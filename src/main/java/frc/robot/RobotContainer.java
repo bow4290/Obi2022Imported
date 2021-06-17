@@ -48,25 +48,25 @@ public class RobotContainer {
     shooterSubsystem = new ShooterSubsystem();
     
     drivetrainSubsystem.setDefaultCommand(new RunCommand(() -> drivetrainSubsystem.drive(getLeftY(), getRightY()), drivetrainSubsystem));
-    intakeSubsystem.setDefaultCommand(new RunCommand(() -> intakeSubsystem.intakeIn(getAxisValue(3)), intakeSubsystem));
+    intakeSubsystem.setDefaultCommand(new RunCommand(() -> intakeSubsystem.intakeIn(getAxisValue(3)), intakeSubsystem));      // Intake motor follows xbox Right Trigger
 
     configureButtonBindings();
   }
 
   private void configureButtonBindings() {
-    setJoystickButtonWhenPressed(joystickRight, 1, new ShiftGearCommand(drivetrainSubsystem));            // Shift gear         = press right joystick trigger
+    setJoystickButtonWhenPressed(joystickRight, 1, new ShiftGearCommand(drivetrainSubsystem));            // Shift gear         = press Right Joystick Trigger
     
-    setJoystickButtonWhenPressed(xboxController, 1, new ToggleShooterSolenoidCommand(shooterSubsystem));  // Shooter pneumatics = press xbox A button
-    setJoystickButtonWhenPressed(xboxController, 2, new ToggleIntakeSolenoidCommand(intakeSubsystem));    // Intake pneumatics  = press xbox B button
-    setJoystickButtonWhileHeld(xboxController, 3, new ClimbCommand(climberSubsystem));                    // To climb           = hold xbox X button
-    setJoystickButtonWhenPressed(xboxController, 4, new ToggleClimberSolenoidCommand(climberSubsystem));  // Climber pneumatics = press xbox Y button
+    setJoystickButtonWhenPressed(xboxController, 1, new ToggleShooterSolenoidCommand(shooterSubsystem));  // Shooter pneumatics = press xbox A Button
+    setJoystickButtonWhenPressed(xboxController, 2, new ToggleIntakeSolenoidCommand(intakeSubsystem));    // Intake pneumatics  = press xbox B Button
+    setJoystickButtonWhileHeld(xboxController, 3, new ClimbCommand(climberSubsystem));                    // To climb           = hold xbox X Button
+    setJoystickButtonWhenPressed(xboxController, 4, new ToggleClimberSolenoidCommand(climberSubsystem));  // Climber pneumatics = press xbox Y Button
 
-    // To shoot balls hold down the right bumper. Balls should automatically convey.
+    // To shoot balls hold down the Right Bumper. Balls should automatically convey.
     setJoystickButtonWhileHeld(xboxController, 6, new ParallelCommandGroup(
       new ShootCommand(shooterSubsystem),
       new ConveyorShootBallCommand(conveyorSubsystem)
     ));
-    setJoystickButtonWhenPressed(xboxController, 9, new ReverseConveyorCommand(conveyorSubsystem));       // Reverse conveyor   = press right stick button
+    setJoystickButtonWhenPressed(xboxController, 9, new ReverseConveyorCommand(conveyorSubsystem));       // Reverse conveyor   = press xbox Right Stick in
   }
 
   public double getLeftY(){
