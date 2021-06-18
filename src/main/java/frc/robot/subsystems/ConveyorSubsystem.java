@@ -10,11 +10,13 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 
+import edu.wpi.first.wpilibj.CounterBase;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Constants.ConveyorConstants;
+import frc.robot.Constants.ShooterConstants;
 
 public class ConveyorSubsystem extends SubsystemBase {
   
@@ -34,6 +36,10 @@ public class ConveyorSubsystem extends SubsystemBase {
 
     conveyorButton1 = new DigitalInput(ConveyorConstants.conveyorButton1Port);
     conveyorButton2 = new DigitalInput(ConveyorConstants.conveyorButton2Port);
+  
+    shooterEncoder = new Encoder(ShooterConstants.shooterEncoderChannelA, ShooterConstants.shooterEncoderChannelB, true, CounterBase.EncodingType.k4X);
+    shooterEncoder.setSamplesToAverage(ShooterConstants.shooterEncoderAverageSamples);
+
   }
 
   public void conveyBall(double conveyorSpeed){

@@ -10,6 +10,8 @@ package frc.robot.subsystems;
 import edu.wpi.first.wpilibj.*;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+
+import com.ctre.phoenix.motorcontrol.InvertType;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 
 import frc.robot.Constants.DriveConstants;
@@ -38,13 +40,27 @@ public class DrivetrainSubsystem extends SubsystemBase {
     rightVictorSPX2 = new WPI_VictorSPX(DriveConstants.rightVictorSPX2Channel);
     rightVictorSPX3 = new WPI_VictorSPX(DriveConstants.rightVictorSPX3Channel);
 
-    SpeedControllerGroup m_left = new SpeedControllerGroup(leftVictorSPX1, leftVictorSPX2, leftVictorSPX3);
-    SpeedControllerGroup m_right = new SpeedControllerGroup(rightVictorSPX1, rightVictorSPX2, rightVictorSPX3);
+    leftVictorSPX1.setInverted(true);
+    rightVictorSPX1.setInverted(true);
 
-    m_left.setInverted(false);
-    m_right.setInverted(true);
+    leftVictorSPX2.follow(leftVictorSPX1);
+    leftVictorSPX2.setInverted(InvertType.FollowMaster);
+    leftVictorSPX3.follow(leftVictorSPX2);
+    leftVictorSPX3.setInverted(InvertType.FollowMaster);
 
-    m_drive = new DifferentialDrive(m_left, m_right);
+    rightVictorSPX2.follow(rightVictorSPX1);
+    rightVictorSPX2.setInverted(InvertType.FollowMaster);
+    rightVictorSPX3.follow(rightVictorSPX2);
+    rightVictorSPX3.setInverted(InvertType.FollowMaster);
+
+    // Using Speed Controller Groups caused output to motors to not update quick enough.
+    //SpeedControllerGroup m_left = new SpeedControllerGroup(leftVictorSPX1, leftVictorSPX2, leftVictorSPX3);
+    //SpeedControllerGroup m_right = new SpeedControllerGroup(rightVictorSPX1, rightVictorSPX2, rightVictorSPX3);
+
+    //m_left.setInverted(true);
+    //m_right.setInverted(true);
+
+    m_drive = new DifferentialDrive(leftVictorSPX1, rightVictorSPX1);
     m_drive.setDeadband(0.05);
     m_drive.setMaxOutput(DriveConstants.driveMaxSpeed);
 

@@ -66,7 +66,7 @@ public class RobotContainer {
       new ShootCommand(shooterSubsystem),
       new ConveyorShootBallCommand(conveyorSubsystem)
     ));
-    setJoystickButtonWhenPressed(xboxController, 9, new ReverseConveyorCommand(conveyorSubsystem));       // Reverse conveyor   = press xbox Right Stick in
+    setJoystickButtonWhileHeld(xboxController, 10, new ReverseConveyorCommand(conveyorSubsystem));       // Reverse conveyor   = press xbox Right Stick in
   }
 
   public double getLeftY(){

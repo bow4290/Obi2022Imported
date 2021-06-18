@@ -32,14 +32,14 @@ public class IntakeSubsystem extends SubsystemBase {
     intakeStatus = IntakeStatus.UP;
   }
 
-  public void extendIntake(){
+  public void retractIntake(){
     intakeSolenoid.set(DoubleSolenoid.Value.kForward);
-    intakeStatus = IntakeStatus.DOWN;
+    intakeStatus = IntakeStatus.UP;
   }
 
-  public void retractIntake(){
+  public void extendIntake(){
     intakeSolenoid.set(DoubleSolenoid.Value.kReverse);
-    intakeStatus = IntakeStatus.UP;
+    intakeStatus = IntakeStatus.DOWN;
   }
 
   public void intakeIn(double intakeSpeed){

@@ -9,21 +9,16 @@ package frc.robot;
 
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.cameraserver.CameraServer;
-import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import frc.robot.Constants.RandomConstants;
 import frc.robot.commands.conveyor.ConveyorIndexBallCommand;
 import frc.robot.subsystems.ConveyorSubsystem;
-import frc.robot.subsystems.DrivetrainSubsystem;
 
 public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
   private ConveyorSubsystem conveyorSubsystem;
-  private DrivetrainSubsystem drivetrainSubsystem;
-  private Compressor compressor;
   public static CameraServer server;
   private RobotContainer m_robotContainer;
 
@@ -32,17 +27,19 @@ public class Robot extends TimedRobot {
     m_robotContainer = new RobotContainer();
     UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
     camera.setResolution(160, 120);
-    compressor = new Compressor(RandomConstants.compressorCANID);
-    drivetrainSubsystem.driveGyro.calibrate();
+    m_robotContainer.drivetrainSubsystem.driveGyro.calibrate();
   }
 
   @Override
   public void robotPeriodic() {
     CommandScheduler.getInstance().run();
-    SmartDashboard.putBoolean("Button Value 1: ", conveyorSubsystem.getButton1());
-    SmartDashboard.putBoolean("Button Value 2: ", conveyorSubsystem.getButton2());
+    SmartDashboard.putBoolean("Button Value 1: ", m_robotContainer.conveyorSubsystem.getButton1());
+    SmartDashboard.putBoolean("Button Value 2: ", m_robotContainer.conveyorSubsystem.getButton2());
+    SmartDashboard.putNumber("Gyro Angle: ", m_robotContainer.drivetrainSubsystem.getGyroAngle());
+    SmartDashboard.putNumber("Left Drive Encoder: ", m_robotContainer.drivetrainSubsystem.getLeftEncoder());
+    SmartDashboard.putNumber("Right Drive Encoder: ", m_robotContainer.drivetrainSubsystem.getRightEncoder());
 
-    if((conveyorSubsystem.getButton1() == false) || (conveyorSubsystem.getButton2() == false)){
+    if((m_robotContainer.conveyorSubsystem.getButton1() == false) || (m_robotContainer.conveyorSubsystem.getButton2() == false)){
       new ConveyorIndexBallCommand(conveyorSubsystem);
     }
 

@@ -46,8 +46,8 @@ public final class Constants {
 
     public static final class IntakeConstants{
         public static final int intakeMotorChannel = 13;
-        public static final int intakeUpChannel = 1;
-        public static final int intakeDownChannel = 2;
+        public static final int intakeUpChannel = 0;
+        public static final int intakeDownChannel = 1;
         public static final double intakeSpeed = 1;
     }
 
@@ -84,12 +84,11 @@ public final class Constants {
         public static final int shooterUpChannel = 2;
         public static final int shooterDownChannel = 3;
         public static final double shootSpeed = 0.91;
-        public static final double targetShooterRate = 193400;
+        public static final double targetShooterRate = 180000;
         public static final double shooterSpeedOffset = 0.85;
-    }
-
-    public static final class RandomConstants{
-        public static final int compressorCANID = 0;
+        public static final int shooterEncoderChannelA = 0;
+        public static final int shooterEncoderChannelB = 1;
+        public static final int shooterEncoderAverageSamples = 127;
     }
 
 }
