@@ -48,7 +48,7 @@ public class RobotContainer {
     conveyorSubsystem = new ConveyorSubsystem();
     shooterSubsystem = new ShooterSubsystem();
     
-    drivetrainSubsystem.setDefaultCommand(new RunCommand(() -> drivetrainSubsystem.drive(getLeftY(), getRightY()), drivetrainSubsystem));
+    drivetrainSubsystem.setDefaultCommand(new RunCommand(() -> drivetrainSubsystem.drive(-getLeftY(), -getRightY()), drivetrainSubsystem));   // Negate the values because dumb joysticks
     intakeSubsystem.setDefaultCommand(new RunCommand(() -> intakeSubsystem.intakeIn(getAxisValue(3)), intakeSubsystem));      // Intake motor follows xbox Right Trigger
 
     configureButtonBindings();

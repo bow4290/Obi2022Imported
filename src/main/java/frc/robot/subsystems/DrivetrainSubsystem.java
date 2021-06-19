@@ -88,7 +88,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
   public void drive(double leftSpeed, double rightSpeed){
     leftSpeed = leftSpeed * DriveConstants.driveSpeedMultiplier;
     rightSpeed = rightSpeed * DriveConstants.driveSpeedMultiplier;
-    m_drive.tankDrive(-leftSpeed, -rightSpeed);
+    m_drive.tankDrive(leftSpeed, rightSpeed);
   }
 
   public void stopDrive(){

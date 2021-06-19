@@ -8,6 +8,7 @@
 package frc.robot;
 
 import edu.wpi.cscore.UsbCamera;
+import edu.wpi.cscore.VideoMode;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -17,29 +18,34 @@ import frc.robot.commands.conveyor.ConveyorIndexBallCommand;
 import frc.robot.subsystems.ConveyorSubsystem;
 
 public class Robot extends TimedRobot {
-  private Command m_autonomousCommand;
+  private Command autonomousCommand;
   private ConveyorSubsystem conveyorSubsystem;
   public static CameraServer server;
-  private RobotContainer m_robotContainer;
+  private RobotContainer robotContainer;
 
   @Override
   public void robotInit() {
-    m_robotContainer = new RobotContainer();
+    robotContainer = new RobotContainer();
+
     UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
-    camera.setResolution(160, 120);
-    m_robotContainer.drivetrainSubsystem.driveGyro.calibrate();
+    camera.setVideoMode(VideoMode.PixelFormat.kMJPEG, 200, 150, 30);
+    //camera.setExposureManual(10);
+    //camera.setWhiteBalanceManual(50);
+
+    robotContainer.drivetrainSubsystem.driveGyro.calibrate();
   }
 
   @Override
   public void robotPeriodic() {
     CommandScheduler.getInstance().run();
-    SmartDashboard.putBoolean("Button Value 1: ", m_robotContainer.conveyorSubsystem.getButton1());
-    SmartDashboard.putBoolean("Button Value 2: ", m_robotContainer.conveyorSubsystem.getButton2());
-    SmartDashboard.putNumber("Gyro Angle: ", m_robotContainer.drivetrainSubsystem.getGyroAngle());
-    SmartDashboard.putNumber("Left Drive Encoder: ", m_robotContainer.drivetrainSubsystem.getLeftEncoder());
-    SmartDashboard.putNumber("Right Drive Encoder: ", m_robotContainer.drivetrainSubsystem.getRightEncoder());
+    
+    SmartDashboard.putBoolean("Button Value 1: ", robotContainer.conveyorSubsystem.getButton1());
+    SmartDashboard.putBoolean("Button Value 2: ", robotContainer.conveyorSubsystem.getButton2());
+    SmartDashboard.putNumber("Gyro Angle: ", robotContainer.drivetrainSubsystem.getGyroAngle());
+    SmartDashboard.putNumber("Left Drive Encoder: ", robotContainer.drivetrainSubsystem.getLeftEncoder());
+    SmartDashboard.putNumber("Right Drive Encoder: ", robotContainer.drivetrainSubsystem.getRightEncoder());
 
-    if((m_robotContainer.conveyorSubsystem.getButton1() == false) || (m_robotContainer.conveyorSubsystem.getButton2() == false)){
+    if((robotContainer.conveyorSubsystem.getButton1() == false) || (robotContainer.conveyorSubsystem.getButton2() == false)){
       new ConveyorIndexBallCommand(conveyorSubsystem);
     }
 
@@ -55,12 +61,13 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousInit() {
-    m_autonomousCommand = m_robotContainer.getAutonomousCommand();
-    m_robotContainer.drivetrainSubsystem.resetGyro();
-    m_robotContainer.drivetrainSubsystem.resetEncoders();
+    autonomousCommand = robotContainer.getAutonomousCommand();
+    
+    robotContainer.drivetrainSubsystem.resetGyro();
+    robotContainer.drivetrainSubsystem.resetEncoders();
 
-    if (m_autonomousCommand != null) {
-      m_autonomousCommand.schedule();
+    if (autonomousCommand != null) {
+      autonomousCommand.schedule();
     }
   }
 
@@ -70,8 +77,8 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
-    if (m_autonomousCommand != null) {
-      m_autonomousCommand.cancel();
+    if (autonomousCommand != null) {
+      autonomousCommand.cancel();
     }
   }
 

@@ -14,7 +14,6 @@ import edu.wpi.first.wpilibj.CounterBase;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants;
 import frc.robot.Constants.ConveyorConstants;
 import frc.robot.Constants.ShooterConstants;
 
@@ -23,7 +22,6 @@ public class ConveyorSubsystem extends SubsystemBase {
   private final WPI_VictorSPX topConveyorMotor;
   private final WPI_VictorSPX bottomConveyorMotor;
   
-  public Constants constants = new Constants();
   public static DigitalInput conveyorButton1;
   public static DigitalInput conveyorButton2;
 
@@ -39,7 +37,6 @@ public class ConveyorSubsystem extends SubsystemBase {
   
     shooterEncoder = new Encoder(ShooterConstants.shooterEncoderChannelA, ShooterConstants.shooterEncoderChannelB, true, CounterBase.EncodingType.k4X);
     shooterEncoder.setSamplesToAverage(ShooterConstants.shooterEncoderAverageSamples);
-
   }
 
   public void conveyBall(double conveyorSpeed){
