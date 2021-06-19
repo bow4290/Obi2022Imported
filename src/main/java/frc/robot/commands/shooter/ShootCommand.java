@@ -8,6 +8,7 @@
 package frc.robot.commands.shooter;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.RobotContainer;
 import frc.robot.Constants.ShooterConstants;
 import frc.robot.subsystems.ShooterSubsystem;
 
@@ -25,7 +26,20 @@ public class ShootCommand extends CommandBase {
 
   @Override
   public void execute() {
-    shooterSubsystem.shooterShoot(ShooterConstants.shootSpeed);
+    switch(RobotContainer.LimelightShootingPosition){
+      case 0:
+        shooterSubsystem.shooterShoot(ShooterConstants.shootSpeedPosition0);
+        break;
+      case 1:
+        shooterSubsystem.shooterShoot(ShooterConstants.shootSpeedPosition1);
+        break;
+      case 2:
+        shooterSubsystem.shooterShoot(ShooterConstants.shootSpeedPosition2);
+        break;
+      case 3:
+        shooterSubsystem.shooterShoot(ShooterConstants.shootSpeedPosition3);
+        break;
+    }
   }
 
   @Override

@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.RunCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants.OIConstants;
 import frc.robot.commands.climber.ClimbCommand;
 import frc.robot.commands.climber.ToggleClimberSolenoidCommand;
@@ -35,6 +36,7 @@ public class RobotContainer {
   public ClimberSubsystem climberSubsystem;
   public ConveyorSubsystem conveyorSubsystem;
   public ShooterSubsystem shooterSubsystem;
+  public static int LimelightShootingPosition;
 
   public RobotContainer() {
 
@@ -51,12 +53,36 @@ public class RobotContainer {
     drivetrainSubsystem.setDefaultCommand(new RunCommand(() -> drivetrainSubsystem.drive(-getLeftY(), -getRightY()), drivetrainSubsystem));   // Negate the values because dumb joysticks
     intakeSubsystem.setDefaultCommand(new RunCommand(() -> intakeSubsystem.intakeIn(getAxisValue(3)), intakeSubsystem));      // Intake motor follows xbox Right Trigger
 
+    switch(getDPad()){
+      case 0:
+        LimelightShootingPosition = 0;
+        break;
+      case 90:
+        LimelightShootingPosition = 1;
+        break;
+      case 180:
+        LimelightShootingPosition = 2;
+        break;
+      case 270:
+        LimelightShootingPosition = 3;
+        break;
+      default:
+        LimelightShootingPosition = 0;
+        break;
+    }
+    
+    
     configureButtonBindings();
   }
 
   private void configureButtonBindings() {
     // Left Joystick Buttons
-    setJoystickButtonWhenPressed(joystickLeft, 1, new LimelightDriveToPositionCommand(0, drivetrainSubsystem));    // Pipeline 0 limelight drive command
+    setJoystickButtonWhenHeld(joystickLeft, 1, new SequentialCommandGroup(                        // Limelight track and shoot = hold Left Joystick Trigger
+        new LimelightDriveToPositionCommand(LimelightShootingPosition, drivetrainSubsystem),       // LimelightShootingPosition = Pipeline #
+        new ParallelCommandGroup(
+          new ShootCommand(shooterSubsystem),
+          new ConveyorShootBallCommand(conveyorSubsystem)
+          )));
     
     // Right Joystick Buttons
     setJoystickButtonWhenPressed(joystickRight, 1, new ShiftGearCommand(drivetrainSubsystem));            // Shift gear         = press Right Joystick Trigger
@@ -93,6 +119,10 @@ public class RobotContainer {
     return xboxController.getRawAxis(axis);
   }
 
+  public int getDPad(){
+    return xboxController.getPOV();
+  }
+
   // WhenPressed runs the command once at the moment the button is pressed.
   private void setJoystickButtonWhenPressed(Joystick joystick, int button, CommandBase command) {
     new JoystickButton(joystick, button).whenPressed(command);
@@ -101,6 +131,11 @@ public class RobotContainer {
   // WhileHeld constantly starts the command and repeatedly schedules while the button is held. Cancels when button is released.
   private void setJoystickButtonWhileHeld(Joystick joystick, int button, CommandBase command) {
     new JoystickButton(joystick, button).whileHeld(command);
+  }
+
+  // WhenHeld starts the command once when the button is first pressed. Command runs until button is released or command interrupted.
+  private void setJoystickButtonWhenHeld(Joystick joystick, int button, CommandBase command) {
+    new JoystickButton(joystick, button).whenHeld(command);
   }
 
   public Command getAutonomousCommand() {

@@ -66,6 +66,8 @@ public class LimelightDriveToPositionCommand extends CommandBase {
       System.out.println(correctedRightMotorSpeed);
 
       drivetrainSubsystem.drive(correctedLeftMotorSpeed, correctedRightMotorSpeed);
+    } else{
+      isFinished();
     }
   }
 
