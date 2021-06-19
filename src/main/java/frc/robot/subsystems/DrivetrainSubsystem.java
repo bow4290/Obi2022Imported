@@ -40,8 +40,8 @@ public class DrivetrainSubsystem extends SubsystemBase {
     rightVictorSPX2 = new WPI_VictorSPX(DriveConstants.rightVictorSPX2Channel);
     rightVictorSPX3 = new WPI_VictorSPX(DriveConstants.rightVictorSPX3Channel);
 
-    leftVictorSPX1.setInverted(true);
-    rightVictorSPX1.setInverted(true);
+    leftVictorSPX1.setInverted(false);
+    rightVictorSPX1.setInverted(false);
 
     leftVictorSPX2.follow(leftVictorSPX1);
     leftVictorSPX2.setInverted(InvertType.FollowMaster);
@@ -88,7 +88,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
   public void drive(double leftSpeed, double rightSpeed){
     leftSpeed = leftSpeed * DriveConstants.driveSpeedMultiplier;
     rightSpeed = rightSpeed * DriveConstants.driveSpeedMultiplier;
-    m_drive.tankDrive(leftSpeed, rightSpeed);
+    m_drive.tankDrive(-leftSpeed, -rightSpeed);
   }
 
   public void stopDrive(){

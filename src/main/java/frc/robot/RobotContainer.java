@@ -20,6 +20,7 @@ import frc.robot.commands.conveyor.ConveyorShootBallCommand;
 import frc.robot.commands.conveyor.ReverseConveyorCommand;
 import frc.robot.commands.drivetrain.ShiftGearCommand;
 import frc.robot.commands.intake.ToggleIntakeSolenoidCommand;
+import frc.robot.commands.limelight.LimelightDriveToPositionACommand;
 import frc.robot.commands.shooter.ShootCommand;
 import frc.robot.commands.shooter.ToggleShooterSolenoidCommand;
 import frc.robot.subsystems.*;
@@ -54,19 +55,22 @@ public class RobotContainer {
   }
 
   private void configureButtonBindings() {
-    setJoystickButtonWhenPressed(joystickRight, 1, new ShiftGearCommand(drivetrainSubsystem));            // Shift gear         = press Right Joystick Trigger
+    // Left Joystick Buttons
+    setJoystickButtonWhenPressed(joystickLeft, 1, new LimelightDriveToPositionACommand(drivetrainSubsystem));
     
+    // Right Joystick Buttons
+    setJoystickButtonWhenPressed(joystickRight, 1, new ShiftGearCommand(drivetrainSubsystem));            // Shift gear         = press Right Joystick Trigger
+
+    // Xbox Controller Buttons
     setJoystickButtonWhenPressed(xboxController, 1, new ToggleShooterSolenoidCommand(shooterSubsystem));  // Shooter pneumatics = press xbox A Button
     setJoystickButtonWhenPressed(xboxController, 2, new ToggleIntakeSolenoidCommand(intakeSubsystem));    // Intake pneumatics  = press xbox B Button
     setJoystickButtonWhileHeld(xboxController, 3, new ClimbCommand(climberSubsystem));                    // To climb           = hold xbox X Button
     setJoystickButtonWhenPressed(xboxController, 4, new ToggleClimberSolenoidCommand(climberSubsystem));  // Climber pneumatics = press xbox Y Button
-
-    // To shoot balls hold down the Right Bumper. Balls should automatically convey.
-    setJoystickButtonWhileHeld(xboxController, 6, new ParallelCommandGroup(
+    setJoystickButtonWhileHeld(xboxController, 6, new ParallelCommandGroup(                               // Shoot balls        = hold xbox Right Bumper
       new ShootCommand(shooterSubsystem),
       new ConveyorShootBallCommand(conveyorSubsystem)
-    ));
-    setJoystickButtonWhileHeld(xboxController, 10, new ReverseConveyorCommand(conveyorSubsystem));       // Reverse conveyor   = press xbox Right Stick in
+      ));
+    setJoystickButtonWhileHeld(xboxController, 10, new ReverseConveyorCommand(conveyorSubsystem));        // Reverse conveyor   = hold xbox Right Stick in
   }
 
   public double getLeftY(){

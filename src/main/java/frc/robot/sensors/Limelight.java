@@ -16,9 +16,8 @@ public class Limelight {
         vision, driving
     }
 
-    public Limelight(LedMode ledMode){
+    public Limelight(){
         table = NetworkTableInstance.getDefault().getTable("limelight");
-        setLedMode(ledMode);
     }
 
     public void setLedMode(LedMode mode){                       // Set the state of the LED
