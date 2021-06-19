@@ -14,10 +14,11 @@ import frc.robot.sensors.Limelight;
 import frc.robot.sensors.Limelight.*;
 import frc.robot.subsystems.DrivetrainSubsystem;
 
-public class LimelightDriveToPositionACommand extends CommandBase {
+public class LimelightDriveToPositionCommand extends CommandBase {
 
   private final DrivetrainSubsystem drivetrainSubsystem;
   private final Limelight limelight;
+  private int pipeline;
   private double xError = 0;
   private double yError = 0;
   private double target = 0;
@@ -28,7 +29,8 @@ public class LimelightDriveToPositionACommand extends CommandBase {
   private double correctedLeftMotorSpeed = 0;
   private double correctedRightMotorSpeed = 0;
 
-  public LimelightDriveToPositionACommand(DrivetrainSubsystem drivetrainSubsystem) {
+  public LimelightDriveToPositionCommand(int pipeline, DrivetrainSubsystem drivetrainSubsystem) {
+    this.pipeline = pipeline;
     this.drivetrainSubsystem = drivetrainSubsystem;
     limelight = new Limelight();
     addRequirements(drivetrainSubsystem);
@@ -38,7 +40,7 @@ public class LimelightDriveToPositionACommand extends CommandBase {
   public void initialize() {
     limelight.setLedMode(LedMode.ledOn);
     limelight.setCamMode(CamMode.vision);
-    limelight.setPipeline(0);
+    limelight.setPipeline(pipeline);
   }
 
   @Override

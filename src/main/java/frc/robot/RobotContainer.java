@@ -20,7 +20,7 @@ import frc.robot.commands.conveyor.ConveyorShootBallCommand;
 import frc.robot.commands.conveyor.ReverseConveyorCommand;
 import frc.robot.commands.drivetrain.ShiftGearCommand;
 import frc.robot.commands.intake.ToggleIntakeSolenoidCommand;
-import frc.robot.commands.limelight.LimelightDriveToPositionACommand;
+import frc.robot.commands.limelight.LimelightDriveToPositionCommand;
 import frc.robot.commands.shooter.ShootCommand;
 import frc.robot.commands.shooter.ToggleShooterSolenoidCommand;
 import frc.robot.subsystems.*;
@@ -56,7 +56,7 @@ public class RobotContainer {
 
   private void configureButtonBindings() {
     // Left Joystick Buttons
-    setJoystickButtonWhenPressed(joystickLeft, 1, new LimelightDriveToPositionACommand(drivetrainSubsystem));
+    setJoystickButtonWhenPressed(joystickLeft, 1, new LimelightDriveToPositionCommand(0, drivetrainSubsystem));    // Pipeline 0 limelight drive command
     
     // Right Joystick Buttons
     setJoystickButtonWhenPressed(joystickRight, 1, new ShiftGearCommand(drivetrainSubsystem));            // Shift gear         = press Right Joystick Trigger
