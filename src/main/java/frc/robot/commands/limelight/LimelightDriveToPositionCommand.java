@@ -41,6 +41,8 @@ public class LimelightDriveToPositionCommand extends CommandBase {
     limelight.setLedMode(LedMode.ledOn);
     limelight.setCamMode(CamMode.vision);
     limelight.setPipeline(pipeline);
+    xError = 10;
+    yError = 10;
   }
 
   @Override
@@ -65,7 +67,7 @@ public class LimelightDriveToPositionCommand extends CommandBase {
       correctedRightMotorSpeed = LimelightConstants.limelightDriveSpeed + speedAdjustment + turnAdjustment;
       System.out.println(correctedRightMotorSpeed);
 
-      drivetrainSubsystem.drive(correctedLeftMotorSpeed, correctedRightMotorSpeed);
+      drivetrainSubsystem.drive(-correctedLeftMotorSpeed, -correctedRightMotorSpeed);
     } else{
       isFinished();
     }
@@ -79,6 +81,6 @@ public class LimelightDriveToPositionCommand extends CommandBase {
 
   @Override
   public boolean isFinished() {
-    return false;               // Should finish when xError and yError are "good enough"?
+    return(Math.abs(xError) < 2.5 && Math.abs(yError) < 2.5);               // Should finish when xError and yError are "good enough"?
   }
 }

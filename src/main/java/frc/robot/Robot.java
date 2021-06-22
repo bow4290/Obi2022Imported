@@ -15,11 +15,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.commands.conveyor.ConveyorIndexBallCommand;
-import frc.robot.subsystems.ConveyorSubsystem;
 
 public class Robot extends TimedRobot {
   private Command autonomousCommand;
-  private ConveyorSubsystem conveyorSubsystem;
   public static CameraServer server;
   private RobotContainer robotContainer;
 
@@ -44,11 +42,14 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("Gyro Angle: ", robotContainer.drivetrainSubsystem.getGyroAngle());
     SmartDashboard.putNumber("Left Drive Encoder: ", robotContainer.drivetrainSubsystem.getLeftEncoder());
     SmartDashboard.putNumber("Right Drive Encoder: ", robotContainer.drivetrainSubsystem.getRightEncoder());
+    SmartDashboard.putNumber("Shooter Encoder End: ", robotContainer.conveyorSubsystem.getEncoderRate());
 
     if((robotContainer.conveyorSubsystem.getButton1() == false) || (robotContainer.conveyorSubsystem.getButton2() == false)){
-      new ConveyorIndexBallCommand(conveyorSubsystem);
+      new ConveyorIndexBallCommand(robotContainer.conveyorSubsystem).execute();
     }
-
+    else {
+      new ConveyorIndexBallCommand(robotContainer.conveyorSubsystem).end(true);
+    }
   }
 
   @Override
