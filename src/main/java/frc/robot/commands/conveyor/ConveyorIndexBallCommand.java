@@ -25,7 +25,11 @@ public class ConveyorIndexBallCommand extends CommandBase {
 
   @Override
   public void execute() {
-    conveyorSubsystem.conveyBall(ConveyorConstants.conveyorIndexBallSpeed);
+    if((conveyorSubsystem.getButton1() == false) || (conveyorSubsystem.getButton2() == false)){       // Buttons are wired NC, so returns false when button is pressed
+    conveyorSubsystem.conveyBall(ConveyorConstants.conveyorIndexBallSpeed);                           // If one of the intake buttons is pressed, convey the balls
+    } else{
+      conveyorSubsystem.conveyorStop();
+    }
   }
 
   @Override

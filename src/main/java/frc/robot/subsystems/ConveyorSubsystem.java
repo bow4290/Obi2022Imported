@@ -28,8 +28,6 @@ public class ConveyorSubsystem extends SubsystemBase {
   private static DigitalInput conveyorButton1;
   private static DigitalInput conveyorButton2;
 
-  private static BooleanSupplier conveyorCmdSelector;
-
   public Encoder shooterEncoder;
 
   public ConveyorSubsystem() {
@@ -42,14 +40,6 @@ public class ConveyorSubsystem extends SubsystemBase {
   
     shooterEncoder = new Encoder(ShooterConstants.shooterEncoderChannelA, ShooterConstants.shooterEncoderChannelB, true, CounterBase.EncodingType.k4X);
     shooterEncoder.setSamplesToAverage(ShooterConstants.shooterEncoderAverageSamples);
-
-    conveyorCmdSelector = new BooleanSupplier(){
-      @Override
-      public boolean getAsBoolean() {        
-        System.out.println("I am updating the button boolean");
-        return ((getButton1() == false) || (getButton2() == false));
-      }
-    };
   }
 
   public void conveyBall(double conveyorSpeed){
@@ -75,10 +65,6 @@ public class ConveyorSubsystem extends SubsystemBase {
 
   public double getEncoderRate(){
     return(shooterEncoder.getRate());
-  }
-
-  public BooleanSupplier getconveyorCmdSelector(){
-    return conveyorCmdSelector;
   }
 
   @Override

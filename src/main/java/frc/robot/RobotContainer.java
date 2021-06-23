@@ -11,7 +11,6 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
@@ -21,7 +20,6 @@ import frc.robot.commands.climber.ToggleClimberSolenoidCommand;
 import frc.robot.commands.conveyor.ConveyorIndexBallCommand;
 import frc.robot.commands.conveyor.ConveyorShootBallCommand;
 import frc.robot.commands.conveyor.ReverseConveyorCommand;
-import frc.robot.commands.conveyor.StopConveyorCommand;
 import frc.robot.commands.drivetrain.ShiftGearCommand;
 import frc.robot.commands.intake.ToggleIntakeSolenoidCommand;
 import frc.robot.commands.limelight.LimelightDriveToPositionCommand;
@@ -56,7 +54,8 @@ public class RobotContainer {
     shooterSubsystem = new ShooterSubsystem();
     
     drivetrainSubsystem.setDefaultCommand(new RunCommand(() -> drivetrainSubsystem.drive(-getLeftY(), -getRightY()), drivetrainSubsystem));   // Negate the values because dumb joysticks
-    intakeSubsystem.setDefaultCommand(new RunCommand(() -> intakeSubsystem.intakeIn(getAxisValue(3)), intakeSubsystem));      // Intake motor follows xbox Right Trigger
+    intakeSubsystem.setDefaultCommand(new RunCommand(() -> intakeSubsystem.intakeIn(getAxisValue(3)), intakeSubsystem));                      // Intake motor follows xbox Right Trigger
+    conveyorSubsystem.setDefaultCommand(new ConveyorIndexBallCommand(conveyorSubsystem));
 
     switch(getDPad()){
       case 0:
@@ -148,7 +147,4 @@ public class RobotContainer {
     return null;
   }
 
-  public ConditionalCommand getConveyorCmdSelector(){
-    return new ConditionalCommand(new ConveyorIndexBallCommand(conveyorSubsystem), new StopConveyorCommand(conveyorSubsystem), conveyorSubsystem.getconveyorCmdSelector());
-  }
 }
