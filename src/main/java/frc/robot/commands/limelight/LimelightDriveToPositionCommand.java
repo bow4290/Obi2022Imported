@@ -56,16 +56,16 @@ public class LimelightDriveToPositionCommand extends CommandBase {
       SmartDashboard.putNumber("Limelight X Error: ", xError);
       SmartDashboard.putNumber("Limelight Y Error: ", yError);
 
-      distanceError = -yError;          // Distance is directly proportional to the Y (vertical) error
+      distanceError = yError;          // Distance is directly proportional to the Y (vertical) error
       speedAdjustment = LimelightConstants.kpDistance*distanceError;
 
-      headingError = -xError;
+      headingError = xError;
       turnAdjustment = LimelightConstants.kpAim*headingError;
 
       correctedLeftMotorSpeed = LimelightConstants.limelightDriveSpeed + speedAdjustment - turnAdjustment;
       correctedRightMotorSpeed = LimelightConstants.limelightDriveSpeed + speedAdjustment + turnAdjustment;
 
-      drivetrainSubsystem.drive(-correctedLeftMotorSpeed, -correctedRightMotorSpeed);
+      drivetrainSubsystem.drive(correctedLeftMotorSpeed, correctedRightMotorSpeed);
     } else{
       isFinished();
     }
@@ -79,6 +79,6 @@ public class LimelightDriveToPositionCommand extends CommandBase {
 
   @Override
   public boolean isFinished() {
-    return(Math.abs(xError) < 2.5 && Math.abs(yError) < 2.5);               // Should finish when xError and yError are "good enough"?
+    return(Math.abs(xError) < 0.2 && Math.abs(yError) < 0.2);
   }
 }

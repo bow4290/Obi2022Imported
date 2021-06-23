@@ -84,10 +84,10 @@ public final class Constants {
         public static final int shooterUpChannel = 2;
         public static final int shooterDownChannel = 3;
         public static final double shootSpeedPosition0 = 0.91;
-        public static final double shootSpeedPosition1 = 0.91;
-        public static final double shootSpeedPosition2 = 0.91;
-        public static final double shootSpeedPosition3 = 0.91;
-        public static final double targetShooterRate = 180000;
+        public static final double shootSpeedPosition1 = 0.75;
+        public static final double shootSpeedPosition2 = 0.50;
+        public static final double shootSpeedPosition3 = 0.25;
+        public static final double targetShooterRate = 170000;
         public static final double shooterSpeedOffset = 0.85;
         public static final int shooterEncoderChannelA = 0;
         public static final int shooterEncoderChannelB = 1;
