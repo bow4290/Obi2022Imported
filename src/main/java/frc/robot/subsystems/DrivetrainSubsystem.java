@@ -9,6 +9,7 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.*;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import com.ctre.phoenix.motorcontrol.InvertType;
@@ -75,14 +76,10 @@ public class DrivetrainSubsystem extends SubsystemBase {
     driveTrainRightEncoder.setDistancePerPulse(DriveConstants.driveTrainRightEncoderPulseDistance);
 
     driveGyro = new ADXRS450_Gyro();
+    driveGyro.calibrate();
 
     gearShiftSolenoid = new DoubleSolenoid(DriveConstants.gearShiftHighChannel, DriveConstants.gearShiftLowChannel);
     gearShiftStatus = GearShiftStatus.LOW;
-  }
-
-  @Override
-  public void periodic() {
-    // This method will be called once per scheduler run
   }
 
   public void drive(double leftSpeed, double rightSpeed){
@@ -132,6 +129,13 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
   public static GearShiftStatus getGearShiftPosition(){
     return gearShiftStatus;
+  }
+
+  @Override
+  public void periodic() {
+    SmartDashboard.putNumber("Gyro Angle: ", getGyroAngle());
+    SmartDashboard.putNumber("Left Drive Encoder: ", getLeftEncoder());
+    SmartDashboard.putNumber("Right Drive Encoder: ", getRightEncoder());
   }
 
 }

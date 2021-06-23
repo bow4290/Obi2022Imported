@@ -11,14 +11,17 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants.OIConstants;
 import frc.robot.commands.climber.ClimbCommand;
 import frc.robot.commands.climber.ToggleClimberSolenoidCommand;
+import frc.robot.commands.conveyor.ConveyorIndexBallCommand;
 import frc.robot.commands.conveyor.ConveyorShootBallCommand;
 import frc.robot.commands.conveyor.ReverseConveyorCommand;
+import frc.robot.commands.conveyor.StopConveyorCommand;
 import frc.robot.commands.drivetrain.ShiftGearCommand;
 import frc.robot.commands.intake.ToggleIntakeSolenoidCommand;
 import frc.robot.commands.limelight.LimelightDriveToPositionCommand;
@@ -31,11 +34,13 @@ public class RobotContainer {
   public static Joystick joystickLeft;
   public static Joystick joystickRight;
   public static Joystick xboxController;
-  public DrivetrainSubsystem drivetrainSubsystem;
-  public IntakeSubsystem intakeSubsystem;
-  public ClimberSubsystem climberSubsystem;
-  public ConveyorSubsystem conveyorSubsystem;
-  public ShooterSubsystem shooterSubsystem;
+
+  private DrivetrainSubsystem drivetrainSubsystem;
+  private IntakeSubsystem intakeSubsystem;
+  private ClimberSubsystem climberSubsystem;
+  private ConveyorSubsystem conveyorSubsystem;
+  private ShooterSubsystem shooterSubsystem;
+
   public static int LimelightShootingPosition;
 
   public RobotContainer() {
@@ -73,6 +78,7 @@ public class RobotContainer {
     
     
     configureButtonBindings();
+
   }
 
   private void configureButtonBindings() {
@@ -140,5 +146,9 @@ public class RobotContainer {
 
   public Command getAutonomousCommand() {
     return null;
+  }
+
+  public ConditionalCommand getConveyorCmdSelector(){
+    return new ConditionalCommand(new ConveyorIndexBallCommand(conveyorSubsystem), new StopConveyorCommand(conveyorSubsystem), conveyorSubsystem.getconveyorCmdSelector());
   }
 }

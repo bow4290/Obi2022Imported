@@ -7,12 +7,15 @@
 
 package frc.robot.subsystems;
 
+import java.util.function.BooleanSupplier;
+
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 
 import edu.wpi.first.wpilibj.CounterBase;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ConveyorConstants;
 import frc.robot.Constants.ShooterConstants;
@@ -22,8 +25,10 @@ public class ConveyorSubsystem extends SubsystemBase {
   private final WPI_VictorSPX topConveyorMotor;
   private final WPI_VictorSPX bottomConveyorMotor;
   
-  public static DigitalInput conveyorButton1;
-  public static DigitalInput conveyorButton2;
+  private static DigitalInput conveyorButton1;
+  private static DigitalInput conveyorButton2;
+
+  private static BooleanSupplier conveyorCmdSelector;
 
   public Encoder shooterEncoder;
 
@@ -37,6 +42,14 @@ public class ConveyorSubsystem extends SubsystemBase {
   
     shooterEncoder = new Encoder(ShooterConstants.shooterEncoderChannelA, ShooterConstants.shooterEncoderChannelB, true, CounterBase.EncodingType.k4X);
     shooterEncoder.setSamplesToAverage(ShooterConstants.shooterEncoderAverageSamples);
+
+    conveyorCmdSelector = new BooleanSupplier(){
+      @Override
+      public boolean getAsBoolean() {        
+        System.out.println("I am updating the button boolean");
+        return ((getButton1() == false) || (getButton2() == false));
+      }
+    };
   }
 
   public void conveyBall(double conveyorSpeed){
@@ -64,8 +77,14 @@ public class ConveyorSubsystem extends SubsystemBase {
     return(shooterEncoder.getRate());
   }
 
+  public BooleanSupplier getconveyorCmdSelector(){
+    return conveyorCmdSelector;
+  }
+
   @Override
   public void periodic() {
-    // This method will be called once per scheduler run
+    SmartDashboard.putBoolean("Button Value 1: ", getButton1());
+    SmartDashboard.putBoolean("Button Value 2: ", getButton2());
+    SmartDashboard.putNumber("Shooter Encoder End: ", getEncoderRate());
   }
 }

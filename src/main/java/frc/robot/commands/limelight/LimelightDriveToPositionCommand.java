@@ -63,9 +63,7 @@ public class LimelightDriveToPositionCommand extends CommandBase {
       turnAdjustment = LimelightConstants.kpAim*headingError;
 
       correctedLeftMotorSpeed = LimelightConstants.limelightDriveSpeed + speedAdjustment - turnAdjustment;
-      System.out.println(correctedLeftMotorSpeed);
       correctedRightMotorSpeed = LimelightConstants.limelightDriveSpeed + speedAdjustment + turnAdjustment;
-      System.out.println(correctedRightMotorSpeed);
 
       drivetrainSubsystem.drive(-correctedLeftMotorSpeed, -correctedRightMotorSpeed);
     } else{
