@@ -90,7 +90,7 @@ public class RobotContainer {
   private void configureButtonBindings() {
     // Left Joystick Buttons
     setJoystickButtonWhenHeld(joystickLeft, 1, new SequentialCommandGroup(               // Limelight track and shoot = hold Left Joystick Trigger
-        new LimelightInitCommand(0),                                                     // Pipeline 0
+        new LimelightInitCommand(LimelightShootingPosition),
         new LimelightDriveToDistanceCommand(drivetrainSubsystem, limelight),
         new LimelightDriveToHeadingCommand(drivetrainSubsystem, limelight),
         new LimelightEndCommand(),
