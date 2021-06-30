@@ -22,9 +22,13 @@ import frc.robot.commands.conveyor.ConveyorShootBallCommand;
 import frc.robot.commands.conveyor.ReverseConveyorCommand;
 import frc.robot.commands.drivetrain.ShiftGearCommand;
 import frc.robot.commands.intake.ToggleIntakeSolenoidCommand;
-import frc.robot.commands.limelight.LimelightDriveToPositionCommand;
+import frc.robot.commands.limelight.LimelightDriveToDistanceCommand;
+import frc.robot.commands.limelight.LimelightDriveToHeadingCommand;
+import frc.robot.commands.limelight.LimelightEndCommand;
+import frc.robot.commands.limelight.LimelightInitCommand;
 import frc.robot.commands.shooter.ShootCommand;
 import frc.robot.commands.shooter.ToggleShooterSolenoidCommand;
+import frc.robot.sensors.Limelight;
 import frc.robot.subsystems.*;
 
 public class RobotContainer {
@@ -38,6 +42,7 @@ public class RobotContainer {
   private ClimberSubsystem climberSubsystem;
   private ConveyorSubsystem conveyorSubsystem;
   private ShooterSubsystem shooterSubsystem;
+  private Limelight limelight;
 
   public static int LimelightShootingPosition;
 
@@ -52,6 +57,8 @@ public class RobotContainer {
     climberSubsystem = new ClimberSubsystem();
     conveyorSubsystem = new ConveyorSubsystem();
     shooterSubsystem = new ShooterSubsystem();
+
+    limelight = new Limelight();
     
     drivetrainSubsystem.setDefaultCommand(new RunCommand(() -> drivetrainSubsystem.drive(-getLeftY(), -getRightY()), drivetrainSubsystem));   // Negate the values because dumb joysticks
     intakeSubsystem.setDefaultCommand(new RunCommand(() -> intakeSubsystem.intakeIn(getAxisValue(3)), intakeSubsystem));                      // Intake motor follows xbox Right Trigger
@@ -82,8 +89,12 @@ public class RobotContainer {
 
   private void configureButtonBindings() {
     // Left Joystick Buttons
-    setJoystickButtonWhenHeld(joystickLeft, 1, new SequentialCommandGroup(                        // Limelight track and shoot = hold Left Joystick Trigger
-        new LimelightDriveToPositionCommand(LimelightShootingPosition, drivetrainSubsystem),       // LimelightShootingPosition = Pipeline #
+    setJoystickButtonWhenHeld(joystickLeft, 1, new SequentialCommandGroup(               // Limelight track and shoot = hold Left Joystick Trigger
+        new LimelightInitCommand(0),                                                     // Pipeline 0
+        new LimelightDriveToDistanceCommand(drivetrainSubsystem, limelight),
+        new LimelightDriveToHeadingCommand(drivetrainSubsystem, limelight),
+        new LimelightEndCommand(),
+        new ToggleShooterSolenoidCommand(shooterSubsystem),
         new ParallelCommandGroup(
           new ShootCommand(shooterSubsystem),
           new ConveyorShootBallCommand(conveyorSubsystem)

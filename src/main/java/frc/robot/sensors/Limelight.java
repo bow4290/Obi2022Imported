@@ -24,6 +24,25 @@ public class Limelight {
         table.getEntry("ledMode").setNumber(mode.ordinal());
     }
 
+    public LedMode getLedMode(){
+        int mode_num = table.getEntry("ledMode").getNumber(0).intValue();
+
+        if (mode_num == 0) {
+            return LedMode.ledPipeline;
+        }
+        else if (mode_num == 1) {
+            return LedMode.ledOff;
+        }
+        else if (mode_num == 1) {
+            return LedMode.ledBlink;
+        }
+        else if (mode_num == 2) {
+            return LedMode.ledOn;
+        }
+
+        return LedMode.ledOff;
+    }
+
     public void setCamMode(CamMode mode){                       // Set the camera mode (vision processing or driving camera)
         table.getEntry("camMode").setNumber(mode.ordinal());
     }

@@ -74,8 +74,13 @@ public final class Constants {
         public static final double h2 = 99;                     // Distance from ground to target
         public static final double a1 = 61.31;                  // Limelight mount angle
         public static final double limelightDriveSpeed = 0.5;
-        public static final double kpDistance = 0.25;           // kP for yError
-        public static final double kpAim = 0.05;                // kP for xError
+        public static final double kpDistance = 0.2;           // kP for yError
+        public static final double kiDistance = 0;
+        public static final double kdDistance = 0.025;
+        public static final double distanceIntegralWindow = 5;
+        public static final double kpAim = 0.075;                // kP for xError
+        public static final double kiAim = 0;
+        public static final double turnIntegralWindow = 5;
     }
 
     public static final class ShooterConstants{
