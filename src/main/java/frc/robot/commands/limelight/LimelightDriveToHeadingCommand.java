@@ -33,6 +33,7 @@ public class LimelightDriveToHeadingCommand extends CommandBase {
   @Override
   public void initialize() {
     System.out.println("Running Limelight Heading Command");
+    lastTimestamp = Timer.getFPGATimestamp();
   }
 
   @Override
