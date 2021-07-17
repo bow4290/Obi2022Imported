@@ -35,6 +35,7 @@ public class LimelightDriveToDistanceCommand extends CommandBase {
   @Override
   public void initialize() {
     System.out.println("Running Limelight Distance Command");
+    lastTimestamp = Timer.getFPGATimestamp();
   }
 
   @Override
