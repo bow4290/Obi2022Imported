@@ -70,6 +70,6 @@ public class LimelightDriveToHeadingCommand extends CommandBase {
 
   @Override
   public boolean isFinished() {
-    return ((Math.abs(limelight.getXError()) < 0.2));
+    return ((Math.abs(limelight.getXError()) < 0.2) && (Math.abs(sumError) < 0.5));
   }
 }
