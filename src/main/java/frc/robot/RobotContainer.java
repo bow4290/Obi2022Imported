@@ -72,6 +72,7 @@ public class RobotContainer {
     // Left Joystick Buttons
     setJoystickButtonWhenHeld(joystickLeft, 1, new SequentialCommandGroup(               // Limelight track and shoot = hold Left Joystick Trigger
         new LimelightInitCommand(LimelightShootingPosition),
+        new LimelightDriveToHeadingCommand(drivetrainSubsystem, limelight),
         new LimelightDriveToDistanceCommand(drivetrainSubsystem, limelight),
         new LimelightDriveToHeadingCommand(drivetrainSubsystem, limelight),
         new LimelightEndCommand()
