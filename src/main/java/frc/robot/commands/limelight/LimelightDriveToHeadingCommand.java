@@ -23,6 +23,7 @@ public class LimelightDriveToHeadingCommand extends CommandBase {
   private double sumError = 0;
   private double correctedLeftMotorSpeed = 0;
   private double correctedRightMotorSpeed = 0;
+  private double motorTurnSpeedRatio = 0;
   
   public LimelightDriveToHeadingCommand(DrivetrainSubsystem drivetrainSubsystem, Limelight limelight) {
     this.drivetrainSubsystem = drivetrainSubsystem;
@@ -56,7 +57,24 @@ public class LimelightDriveToHeadingCommand extends CommandBase {
 
     correctedLeftMotorSpeed = LimelightConstants.limelightDriveSpeed - kpAdjustment - kiAdjustment;
     correctedRightMotorSpeed = LimelightConstants.limelightDriveSpeed + kpAdjustment + kiAdjustment;
-
+    
+    // Set maximum drive speed whilst maintaining turn ratio
+    if (correctedLeftMotorSpeed > LimelightConstants.maxLimelightTurneSpeed){
+      correctedLeftMotorSpeed = LimelightConstants.maxLimelightTurnSpeed;
+    } else if (correctedLeftMotorSpeed < -LimelightConstants.maxLimelightTurnSpeed){
+      correctedLeftMotorSpeed = -LimelightConstants.maxLimelightTurnSpeed;
+    } else{
+      correctedLeftMotorSpeed = correctedLeftMotorSpeed;
+    }
+    
+    if (correctedRightMotorSpeed > LimelightConstants.maxLimelightTurnSpeed){
+      correctedRightMotorSpeed = LimelightConstants.maxLimelightTurnSpeed;
+    } else if (correctedRightMotorSpeed < -LimelightConstants.maxLimelightTurnSpeed){
+      correctedRightMotorSpeed = -LimelightConstants.maxLimelightTurnSpeed;
+    } else{
+      correctedRightMotorSpeed = correctedRightMotorSpeed;
+    }
+    
     drivetrainSubsystem.drive(correctedLeftMotorSpeed, correctedRightMotorSpeed);
 
     lastTimestamp = Timer.getFPGATimestamp();
