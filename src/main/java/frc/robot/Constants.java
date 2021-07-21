@@ -81,6 +81,7 @@ public final class Constants {
         public static final double kpAim = 0.01;                // kP for xError
         public static final double kiAim = 0.05;
         public static final double turnIntegralWindow = 5;
+        public static final double maxLimelightDriveSpeed = 0.6;
     }
 
     public static final class ShooterConstants{
