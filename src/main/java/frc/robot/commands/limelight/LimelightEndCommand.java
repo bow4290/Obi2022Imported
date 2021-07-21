@@ -28,11 +28,11 @@ public class LimelightEndCommand extends CommandBase {
 
   @Override
   public void end(boolean interrupted) {
+    SmartDashboard.putBoolean("Ready to fire", true);
   }
 
   @Override
   public boolean isFinished() {
-    SmartDashboard.putBoolean("Ready to fire", true);
     return true;
   }
   
