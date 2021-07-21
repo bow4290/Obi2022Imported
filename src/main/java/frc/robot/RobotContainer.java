@@ -43,7 +43,6 @@ public class RobotContainer {
   private ConveyorSubsystem conveyorSubsystem;
   private ShooterSubsystem shooterSubsystem;
   private Limelight limelight;
-
   public static int LimelightShootingPosition;
 
   public RobotContainer() {
@@ -59,29 +58,11 @@ public class RobotContainer {
     shooterSubsystem = new ShooterSubsystem();
 
     limelight = new Limelight();
+    LimelightShootingPosition = 3;      // Position 3 is auto position
     
     drivetrainSubsystem.setDefaultCommand(new RunCommand(() -> drivetrainSubsystem.drive(-getLeftY(), -getRightY()), drivetrainSubsystem));   // Negate the values because dumb joysticks
     intakeSubsystem.setDefaultCommand(new RunCommand(() -> intakeSubsystem.intakeIn(getAxisValue(3)), intakeSubsystem));                      // Intake motor follows xbox Right Trigger
-    conveyorSubsystem.setDefaultCommand(new ConveyorIndexBallCommand(conveyorSubsystem));
-
-    switch(getDPad()){
-      case 0:
-        LimelightShootingPosition = 0;
-        break;
-      case 90:
-        LimelightShootingPosition = 1;
-        break;
-      case 180:
-        LimelightShootingPosition = 2;
-        break;
-      case 270:
-        LimelightShootingPosition = 3;
-        break;
-      default:
-        LimelightShootingPosition = 0;
-        break;
-    }
-    
+    conveyorSubsystem.setDefaultCommand(new ConveyorIndexBallCommand(conveyorSubsystem)); 
     
     configureButtonBindings();
 
@@ -93,12 +74,8 @@ public class RobotContainer {
         new LimelightInitCommand(LimelightShootingPosition),
         new LimelightDriveToDistanceCommand(drivetrainSubsystem, limelight),
         new LimelightDriveToHeadingCommand(drivetrainSubsystem, limelight),
-        new LimelightEndCommand(),
-        new ToggleShooterSolenoidCommand(shooterSubsystem),
-        new ParallelCommandGroup(
-          new ShootCommand(shooterSubsystem),
-          new ConveyorShootBallCommand(conveyorSubsystem)
-          )));
+        new LimelightEndCommand()
+    ));
     
     // Right Joystick Buttons
     setJoystickButtonWhenPressed(joystickRight, 1, new ShiftGearCommand(drivetrainSubsystem));            // Shift gear         = press Right Joystick Trigger
@@ -110,7 +87,7 @@ public class RobotContainer {
     setJoystickButtonWhenPressed(xboxController, 4, new ToggleClimberSolenoidCommand(climberSubsystem));  // Climber pneumatics = press xbox Y Button
     setJoystickButtonWhileHeld(xboxController, 6, new ParallelCommandGroup(                               // Shoot balls        = hold xbox Right Bumper
       new ShootCommand(shooterSubsystem),
-      new ConveyorShootBallCommand(conveyorSubsystem)
+      new ConveyorShootBallCommand(conveyorSubsystem, LimelightShootingPosition)
       ));
     setJoystickButtonWhileHeld(xboxController, 10, new ReverseConveyorCommand(conveyorSubsystem));        // Reverse conveyor   = hold xbox Right Stick in
   }
@@ -139,6 +116,14 @@ public class RobotContainer {
     return xboxController.getPOV();
   }
 
+  public void setShooterPosition(int position){
+    LimelightShootingPosition = position;
+  }
+
+  public int getShooterPosition(){
+    return LimelightShootingPosition;
+  }
+
   // WhenPressed runs the command once at the moment the button is pressed.
   private void setJoystickButtonWhenPressed(Joystick joystick, int button, CommandBase command) {
     new JoystickButton(joystick, button).whenPressed(command);
@@ -156,6 +141,18 @@ public class RobotContainer {
 
   public Command getAutonomousCommand() {
     return null;
+
+    //     new SequentialCommandGroup(               // Limelight track and shoot = hold Left Joystick Trigger
+    //     new LimelightInitCommand(LimelightShootingPosition),
+    //     new LimelightDriveToDistanceCommand(drivetrainSubsystem, limelight),
+    //     new LimelightDriveToHeadingCommand(drivetrainSubsystem, limelight),
+    //     new LimelightEndCommand(),
+    //     new ToggleShooterSolenoidCommand(shooterSubsystem),
+    //     new ParallelCommandGroup(
+    //       new ShootCommand(shooterSubsystem),
+    //       new ConveyorShootBallCommand(conveyorSubsystem)
+    //       )));
+
   }
 
 }

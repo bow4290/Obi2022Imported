@@ -7,6 +7,7 @@
 
 package frc.robot.commands.limelight;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.sensors.Limelight.*;
 import frc.robot.sensors.Limelight;
@@ -34,6 +35,7 @@ public class LimelightInitCommand extends CommandBase {
 
   @Override
   public boolean isFinished() {
+    SmartDashboard.putBoolean("Ready to fire", false);
     return true;
   }
   

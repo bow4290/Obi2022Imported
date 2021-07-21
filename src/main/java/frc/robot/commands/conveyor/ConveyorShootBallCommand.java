@@ -14,23 +14,45 @@ import frc.robot.subsystems.ConveyorSubsystem;
 
 public class ConveyorShootBallCommand extends CommandBase {
   private final ConveyorSubsystem conveyorSubsystem;
+  private final int limelightShootingPosition;
+  private double targetShooterRate = 0;
+  private double shootSpeed = 0;
 
-  public ConveyorShootBallCommand(ConveyorSubsystem conveyorSubsystem) {
+  public ConveyorShootBallCommand(ConveyorSubsystem conveyorSubsystem, int LimelightShootingPosition) {
     this.conveyorSubsystem = conveyorSubsystem;
+    this.limelightShootingPosition = LimelightShootingPosition;
     addRequirements(conveyorSubsystem);
   }
 
   @Override
   public void initialize() {
+    setTargetShooterRate();
   }
 
   @Override
   public void execute() {
-    if(conveyorSubsystem.getEncoderRate() >= ShooterConstants.targetShooterRate){
+    if(conveyorSubsystem.getEncoderRate() >= targetShooterRate){
       conveyorSubsystem.conveyBall(ConveyorConstants.conveyorShootBallSpeed);
     } else{
       conveyorSubsystem.conveyorStop();
     }
+  }
+
+  private void setTargetShooterRate(){
+    if (limelightShootingPosition == 0){          // Change to equation!
+      this.shootSpeed = ShooterConstants.shootSpeedPosition0;
+      targetShooterRate = 170000;
+    } else if(limelightShootingPosition == 1){
+      this.shootSpeed = ShooterConstants.shootSpeedPosition1;
+      targetShooterRate = 150000;
+    } else if(limelightShootingPosition == 2){
+      this.shootSpeed = ShooterConstants.shootSpeedPosition2;
+      targetShooterRate = 0;
+    } else if(limelightShootingPosition == 3){
+      this.shootSpeed = ShooterConstants.shootSpeedPosition3;
+      targetShooterRate = 100000;
+    }
+    //targetShooterRate = equation here
   }
 
   @Override

@@ -67,8 +67,6 @@ public class ConveyorSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-    SmartDashboard.putBoolean("Button Value 1: ", getButton1());
-    SmartDashboard.putBoolean("Button Value 2: ", getButton2());
-    SmartDashboard.putNumber("Shooter Encoder End: ", getEncoderRate());
+    SmartDashboard.putNumber("Shooter Encoder Rate: ", getEncoderRate());
   }
 }
