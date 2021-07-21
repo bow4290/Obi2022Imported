@@ -63,6 +63,23 @@ public class LimelightDriveToDistanceCommand extends CommandBase {
 
     correctedLeftMotorSpeed = LimelightConstants.limelightDriveSpeed + kpAdjustment + kiAdjustment + kdAdjustment;
     correctedRightMotorSpeed = LimelightConstants.limelightDriveSpeed + kpAdjustment + kiAdjustment + kdAdjustment;
+    
+    // Set maximum drive speed (forward and reverse)
+    if (correctedLeftMotorSpeed > LimelightConstants.maxLimelightDriveSpeed){
+      correctedLeftMotorSpeed = LimelightConstants.maxLimelightDriveSpeed;
+    } else if (correctedLeftMotorSpeed < -LimelightConstants.maxLimelightDriveSpeed){
+      correctedLeftMotorSpeed = -LimelightConstants.maxLimelightDriveSpeed;
+    } else{
+      correctedLeftMotorSpeed = correctedLeftMotorSpeed;
+    }
+    
+    if (correctedRightMotorSpeed > LimelightConstants.maxLimelightDriveSpeed){
+      correctedRightMotorSpeed = LimelightConstants.maxLimelightDriveSpeed;
+    } else if (correctedRightMotorSpeed < -LimelightConstants.maxLimelightDriveSpeed){
+      correctedRightMotorSpeed = -LimelightConstants.maxLimelightDriveSpeed;
+    } else{
+      correctedRightMotorSpeed = correctedRightMotorSpeed;
+    }
 
     drivetrainSubsystem.drive(correctedLeftMotorSpeed, correctedRightMotorSpeed);
 
