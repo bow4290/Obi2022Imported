@@ -39,7 +39,7 @@ public class ConveyorShootBallCommand extends CommandBase {
   }
 
   private void setTargetShooterRate(){
-    if (limelightShootingPosition == 0){          // Change to equation!
+    if (limelightShootingPosition == 0){
       this.shootSpeed = ShooterConstants.shootSpeedPosition0;
     } else if(limelightShootingPosition == 1){
       this.shootSpeed = ShooterConstants.shootSpeedPosition1;
