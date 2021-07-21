@@ -29,14 +29,23 @@ public class LimelightInitCommand extends CommandBase {
     limelight.setCamMode(CamMode.vision);
     limelight.setPipeline(pipeline);
   }
+  
+  @Override
+  public void execute(){
+    limelight.getTarget();
+  }
 
   @Override
   public void end(boolean interrupted) {
   }
 
   @Override
-  public boolean isFinished() {
-    return true;
+  public boolean isFinished() {  
+    if (limelight.getTarget() == 1){
+      return true;
+    } else{
+      return false;
+    }
   }
   
 }
