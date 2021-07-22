@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants.OIConstants;
@@ -20,6 +21,7 @@ import frc.robot.commands.climber.ToggleClimberSolenoidCommand;
 import frc.robot.commands.conveyor.ConveyorIndexBallCommand;
 import frc.robot.commands.conveyor.ConveyorShootBallCommand;
 import frc.robot.commands.conveyor.ReverseConveyorCommand;
+import frc.robot.commands.conveyor.TimeCommand;
 import frc.robot.commands.drivetrain.ShiftGearCommand;
 import frc.robot.commands.intake.ToggleIntakeSolenoidCommand;
 import frc.robot.commands.limelight.LimelightDriveToDistanceCommand;
@@ -42,7 +44,7 @@ public class RobotContainer {
   private ClimberSubsystem climberSubsystem;
   private ConveyorSubsystem conveyorSubsystem;
   private ShooterSubsystem shooterSubsystem;
-  private Limelight limelight;
+  public Limelight limelight;
   public static int LimelightShootingPosition;
 
   public RobotContainer() {
@@ -58,7 +60,6 @@ public class RobotContainer {
     shooterSubsystem = new ShooterSubsystem();
 
     limelight = new Limelight();
-    LimelightShootingPosition = 3;      // Position 3 is auto position
     
     drivetrainSubsystem.setDefaultCommand(new RunCommand(() -> drivetrainSubsystem.drive(-getLeftY(), -getRightY()), drivetrainSubsystem));   // Negate the values because dumb joysticks
     intakeSubsystem.setDefaultCommand(new RunCommand(() -> intakeSubsystem.intakeIn(getAxisValue(3)), intakeSubsystem));                      // Intake motor follows xbox Right Trigger
@@ -141,19 +142,23 @@ public class RobotContainer {
   }
 
   public Command getAutonomousCommand() {
-    return null;
-
-    //     new SequentialCommandGroup(               // Limelight track and shoot = hold Left Joystick Trigger
-    //     new LimelightInitCommand(LimelightShootingPosition),
-    //     new LimelightDriveToDistanceCommand(drivetrainSubsystem, limelight),
-    //     new LimelightDriveToHeadingCommand(drivetrainSubsystem, limelight),
-    //     new LimelightEndCommand(),
-    //     new ToggleShooterSolenoidCommand(shooterSubsystem),
-    //     new ParallelCommandGroup(
-    //       new ShootCommand(shooterSubsystem),
-    //       new ConveyorShootBallCommand(conveyorSubsystem)
-    //       )));
-
+    return(null);
+    // new SequentialCommandGroup(               // Limelight track and shoot = hold Left Joystick Trigger
+    //   new LimelightInitCommand(3),
+    //   new LimelightDriveToDistanceCommand(drivetrainSubsystem, limelight),
+    //   new LimelightDriveToHeadingCommand(drivetrainSubsystem, limelight),
+    //   new LimelightEndCommand(),
+    //   new ToggleShooterSolenoidCommand(shooterSubsystem),
+    //   new ParallelRaceGroup(                // Once the TimeCommand ends, this entire group interrupts
+    //     new ShootCommand(shooterSubsystem),
+    //     new ConveyorShootBallCommand(conveyorSubsystem,3),
+    //     new TimeCommand()),
+    //   new ToggleShooterSolenoidCommand(shooterSubsystem)
+    //   Add turn angle command
+    //   Add drive for distance command
+    //   Add turn angle command
+    //   Add drive for distance command and intake balls in trench
+    //   );
   }
 
 }

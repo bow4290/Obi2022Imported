@@ -25,6 +25,9 @@ public class LimelightDriveToDistanceCommand extends CommandBase {
   private double errorRate = 0;
   private double correctedLeftMotorSpeed = 0;
   private double correctedRightMotorSpeed = 0;
+  private double kpAdjustment = 0;
+  private double kiAdjustment = 0;
+  private double kdAdjustment = 0;
   
   public LimelightDriveToDistanceCommand(DrivetrainSubsystem drivetrainSubsystem, Limelight limelight) {
     this.drivetrainSubsystem = drivetrainSubsystem;
@@ -45,7 +48,6 @@ public class LimelightDriveToDistanceCommand extends CommandBase {
     dt = Timer.getFPGATimestamp() - lastTimestamp;
     error = yError; // Distance is directly proportional to the Y (vertical) error
     
-
     // Distance Integral Gain Calculation
     if (Math.abs(error) < LimelightConstants.distanceIntegralWindow) {
       sumError += error * dt;
@@ -57,34 +59,37 @@ public class LimelightDriveToDistanceCommand extends CommandBase {
     errorRate = (error - lastError) / dt;
 
     // Distance PID Compensation
-    double kpAdjustment = LimelightConstants.kpDistance * error;
-    double kiAdjustment = LimelightConstants.kiDistance * sumError;
-    double kdAdjustment = LimelightConstants.kdDistance * errorRate;
+    if (limelight.getPipeline() == 3){
+      kpAdjustment = LimelightConstants.kpDistance3 * error;
+      kiAdjustment = LimelightConstants.kiDistance3 * sumError;
+      kdAdjustment = LimelightConstants.kdDistance3 * errorRate;
+    } else {
+      kpAdjustment = LimelightConstants.kpDistance0 * error;
+      kiAdjustment = LimelightConstants.kiDistance0 * sumError;
+      kdAdjustment = LimelightConstants.kdDistance0 * errorRate;
+    }
 
-    correctedLeftMotorSpeed = LimelightConstants.limelightDriveSpeed + kpAdjustment + kiAdjustment + kdAdjustment;
-    correctedRightMotorSpeed = LimelightConstants.limelightDriveSpeed + kpAdjustment + kiAdjustment + kdAdjustment;
+    correctedLeftMotorSpeed = kpAdjustment + kiAdjustment + kdAdjustment;
+    correctedRightMotorSpeed = kpAdjustment + kiAdjustment + kdAdjustment;
     
     // Set maximum drive speed (forward and reverse)
     if (correctedLeftMotorSpeed > LimelightConstants.maxLimelightDriveSpeed){
       correctedLeftMotorSpeed = LimelightConstants.maxLimelightDriveSpeed;
     } else if (correctedLeftMotorSpeed < -LimelightConstants.maxLimelightDriveSpeed){
       correctedLeftMotorSpeed = -LimelightConstants.maxLimelightDriveSpeed;
-    } else{
-      correctedLeftMotorSpeed = correctedLeftMotorSpeed;
     }
     
     if (correctedRightMotorSpeed > LimelightConstants.maxLimelightDriveSpeed){
       correctedRightMotorSpeed = LimelightConstants.maxLimelightDriveSpeed;
     } else if (correctedRightMotorSpeed < -LimelightConstants.maxLimelightDriveSpeed){
       correctedRightMotorSpeed = -LimelightConstants.maxLimelightDriveSpeed;
-    } else{
-      correctedRightMotorSpeed = correctedRightMotorSpeed;
     }
 
     drivetrainSubsystem.drive(correctedLeftMotorSpeed, correctedRightMotorSpeed);
 
     lastTimestamp = Timer.getFPGATimestamp();
     lastError = error;
+    SmartDashboard.putNumber("Distance Error Rate: ", errorRate);
   }
 
   @Override
@@ -95,6 +100,6 @@ public class LimelightDriveToDistanceCommand extends CommandBase {
 
   @Override
   public boolean isFinished() {
-    return ((Math.abs(limelight.getYError()) < 0.2) && (Math.abs(errorRate) < 0.5));
+    return ((Math.abs(limelight.getYError()) < 0.2) && (Math.abs(errorRate) < 5));
   }
 }

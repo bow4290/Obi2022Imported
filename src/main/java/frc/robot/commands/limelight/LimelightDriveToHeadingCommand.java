@@ -19,11 +19,17 @@ public class LimelightDriveToHeadingCommand extends CommandBase {
   private final Limelight limelight;
   private double dt = 0;
   private double lastTimestamp = 0;
+  private double lastError = 0;
+  private double errorRate = 0;
   private double error = 0;
   private double sumError = 0;
   private double correctedLeftMotorSpeed = 0;
   private double correctedRightMotorSpeed = 0;
+  private boolean motorsMeetThresholdSpeed = false;
   private double motorTurnSpeedRatio = 0;
+  private double kpAdjustment = 0;
+  private double kiAdjustment = 0;
+  private double kdAdjustment = 0;
   
   public LimelightDriveToHeadingCommand(DrivetrainSubsystem drivetrainSubsystem, Limelight limelight) {
     this.drivetrainSubsystem = drivetrainSubsystem;
@@ -51,33 +57,55 @@ public class LimelightDriveToHeadingCommand extends CommandBase {
       sumError = 0;
     }
 
-    // Turn PID Compensation
-    double kpAdjustment = LimelightConstants.kpAim * error;
-    double kiAdjustment = LimelightConstants.kiAim * sumError;
+    // Turn Derivative Gain Calculation
+    errorRate = (error - lastError) / dt;
 
-    correctedLeftMotorSpeed = LimelightConstants.limelightDriveSpeed - kpAdjustment - kiAdjustment;
-    correctedRightMotorSpeed = LimelightConstants.limelightDriveSpeed + kpAdjustment + kiAdjustment;
+    // Turn PID Compensation
+    if (limelight.getPipeline() == 3){
+      kpAdjustment = LimelightConstants.kpAim3 * error;
+      kiAdjustment = LimelightConstants.kiAim3 * sumError;
+      kdAdjustment = LimelightConstants.kdAim3 * errorRate;
+    } else {
+      kpAdjustment = LimelightConstants.kpAim0 * error;
+      kiAdjustment = LimelightConstants.kiAim0 * sumError;
+      kdAdjustment = LimelightConstants.kdAim0 * errorRate;
+    }
     
+
+    correctedLeftMotorSpeed = -kpAdjustment - kiAdjustment - kdAdjustment;
+    correctedRightMotorSpeed = kpAdjustment + kiAdjustment + kdAdjustment;
+    
+    motorTurnSpeedRatio = Math.abs(correctedLeftMotorSpeed / correctedRightMotorSpeed);
+
     // Set maximum drive speed whilst maintaining turn ratio
-    if (correctedLeftMotorSpeed > LimelightConstants.maxLimelightTurneSpeed){
+    if (correctedLeftMotorSpeed > LimelightConstants.maxLimelightTurnSpeed){
       correctedLeftMotorSpeed = LimelightConstants.maxLimelightTurnSpeed;
+      motorsMeetThresholdSpeed = true;
     } else if (correctedLeftMotorSpeed < -LimelightConstants.maxLimelightTurnSpeed){
       correctedLeftMotorSpeed = -LimelightConstants.maxLimelightTurnSpeed;
+      motorsMeetThresholdSpeed = true;
     } else{
-      correctedLeftMotorSpeed = correctedLeftMotorSpeed;
+      motorsMeetThresholdSpeed = false;
     }
     
     if (correctedRightMotorSpeed > LimelightConstants.maxLimelightTurnSpeed){
       correctedRightMotorSpeed = LimelightConstants.maxLimelightTurnSpeed;
+      motorsMeetThresholdSpeed = true;
     } else if (correctedRightMotorSpeed < -LimelightConstants.maxLimelightTurnSpeed){
       correctedRightMotorSpeed = -LimelightConstants.maxLimelightTurnSpeed;
+      motorsMeetThresholdSpeed = true;
     } else{
-      correctedRightMotorSpeed = correctedRightMotorSpeed;
+      motorsMeetThresholdSpeed = false;
+    }
+
+    if (motorsMeetThresholdSpeed == true){
+      correctedRightMotorSpeed = correctedRightMotorSpeed / motorTurnSpeedRatio;
     }
     
     drivetrainSubsystem.drive(correctedLeftMotorSpeed, correctedRightMotorSpeed);
 
     lastTimestamp = Timer.getFPGATimestamp();
+    lastError = error;
   }
 
   @Override
@@ -88,6 +116,6 @@ public class LimelightDriveToHeadingCommand extends CommandBase {
 
   @Override
   public boolean isFinished() {
-    return ((Math.abs(limelight.getXError()) < 0.2) && (Math.abs(sumError) < 0.5));
+    return ((Math.abs(limelight.getXError()) < 0.5) && (Math.abs(errorRate) < 0.01));
   }
 }

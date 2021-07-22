@@ -83,6 +83,8 @@ public class DrivetrainSubsystem extends SubsystemBase {
   }
 
   public void drive(double leftSpeed, double rightSpeed){
+    SmartDashboard.putNumber("Left Drive Speed: ", leftSpeed);
+    SmartDashboard.putNumber("Right Drive Speed: ", rightSpeed);
     leftSpeed = leftSpeed * DriveConstants.driveSpeedMultiplier;
     rightSpeed = rightSpeed * DriveConstants.driveSpeedMultiplier;
     m_drive.tankDrive(leftSpeed, rightSpeed);

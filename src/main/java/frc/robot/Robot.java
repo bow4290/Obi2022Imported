@@ -53,6 +53,7 @@ public class Robot extends TimedRobot {
     }
 
     SmartDashboard.putNumber("Shooting Position: ", robotContainer.getShooterPosition());
+    SmartDashboard.putNumber("Limelight Pipe Return: ", robotContainer.limelight.getPipeline());
 
   }
 

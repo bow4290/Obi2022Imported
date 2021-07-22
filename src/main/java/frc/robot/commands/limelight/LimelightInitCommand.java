@@ -24,7 +24,7 @@ public class LimelightInitCommand extends CommandBase {
   @Override
   public void initialize() {
     System.out.println("Running Limelight Init Command");
-    SmartDashboard.putBoolean("Ready to fire", false);
+    SmartDashboard.putBoolean("Ready to fire: ", false);
     limelight.setLedMode(LedMode.ledOn);
     limelight.setCamMode(CamMode.vision);
     limelight.setPipeline(pipeline);
