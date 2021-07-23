@@ -24,6 +24,7 @@ import frc.robot.commands.conveyor.ConveyorShootBallCommand;
 import frc.robot.commands.conveyor.ReverseConveyorCommand;
 import frc.robot.commands.drivetrain.ShiftGearCommand;
 import frc.robot.commands.intake.ToggleIntakeSolenoidCommand;
+import frc.robot.commands.limelight.LimelightAutoDriveToDistanceCommand;
 import frc.robot.commands.limelight.LimelightDriveToDistanceCommand;
 import frc.robot.commands.limelight.LimelightDriveToHeadingCommand;
 import frc.robot.commands.limelight.LimelightEndCommand;
@@ -60,6 +61,7 @@ public class RobotContainer {
     shooterSubsystem = new ShooterSubsystem();
 
     limelight = new Limelight();
+    LimelightShootingPosition = 3;  // Default Position 3 (Start Line)
     
     drivetrainSubsystem.setDefaultCommand(new RunCommand(() -> drivetrainSubsystem.drive(-getLeftY(), -getRightY()), drivetrainSubsystem));   // Negate the values because dumb joysticks
     intakeSubsystem.setDefaultCommand(new RunCommand(() -> intakeSubsystem.intakeIn(getAxisValue(3)), intakeSubsystem));                      // Intake motor follows xbox Right Trigger
@@ -145,19 +147,15 @@ public class RobotContainer {
     return 
       new SequentialCommandGroup(
         new LimelightInitCommand(3),
-        new LimelightDriveToDistanceCommand(drivetrainSubsystem, limelight),
+        new LimelightAutoDriveToDistanceCommand(drivetrainSubsystem, limelight),
         new LimelightDriveToHeadingCommand(drivetrainSubsystem, limelight),
         new LimelightEndCommand(),
-        new ToggleShooterSolenoidCommand(shooterSubsystem),
         new ParallelRaceGroup(                                      // Once the TimeCommand ends, this entire group interrupts
           new ShootCommand(shooterSubsystem, conveyorSubsystem),
           new ConveyorShootBallCommand(conveyorSubsystem,3),
-          new WaitCommand(5)),
-        new ToggleShooterSolenoidCommand(shooterSubsystem)
+          new WaitCommand(5))
      // Add turn angle command
-     // Add drive for distance command
-     // Add turn angle command
-     // Add drive for distance command and intake balls in trench
+     // Add drive for distance command with intake balls in trench
       );
   }
 

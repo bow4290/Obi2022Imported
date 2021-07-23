@@ -14,7 +14,7 @@ import frc.robot.Constants.LimelightConstants;
 import frc.robot.sensors.Limelight;
 import frc.robot.subsystems.DrivetrainSubsystem;
 
-public class LimelightDriveToDistanceCommand extends CommandBase {
+public class LimelightAutoDriveToDistanceCommand extends CommandBase {
   private final DrivetrainSubsystem drivetrainSubsystem;
   private final Limelight limelight;
   private double error = 0;
@@ -29,7 +29,7 @@ public class LimelightDriveToDistanceCommand extends CommandBase {
   private double kiAdjustment = 0;
   private double kdAdjustment = 0;
   
-  public LimelightDriveToDistanceCommand(DrivetrainSubsystem drivetrainSubsystem, Limelight limelight) {
+  public LimelightAutoDriveToDistanceCommand(DrivetrainSubsystem drivetrainSubsystem, Limelight limelight) {
     this.drivetrainSubsystem = drivetrainSubsystem;
     this.limelight = limelight;
     addRequirements(drivetrainSubsystem);
@@ -59,9 +59,9 @@ public class LimelightDriveToDistanceCommand extends CommandBase {
     errorRate = (error - lastError) / dt;
 
     // Distance PID Compensation
-    kpAdjustment = LimelightConstants.kpDistance0 * error;
-    kiAdjustment = LimelightConstants.kiDistance0 * sumError;
-    kdAdjustment = LimelightConstants.kdDistance0 * errorRate;
+    kpAdjustment = LimelightConstants.kpDistance3 * error;
+    kiAdjustment = LimelightConstants.kiDistance3 * sumError;
+    kdAdjustment = LimelightConstants.kdDistance3 * errorRate;
 
     correctedLeftMotorSpeed = kpAdjustment + kiAdjustment + kdAdjustment;
     correctedRightMotorSpeed = kpAdjustment + kiAdjustment + kdAdjustment;
@@ -95,6 +95,6 @@ public class LimelightDriveToDistanceCommand extends CommandBase {
 
   @Override
   public boolean isFinished() {
-    return ((Math.abs(limelight.getYError()) < 0.2) && (Math.abs(sumError) < 0.1) && (Math.abs(errorRate) < 1));
+    return ((Math.abs(limelight.getYError()) < 0.2) && (Math.abs(sumError) < 1) && (Math.abs(errorRate) < 1));
   }
 }
