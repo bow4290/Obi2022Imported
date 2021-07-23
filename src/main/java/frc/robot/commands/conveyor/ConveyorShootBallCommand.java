@@ -26,29 +26,38 @@ public class ConveyorShootBallCommand extends CommandBase {
 
   @Override
   public void initialize() {
-    setTargetShooterRate();
+    setTargetShooterSpeed();
   }
 
   @Override
   public void execute() {
-    if(conveyorSubsystem.getEncoderRate() >= targetShooterRate){
+    if(conveyorSubsystem.getEncoderRate() >= (targetShooterRate - 2000)){
       conveyorSubsystem.conveyBall(ConveyorConstants.conveyorShootBallSpeed);
     } else{
       conveyorSubsystem.conveyorStop();
     }
   }
 
-  private void setTargetShooterRate(){
-    if (limelightShootingPosition == 0){
-      this.shootSpeed = ShooterConstants.shootSpeedPosition0;
-    } else if(limelightShootingPosition == 1){
-      this.shootSpeed = ShooterConstants.shootSpeedPosition1;
-    } else if(limelightShootingPosition == 2){
-      this.shootSpeed = ShooterConstants.shootSpeedPosition2;
-    } else if(limelightShootingPosition == 3){
-      this.shootSpeed = ShooterConstants.shootSpeedPosition3;
+  private void setTargetShooterSpeed(){
+    switch(limelightShootingPosition){
+      case 0:     // Trench Front
+        this.shootSpeed = ShooterConstants.shootSpeedPosition0;
+        break;
+      case 1:     // Trench Back
+        this.shootSpeed = ShooterConstants.shootSpeedPosition1;
+        break;
+      case 2:
+        this.shootSpeed = ShooterConstants.shootSpeedPosition2;
+        break;
+      case 3:     // Auto start line
+        this.shootSpeed = ShooterConstants.shootSpeedPosition3;
+        break;
     }
-    targetShooterRate = 240000*(this.shootSpeed)-25000;
+    targetShooterRate = (ShooterConstants.shooterMotorToRateSlope * this.shootSpeed) - ShooterConstants.shooterMotorToRateIntercept;
+  }
+
+  public double getTargetShooterSpeed(){
+    return this.shootSpeed;
   }
 
   @Override

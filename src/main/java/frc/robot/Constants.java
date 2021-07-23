@@ -108,6 +108,8 @@ public final class Constants {
         public static final int shooterEncoderChannelA = 0;
         public static final int shooterEncoderChannelB = 1;
         public static final int shooterEncoderAverageSamples = 127;
+        public static final int shooterMotorToRateSlope = 240000;
+        public static final int shooterMotorToRateIntercept = 25000;
     }
 
 }

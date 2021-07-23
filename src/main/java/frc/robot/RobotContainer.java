@@ -15,13 +15,13 @@ import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Constants.OIConstants;
 import frc.robot.commands.climber.ClimbCommand;
 import frc.robot.commands.climber.ToggleClimberSolenoidCommand;
 import frc.robot.commands.conveyor.ConveyorIndexBallCommand;
 import frc.robot.commands.conveyor.ConveyorShootBallCommand;
 import frc.robot.commands.conveyor.ReverseConveyorCommand;
-import frc.robot.commands.conveyor.TimeCommand;
 import frc.robot.commands.drivetrain.ShiftGearCommand;
 import frc.robot.commands.intake.ToggleIntakeSolenoidCommand;
 import frc.robot.commands.limelight.LimelightDriveToDistanceCommand;
@@ -88,7 +88,7 @@ public class RobotContainer {
     setJoystickButtonWhileHeld(xboxController, 3, new ClimbCommand(climberSubsystem));                    // To climb           = hold xbox X Button
     setJoystickButtonWhenPressed(xboxController, 4, new ToggleClimberSolenoidCommand(climberSubsystem));  // Climber pneumatics = press xbox Y Button
     setJoystickButtonWhileHeld(xboxController, 6, new ParallelCommandGroup(                               // Shoot balls        = hold xbox Right Bumper
-      new ShootCommand(shooterSubsystem),
+      new ShootCommand(shooterSubsystem, conveyorSubsystem),
       new ConveyorShootBallCommand(conveyorSubsystem, LimelightShootingPosition)
       ));
     setJoystickButtonWhileHeld(xboxController, 10, new ReverseConveyorCommand(conveyorSubsystem));        // Reverse conveyor   = hold xbox Right Stick in
@@ -142,23 +142,23 @@ public class RobotContainer {
   }
 
   public Command getAutonomousCommand() {
-    return(null);
-    // new SequentialCommandGroup(               // Limelight track and shoot = hold Left Joystick Trigger
-    //   new LimelightInitCommand(3),
-    //   new LimelightDriveToDistanceCommand(drivetrainSubsystem, limelight),
-    //   new LimelightDriveToHeadingCommand(drivetrainSubsystem, limelight),
-    //   new LimelightEndCommand(),
-    //   new ToggleShooterSolenoidCommand(shooterSubsystem),
-    //   new ParallelRaceGroup(                // Once the TimeCommand ends, this entire group interrupts
-    //     new ShootCommand(shooterSubsystem),
-    //     new ConveyorShootBallCommand(conveyorSubsystem,3),
-    //     new TimeCommand()),
-    //   new ToggleShooterSolenoidCommand(shooterSubsystem)
-    //   Add turn angle command
-    //   Add drive for distance command
-    //   Add turn angle command
-    //   Add drive for distance command and intake balls in trench
-    //   );
+    return 
+      new SequentialCommandGroup(
+        new LimelightInitCommand(3),
+        new LimelightDriveToDistanceCommand(drivetrainSubsystem, limelight),
+        new LimelightDriveToHeadingCommand(drivetrainSubsystem, limelight),
+        new LimelightEndCommand(),
+        new ToggleShooterSolenoidCommand(shooterSubsystem),
+        new ParallelRaceGroup(                                      // Once the TimeCommand ends, this entire group interrupts
+          new ShootCommand(shooterSubsystem, conveyorSubsystem),
+          new ConveyorShootBallCommand(conveyorSubsystem,3),
+          new WaitCommand(5)),
+        new ToggleShooterSolenoidCommand(shooterSubsystem)
+     // Add turn angle command
+     // Add drive for distance command
+     // Add turn angle command
+     // Add drive for distance command and intake balls in trench
+      );
   }
 
 }
