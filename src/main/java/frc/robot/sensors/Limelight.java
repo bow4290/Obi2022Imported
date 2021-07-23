@@ -54,6 +54,10 @@ public class Limelight {
     public double getTarget(){                          // Whether the limelight has any valid targets (0 or 1)
         return table.getEntry("tv").getDouble(0);
     }
+
+    public boolean isTarget(){                          // Whether the limelight has any valid targets (0 or 1)
+        return table.getEntry("tv").getDouble(0) == 1;
+    }
     
     public double getXError(){                          // Horizontal offset from limelight crosshair to target crosshair
         return table.getEntry("tx").getDouble(0.00);

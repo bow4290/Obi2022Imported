@@ -41,11 +41,7 @@ public class LimelightInitCommand extends CommandBase {
 
   @Override
   public boolean isFinished() {  
-    if (limelight.getTarget() == 1){
-      return true;
-    } else{
-      return false;
-    }
+      return limelight.isTarget();
   }
   
 }
