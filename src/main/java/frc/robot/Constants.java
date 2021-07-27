@@ -38,6 +38,21 @@ public final class Constants {
         public static final int gearShiftLowChannel = 5;
     }
 
+    public static final class AutoDriveConstants{
+        public static final double autoDriveSpeed = 0.6;
+        public static final double straightkP = 0.3;
+        public static final double distancekP = 0.02;
+        public static final double distancekI = 0;
+        public static final double distancekD = 0.005;
+        public static final double autoDistanceIntegralWindow = 12;
+        
+        public static final double autoTurnSpeed = 0.5;
+        public static final double turnkP = 0.05;
+        public static final double turnkI = 0.2;
+        public static final double turnkD = 0.001;
+        public static final double autoTurnIntegralWindow = 5;
+    }
+
     public static final class OIConstants{
         public static final int LEFT_JOYSTICK = 0;
         public static final int RIGHT_JOYSTICK = 1;

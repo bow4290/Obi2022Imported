@@ -5,7 +5,7 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.commands.limelight;
+package frc.robot.commands.auto;
 
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -14,7 +14,7 @@ import frc.robot.Constants.LimelightConstants;
 import frc.robot.sensors.Limelight;
 import frc.robot.subsystems.DrivetrainSubsystem;
 
-public class LimelightDriveToHeadingCommand extends CommandBase {
+public class LimelightAutoDriveToHeadingCommand extends CommandBase {
   private final DrivetrainSubsystem drivetrainSubsystem;
   private final Limelight limelight;
   private double dt = 0;
@@ -31,7 +31,7 @@ public class LimelightDriveToHeadingCommand extends CommandBase {
   private double kiAdjustment = 0;
   private double kdAdjustment = 0;
   
-  public LimelightDriveToHeadingCommand(DrivetrainSubsystem drivetrainSubsystem, Limelight limelight) {
+  public LimelightAutoDriveToHeadingCommand(DrivetrainSubsystem drivetrainSubsystem, Limelight limelight) {
     this.drivetrainSubsystem = drivetrainSubsystem;
     this.limelight = limelight;
     addRequirements(drivetrainSubsystem);
@@ -61,10 +61,10 @@ public class LimelightDriveToHeadingCommand extends CommandBase {
     errorRate = (error - lastError) / dt;
 
     // Turn PID Compensation
-    kpAdjustment = LimelightConstants.kpAim0 * error;
-    kiAdjustment = LimelightConstants.kiAim0 * sumError;
-    kdAdjustment = LimelightConstants.kdAim0 * errorRate;
-
+    kpAdjustment = LimelightConstants.kpAim3 * error;
+    kiAdjustment = LimelightConstants.kiAim3 * sumError;
+    kdAdjustment = LimelightConstants.kdAim3 * errorRate;
+    
     correctedLeftMotorSpeed = -kpAdjustment - kiAdjustment - kdAdjustment;
     correctedRightMotorSpeed = kpAdjustment + kiAdjustment + kdAdjustment;
     

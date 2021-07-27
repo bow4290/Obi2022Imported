@@ -24,7 +24,10 @@ import frc.robot.commands.conveyor.ConveyorShootBallCommand;
 import frc.robot.commands.conveyor.ReverseConveyorCommand;
 import frc.robot.commands.drivetrain.ShiftGearCommand;
 import frc.robot.commands.intake.ToggleIntakeSolenoidCommand;
-import frc.robot.commands.limelight.LimelightAutoDriveToDistanceCommand;
+import frc.robot.commands.auto.AutoDriveDistanceCommand;
+import frc.robot.commands.auto.AutoTurnAngleCommand;
+import frc.robot.commands.auto.LimelightAutoDriveToDistanceCommand;
+import frc.robot.commands.auto.LimelightAutoDriveToHeadingCommand;
 import frc.robot.commands.limelight.LimelightDriveToDistanceCommand;
 import frc.robot.commands.limelight.LimelightDriveToHeadingCommand;
 import frc.robot.commands.limelight.LimelightEndCommand;
@@ -148,14 +151,16 @@ public class RobotContainer {
       new SequentialCommandGroup(
         new LimelightInitCommand(3),
         new LimelightAutoDriveToDistanceCommand(drivetrainSubsystem, limelight),
-        new LimelightDriveToHeadingCommand(drivetrainSubsystem, limelight),
+        new LimelightAutoDriveToHeadingCommand(drivetrainSubsystem, limelight),
         new LimelightEndCommand(),
         new ParallelRaceGroup(                                      // Once the TimeCommand ends, this entire group interrupts
           new ShootCommand(shooterSubsystem, conveyorSubsystem),
           new ConveyorShootBallCommand(conveyorSubsystem,3),
+          new WaitCommand(4)),
+        new AutoTurnAngleCommand(drivetrainSubsystem, 45),
+        new ParallelRaceGroup(
+          new AutoDriveDistanceCommand(drivetrainSubsystem, intakeSubsystem, 36),
           new WaitCommand(5))
-     // Add turn angle command
-     // Add drive for distance command with intake balls in trench
       );
   }
 

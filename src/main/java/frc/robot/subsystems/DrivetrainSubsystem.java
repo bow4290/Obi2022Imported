@@ -119,6 +119,10 @@ public class DrivetrainSubsystem extends SubsystemBase {
     return(driveGyro.getAngle());
   }
 
+  public double getGyroRate(){
+    return(driveGyro.getRate());
+  }
+
   public void shiftDown(){
     gearShiftSolenoid.set(DoubleSolenoid.Value.kForward);   // kForward is Low (down) speed
     gearShiftStatus = GearShiftStatus.LOW;
