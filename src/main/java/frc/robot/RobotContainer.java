@@ -8,6 +8,8 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandBase;
@@ -48,8 +50,11 @@ public class RobotContainer {
   private ClimberSubsystem climberSubsystem;
   private ConveyorSubsystem conveyorSubsystem;
   private ShooterSubsystem shooterSubsystem;
+
   public Limelight limelight;
   public static int LimelightShootingPosition;
+
+  SendableChooser<Command> chooser = new SendableChooser<>();
 
   public RobotContainer() {
 
@@ -65,13 +70,17 @@ public class RobotContainer {
 
     limelight = new Limelight();
     LimelightShootingPosition = 3;  // Default Position 3 (Start Line)
+
+    chooser.setDefaultOption("Auto Shoot and Collect", AutoShootAndCollect);
+    chooser.addOption("Auto Shoot Only", AutoShootOnly);
+    chooser.addOption("Auto Drive Only", AutoDriveOnly);
+    SmartDashboard.putData(chooser);
     
     drivetrainSubsystem.setDefaultCommand(new RunCommand(() -> drivetrainSubsystem.drive(-getLeftY(), -getRightY()), drivetrainSubsystem));   // Negate the values because dumb joysticks
     intakeSubsystem.setDefaultCommand(new RunCommand(() -> intakeSubsystem.intakeIn(getAxisValue(3)), intakeSubsystem));                      // Intake motor follows xbox Right Trigger
     conveyorSubsystem.setDefaultCommand(new ConveyorIndexBallCommand(conveyorSubsystem)); 
     
     configureButtonBindings();
-
   }
 
   private void configureButtonBindings() {
@@ -97,6 +106,40 @@ public class RobotContainer {
       new ConveyorShootBallCommand(conveyorSubsystem, LimelightShootingPosition)
       ));
     setJoystickButtonWhileHeld(xboxController, 10, new ReverseConveyorCommand(conveyorSubsystem));        // Reverse conveyor   = hold xbox Right Stick in
+  }
+
+  private final Command AutoShootAndCollect =
+    new SequentialCommandGroup(
+      new LimelightInitCommand(3),
+      new LimelightAutoDriveToDistanceCommand(drivetrainSubsystem, limelight),
+      new LimelightAutoDriveToHeadingCommand(drivetrainSubsystem, limelight),
+      new LimelightEndCommand(),
+      new ParallelRaceGroup(                                      // Once the TimeCommand ends, this entire group interrupts
+        new ShootCommand(shooterSubsystem, conveyorSubsystem),
+        new ConveyorShootBallCommand(conveyorSubsystem,3),
+        new WaitCommand(4)),
+      new AutoTurnAngleCommand(drivetrainSubsystem, 45),
+      new ParallelRaceGroup(
+        new AutoDriveDistanceCommand(drivetrainSubsystem, intakeSubsystem, 36),
+        new WaitCommand(5))
+    );
+
+  private final Command AutoShootOnly =
+    new SequentialCommandGroup(
+      new LimelightInitCommand(3),
+      new LimelightAutoDriveToDistanceCommand(drivetrainSubsystem, limelight),
+      new LimelightAutoDriveToHeadingCommand(drivetrainSubsystem, limelight),
+      new LimelightEndCommand(),
+      new ParallelRaceGroup(                                      // Once the TimeCommand ends, this entire group interrupts
+        new ShootCommand(shooterSubsystem, conveyorSubsystem),
+        new ConveyorShootBallCommand(conveyorSubsystem,3),
+        new WaitCommand(4))
+    );
+
+  private final Command AutoDriveOnly = new AutoDriveDistanceCommand(drivetrainSubsystem, intakeSubsystem, -24);
+
+  public Command getAutonomousCommand() {
+    return chooser.getSelected();
   }
 
   public double getLeftY(){
@@ -144,24 +187,6 @@ public class RobotContainer {
   // WhenHeld starts the command once when the button is first pressed. Command runs until button is released or command interrupted.
   private void setJoystickButtonWhenHeld(Joystick joystick, int button, CommandBase command) {
     new JoystickButton(joystick, button).whenHeld(command);
-  }
-
-  public Command getAutonomousCommand() {
-    return 
-      new SequentialCommandGroup(
-        new LimelightInitCommand(3),
-        new LimelightAutoDriveToDistanceCommand(drivetrainSubsystem, limelight),
-        new LimelightAutoDriveToHeadingCommand(drivetrainSubsystem, limelight),
-        new LimelightEndCommand(),
-        new ParallelRaceGroup(                                      // Once the TimeCommand ends, this entire group interrupts
-          new ShootCommand(shooterSubsystem, conveyorSubsystem),
-          new ConveyorShootBallCommand(conveyorSubsystem,3),
-          new WaitCommand(4)),
-        new AutoTurnAngleCommand(drivetrainSubsystem, 45),
-        new ParallelRaceGroup(
-          new AutoDriveDistanceCommand(drivetrainSubsystem, intakeSubsystem, 36),
-          new WaitCommand(5))
-      );
   }
 
 }
