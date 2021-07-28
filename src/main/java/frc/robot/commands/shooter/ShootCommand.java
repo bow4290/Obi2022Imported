@@ -8,7 +8,6 @@
 package frc.robot.commands.shooter;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.RobotContainer;
 import frc.robot.Constants.ShooterConstants;
 import frc.robot.sensors.Limelight;
 import frc.robot.subsystems.ConveyorSubsystem;
@@ -21,9 +20,9 @@ public class ShootCommand extends CommandBase {
   private static double shooterMotorSpeed = 0;
   private static double shooterRateSpeed = 0;
   private static double shooterRateError = 0;
-  private static double shooterRatekP = 0.03;
+  private static double shooterRatekP = 0.3;
   private static double shooterRateCorrection = 0;
-  private static double shooterRateSetPoint = 25000;
+  private static double shooterRateSetPoint = 15000;
   private static double shooterMotorSpeedCorrection = 0;
 
   public ShootCommand(ShooterSubsystem shooterSubsystem, ConveyorSubsystem conveyorSubsystem, Limelight limelight) {
@@ -51,10 +50,15 @@ public class ShootCommand extends CommandBase {
     }
 
     shooterRateSpeed = (ShooterConstants.shooterMotorToRateSlope * shooterMotorSpeed) - ShooterConstants.shooterMotorToRateIntercept;                   // Roughly converts shooter motor speed (0 to 1) into encoder rate (0 to 215,000)
-    shooterRateError = shooterRateSpeed - conveyorSubsystem.getEncoderRate();                                                                           // Shooter rate error is the target rate minus the encoder rate
-    shooterRateCorrection = shooterRatekP * shooterRateError;                                                                   // Obtain corrected rate but add an offset (setpoint)
-    shooterMotorSpeedCorrection = (shooterRateCorrection + ShooterConstants.shooterMotorToRateIntercept) / ShooterConstants.shooterMotorToRateSlope;    // Convert rate speed back to motor speed value (0 to 1)
-    shooterSubsystem.shooterShoot(shooterMotorSpeed + shooterMotorSpeedCorrection);                                                                     // Shoot add target speed plus corrected speed
+    shooterRateError = shooterRateSpeed - conveyorSubsystem.getEncoderRate() + shooterRateSetPoint;                                                     // Shooter rate error is the target rate minus the encoder rate plus an offset
+    shooterRateCorrection = shooterRatekP * shooterRateError;                                                                                           // Obtain corrected rate
+    shooterMotorSpeedCorrection = (Math.abs(shooterRateCorrection) + ShooterConstants.shooterMotorToRateIntercept) / ShooterConstants.shooterMotorToRateSlope;    // Convert rate speed back to motor speed value (0 to 1)
+
+    if(shooterRateCorrection >= 0){
+      shooterSubsystem.shooterShoot(shooterMotorSpeed + shooterMotorSpeedCorrection);
+    } else{
+      shooterSubsystem.shooterShoot(shooterMotorSpeed - shooterMotorSpeedCorrection);
+    }
 
   }
 

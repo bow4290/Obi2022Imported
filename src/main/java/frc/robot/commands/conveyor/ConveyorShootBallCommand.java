@@ -15,8 +15,8 @@ import frc.robot.subsystems.ConveyorSubsystem;
 public class ConveyorShootBallCommand extends CommandBase {
   private final ConveyorSubsystem conveyorSubsystem;
   private final double limelightShootingPosition;
-  private double targetShooterRate = 0;
-  private double shootSpeed = 0;
+  private static double targetShooterRate = 0;
+  private static double shootSpeed = 0;
 
   public ConveyorShootBallCommand(ConveyorSubsystem conveyorSubsystem, double LimelightShootingPosition) {
     this.conveyorSubsystem = conveyorSubsystem;
@@ -31,7 +31,7 @@ public class ConveyorShootBallCommand extends CommandBase {
 
   @Override
   public void execute() {
-    if(conveyorSubsystem.getEncoderRate() >= (targetShooterRate - 5000)){
+    if(conveyorSubsystem.getEncoderRate() >= (targetShooterRate)){
       conveyorSubsystem.conveyBall(ConveyorConstants.conveyorShootBallSpeed);
     } else{
       conveyorSubsystem.conveyorStop();
@@ -39,20 +39,20 @@ public class ConveyorShootBallCommand extends CommandBase {
   }
 
   private void setTargetShooterSpeed(){
-    if(limelightShootingPosition == 0){     // Trench Front
-        this.shootSpeed = ShooterConstants.shootSpeedPosition0;
-    } else if(limelightShootingPosition == 1){     // Trench Back
-        this.shootSpeed = ShooterConstants.shootSpeedPosition1;
+    if(limelightShootingPosition == 0){             // Trench Front
+        shootSpeed = ShooterConstants.shootSpeedPosition0;
+    } else if(limelightShootingPosition == 1){      // Trench Back
+        shootSpeed = ShooterConstants.shootSpeedPosition1;
     } else if(limelightShootingPosition == 2){
-        this.shootSpeed = ShooterConstants.shootSpeedPosition2;
-    } else if(limelightShootingPosition == 3){     // Auto Line
-        this.shootSpeed = ShooterConstants.shootSpeedPosition3;
+        shootSpeed = ShooterConstants.shootSpeedPosition2;
+    } else if(limelightShootingPosition == 3){      // Auto Line
+        shootSpeed = ShooterConstants.shootSpeedPosition3;
     } 
-    targetShooterRate = (ShooterConstants.shooterMotorToRateSlope * this.shootSpeed) - ShooterConstants.shooterMotorToRateIntercept;
+    targetShooterRate = (ShooterConstants.shooterMotorToRateSlope * shootSpeed) - ShooterConstants.shooterMotorToRateIntercept;
   }
 
   public double getTargetShooterSpeed(){
-    return this.shootSpeed;
+    return shootSpeed;
   }
 
   @Override

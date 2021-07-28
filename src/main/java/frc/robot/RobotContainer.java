@@ -80,7 +80,7 @@ public class RobotContainer {
         new LimelightAutoDriveToDistanceCommand(drivetrainSubsystem, limelight),
         new LimelightAutoDriveToHeadingCommand(drivetrainSubsystem, limelight),
         new LimelightEndCommand(),
-        new ParallelRaceGroup(                                      // Once the TimeCommand ends, this entire group interrupts
+        new ParallelRaceGroup(
           new ShootCommand(shooterSubsystem, conveyorSubsystem, limelight),
           new ConveyorShootBallCommand(conveyorSubsystem,limelight.getPipeline()),
           new WaitCommand(4)),
@@ -93,20 +93,23 @@ public class RobotContainer {
     AutoShootOnly =
       new SequentialCommandGroup(new LimelightInitCommand(),
         new LimelightAutoDriveToDistanceCommand(drivetrainSubsystem, limelight),
-        new LimelightAutoDriveToHeadingCommand(drivetrainSubsystem, limelight), new LimelightEndCommand(),
-        new ParallelRaceGroup( // Once the TimeCommand ends, this entire group interrupts
+        new LimelightAutoDriveToHeadingCommand(drivetrainSubsystem, limelight),
+        new LimelightEndCommand(),
+        new ParallelRaceGroup(
           new ShootCommand(shooterSubsystem, conveyorSubsystem, limelight),
-          new ConveyorShootBallCommand(conveyorSubsystem, limelight.getPipeline()), new WaitCommand(4)));
+          new ConveyorShootBallCommand(conveyorSubsystem, limelight.getPipeline()),
+          new WaitCommand(4))
+      );
 
     AutoDriveOnly = new AutoDriveDistanceCommand(drivetrainSubsystem, intakeSubsystem, -24);
 
-    chooser.setDefaultOption("Auto Shoot and Collect", AutoShootAndCollect);
-    chooser.addOption("Auto Shoot Only", AutoShootOnly);
+    chooser.setDefaultOption("Auto Shoot Only", AutoShootOnly);
+    chooser.addOption("Auto Shoot and Collect", AutoShootAndCollect);
     chooser.addOption("Auto Drive Only", AutoDriveOnly);
     SmartDashboard.putData(chooser);
     
     drivetrainSubsystem.setDefaultCommand(new RunCommand(() -> drivetrainSubsystem.drive(-getLeftY(), -getRightY()), drivetrainSubsystem));   // Negate the values because dumb joysticks
-    intakeSubsystem.setDefaultCommand(new RunCommand(() -> intakeSubsystem.intakeIn(getAxisValue(3)), intakeSubsystem));                      // Intake motor follows xbox Right Trigger
+    intakeSubsystem.setDefaultCommand(new RunCommand(() -> intakeSubsystem.intakeIn(getAxisValue(3)), intakeSubsystem));                      // Intake balls   = hold xbox Right Trigger
     conveyorSubsystem.setDefaultCommand(new ConveyorIndexBallCommand(conveyorSubsystem)); 
     
     configureButtonBindings();

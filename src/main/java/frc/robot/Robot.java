@@ -51,7 +51,6 @@ public class Robot extends TimedRobot {
     }
 
     SmartDashboard.putNumber("Shooting Position: ", robotContainer.getShooterPosition());
-    SmartDashboard.putNumber("Limelight Pipe Return: ", robotContainer.limelight.getPipeline());
 
   }
 
@@ -81,6 +80,7 @@ public class Robot extends TimedRobot {
     if (autonomousCommand != null) {
       autonomousCommand.cancel();
     }
+    robotContainer.limelight.setPipeline(0);
   }
 
   @Override
