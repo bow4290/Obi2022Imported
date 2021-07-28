@@ -95,7 +95,7 @@ public final class Constants {
 
         // Auto Position PID Values
         public static final double kpDistance3 = 0.5;
-        public static final double kiDistance3 = 0.2;
+        public static final double kiDistance3 = 0.5;
         public static final double kdDistance3 = 0.05;
         public static final double kpAim3 = 0.2;
         public static final double kiAim3 = 0.4;
@@ -107,7 +107,7 @@ public final class Constants {
         public static final double kdDistance0 = 0.03;
         public static final double kpAim0 = 0.2;
         public static final double kiAim0 = 0.4;
-        public static final double kdAim0 = 0.001;
+        public static final double kdAim0 = 0.002;
     }
 
     public static final class ShooterConstants{
@@ -115,10 +115,10 @@ public final class Constants {
         public static final int rightShooterMotorChannel = 1;
         public static final int shooterUpChannel = 2;
         public static final int shooterDownChannel = 3;
-        public static final double shootSpeedPosition0 = 0.93;
-        public static final double shootSpeedPosition1 = 0.9;
+        public static final double shootSpeedPosition0 = 0.86;
+        public static final double shootSpeedPosition1 = 0.84;
         public static final double shootSpeedPosition2 = 0;
-        public static final double shootSpeedPosition3 = 1;       // Auto shooter speed
+        public static final double shootSpeedPosition3 = 0.95;       // Auto shooter speed
         public static final double shooterSpeedOffset = 0.85;
         public static final int shooterEncoderChannelA = 0;
         public static final int shooterEncoderChannelB = 1;

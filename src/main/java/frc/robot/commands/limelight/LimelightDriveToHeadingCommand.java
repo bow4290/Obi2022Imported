@@ -30,6 +30,7 @@ public class LimelightDriveToHeadingCommand extends CommandBase {
   private double kpAdjustment = 0;
   private double kiAdjustment = 0;
   private double kdAdjustment = 0;
+  private int counter = 0;
   
   public LimelightDriveToHeadingCommand(DrivetrainSubsystem drivetrainSubsystem, Limelight limelight) {
     this.drivetrainSubsystem = drivetrainSubsystem;
@@ -99,6 +100,12 @@ public class LimelightDriveToHeadingCommand extends CommandBase {
 
     lastTimestamp = Timer.getFPGATimestamp();
     lastError = error;
+
+    if (Math.abs(error) < 0.25){
+      counter++;
+    } else{
+      counter = 0;
+    }
   }
 
   @Override
@@ -109,6 +116,6 @@ public class LimelightDriveToHeadingCommand extends CommandBase {
 
   @Override
   public boolean isFinished() {
-    return ((Math.abs(error) < 0.5) && (Math.abs(errorRate) < 0.01));
+    return (counter > 50);
   }
 }

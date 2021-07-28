@@ -22,7 +22,7 @@ public class ShootCommand extends CommandBase {
   private static double shooterRateError = 0;
   private static double shooterRatekP = 0.3;
   private static double shooterRateCorrection = 0;
-  private static double shooterRateSetPoint = 15000;
+  private static double shooterRateSetPoint = 20000;
   private static double shooterMotorSpeedCorrection = 0;
 
   public ShootCommand(ShooterSubsystem shooterSubsystem, ConveyorSubsystem conveyorSubsystem, Limelight limelight) {

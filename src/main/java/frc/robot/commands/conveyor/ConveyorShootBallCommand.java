@@ -31,7 +31,7 @@ public class ConveyorShootBallCommand extends CommandBase {
 
   @Override
   public void execute() {
-    if(conveyorSubsystem.getEncoderRate() >= (targetShooterRate)){
+    if(conveyorSubsystem.getEncoderRate() >= (targetShooterRate-8000)){
       conveyorSubsystem.conveyBall(ConveyorConstants.conveyorShootBallSpeed);
     } else{
       conveyorSubsystem.conveyorStop();
