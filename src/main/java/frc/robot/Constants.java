@@ -39,14 +39,14 @@ public final class Constants {
     }
 
     public static final class AutoDriveConstants{
-        public static final double autoDriveSpeed = 0.6;
+        public static final double autoDriveSpeed = 0.8;
         public static final double straightkP = 0.3;
         public static final double distancekP = 0.02;
         public static final double distancekI = 0;
         public static final double distancekD = 0.005;
         public static final double autoDistanceIntegralWindow = 12;
         
-        public static final double autoTurnSpeed = 0.5;
+        public static final double autoTurnSpeed = 0.8;
         public static final double turnkP = 0.05;
         public static final double turnkI = 0.2;
         public static final double turnkD = 0.001;
@@ -79,7 +79,7 @@ public final class Constants {
         public static final int conveyorButton1Port = 6;
         public static final int conveyorButton2Port = 7;
         public static final double conveyorSpeedDivider = 0.91;
-        public static final double conveyorIndexBallSpeed = 0.67;
+        public static final double conveyorIndexBallSpeed = 0.66;
         public static final double conveyorShootBallSpeed = 1;
         public static final double conveyorReverseSpeed = -0.25;
     }
@@ -96,17 +96,17 @@ public final class Constants {
         // Auto Position PID Values
         public static final double kpDistance3 = 0.5;
         public static final double kiDistance3 = 0.2;
-        public static final double kdDistance3 = 0.01;
+        public static final double kdDistance3 = 0.05;
         public static final double kpAim3 = 0.2;
         public static final double kiAim3 = 0.4;
         public static final double kdAim3 = 0.01;
 
         // Trench Position PID Values
-        public static final double kpDistance0 = 0.4;
-        public static final double kiDistance0 = 0.5;
-        public static final double kdDistance0 = 0.05;
+        public static final double kpDistance0 = 0.3;
+        public static final double kiDistance0 = 0.45;
+        public static final double kdDistance0 = 0.03;
         public static final double kpAim0 = 0.2;
-        public static final double kiAim0 = 0.25;
+        public static final double kiAim0 = 0.4;
         public static final double kdAim0 = 0.001;
     }
 
@@ -115,8 +115,8 @@ public final class Constants {
         public static final int rightShooterMotorChannel = 1;
         public static final int shooterUpChannel = 2;
         public static final int shooterDownChannel = 3;
-        public static final double shootSpeedPosition0 = 0.95;
-        public static final double shootSpeedPosition1 = 0.95;
+        public static final double shootSpeedPosition0 = 0.93;
+        public static final double shootSpeedPosition1 = 0.9;
         public static final double shootSpeedPosition2 = 0;
         public static final double shootSpeedPosition3 = 1;       // Auto shooter speed
         public static final double shooterSpeedOffset = 0.85;

@@ -20,7 +20,6 @@ public class AutoTurnAngleCommand extends CommandBase {
     private double speedToDriveRight = 0;
     private double turnError = 0;
     private double turnSum = 0;
-    private double turnRange = 5;
     private double turnErrorRate = 0;
     private double lastTurnError = 0;
     private double lastTimestamp = 0;

@@ -28,6 +28,7 @@ public class LimelightAutoDriveToDistanceCommand extends CommandBase {
   private double kpAdjustment = 0;
   private double kiAdjustment = 0;
   private double kdAdjustment = 0;
+  private int counter = 0;
   
   public LimelightAutoDriveToDistanceCommand(DrivetrainSubsystem drivetrainSubsystem, Limelight limelight) {
     this.drivetrainSubsystem = drivetrainSubsystem;
@@ -85,16 +86,23 @@ public class LimelightAutoDriveToDistanceCommand extends CommandBase {
     lastError = error;
     SmartDashboard.putNumber("Distance Error Rate: ", errorRate);
     SmartDashboard.putNumber("Distance Sum Error: ", sumError);
+
+    if (Math.abs(error) < 0.5){
+      counter++;
+    } else{
+      counter = 0;
+    }
   }
 
   @Override
   public void end(boolean interrupted) {
     drivetrainSubsystem.stopDrive();
+    counter = 0;
     System.out.println("Limelight Distance Command Interrupted");
   }
 
   @Override
   public boolean isFinished() {
-    return ((Math.abs(limelight.getYError()) < 0.2) && (Math.abs(sumError) < 1) && (Math.abs(errorRate) < 1));
+    return (counter > 50);
   }
 }

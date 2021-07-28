@@ -14,10 +14,8 @@ import frc.robot.sensors.Limelight;
 
 public class LimelightInitCommand extends CommandBase {
   private final Limelight limelight;
-  private final int pipeline;
   
-  public LimelightInitCommand(int pipeline) {
-    this.pipeline = pipeline;
+  public LimelightInitCommand() {
     limelight = new Limelight();
   }
 
@@ -27,7 +25,6 @@ public class LimelightInitCommand extends CommandBase {
     SmartDashboard.putBoolean("Ready to fire: ", false);
     limelight.setLedMode(LedMode.ledOn);
     limelight.setCamMode(CamMode.vision);
-    limelight.setPipeline(pipeline);
   }
   
   @Override

@@ -14,11 +14,11 @@ import frc.robot.subsystems.ConveyorSubsystem;
 
 public class ConveyorShootBallCommand extends CommandBase {
   private final ConveyorSubsystem conveyorSubsystem;
-  private final int limelightShootingPosition;
+  private final double limelightShootingPosition;
   private double targetShooterRate = 0;
   private double shootSpeed = 0;
 
-  public ConveyorShootBallCommand(ConveyorSubsystem conveyorSubsystem, int LimelightShootingPosition) {
+  public ConveyorShootBallCommand(ConveyorSubsystem conveyorSubsystem, double LimelightShootingPosition) {
     this.conveyorSubsystem = conveyorSubsystem;
     this.limelightShootingPosition = LimelightShootingPosition;
     addRequirements(conveyorSubsystem);
@@ -31,7 +31,7 @@ public class ConveyorShootBallCommand extends CommandBase {
 
   @Override
   public void execute() {
-    if(conveyorSubsystem.getEncoderRate() >= (targetShooterRate - 2000)){
+    if(conveyorSubsystem.getEncoderRate() >= (targetShooterRate - 5000)){
       conveyorSubsystem.conveyBall(ConveyorConstants.conveyorShootBallSpeed);
     } else{
       conveyorSubsystem.conveyorStop();
@@ -39,20 +39,15 @@ public class ConveyorShootBallCommand extends CommandBase {
   }
 
   private void setTargetShooterSpeed(){
-    switch(limelightShootingPosition){
-      case 0:     // Trench Front
+    if(limelightShootingPosition == 0){     // Trench Front
         this.shootSpeed = ShooterConstants.shootSpeedPosition0;
-        break;
-      case 1:     // Trench Back
+    } else if(limelightShootingPosition == 1){     // Trench Back
         this.shootSpeed = ShooterConstants.shootSpeedPosition1;
-        break;
-      case 2:
+    } else if(limelightShootingPosition == 2){
         this.shootSpeed = ShooterConstants.shootSpeedPosition2;
-        break;
-      case 3:     // Auto start line
+    } else if(limelightShootingPosition == 3){     // Auto Line
         this.shootSpeed = ShooterConstants.shootSpeedPosition3;
-        break;
-    }
+    } 
     targetShooterRate = (ShooterConstants.shooterMotorToRateSlope * this.shootSpeed) - ShooterConstants.shooterMotorToRateIntercept;
   }
 
