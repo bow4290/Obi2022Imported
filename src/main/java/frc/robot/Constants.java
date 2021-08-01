@@ -39,7 +39,7 @@ public final class Constants {
     }
 
     public static final class AutoDriveConstants{
-        public static final double autoDriveSpeed = 0.8;
+        public static final double autoDriveSpeed = 0.6;
         public static final double straightkP = 0.3;
         public static final double distancekP = 0.02;
         public static final double distancekI = 0;
@@ -88,8 +88,8 @@ public final class Constants {
         public static final double h1 = 24;                     // Distance from ground to limelight
         public static final double h2 = 99;                     // Distance from ground to target
         public static final double a1 = 61.31;                  // Limelight mount angle
-        public static final double maxLimelightDriveSpeed = 0.7;
-        public static final double maxLimelightTurnSpeed = 0.8;     // Make one for auto = 0.6
+        public static final double maxLimelightDriveSpeed = 0.6;
+        public static final double maxLimelightTurnSpeed = 0.6;     // Make one for auto = 0.6
         public static final double distanceIntegralWindow = 1;
         public static final double turnIntegralWindow = 8;
 
@@ -98,7 +98,7 @@ public final class Constants {
         public static final double kiDistance3 = 0.5;
         public static final double kdDistance3 = 0.05;
         public static final double kpAim3 = 0.2;
-        public static final double kiAim3 = 0.4;
+        public static final double kiAim3 = 0.3;
         public static final double kdAim3 = 0.01;
 
         // Trench Position PID Values
@@ -106,8 +106,8 @@ public final class Constants {
         public static final double kiDistance0 = 0.45;
         public static final double kdDistance0 = 0.03;
         public static final double kpAim0 = 0.2;
-        public static final double kiAim0 = 0.4;
-        public static final double kdAim0 = 0.002;
+        public static final double kiAim0 = 0.3;
+        public static final double kdAim0 = 0.01;
     }
 
     public static final class ShooterConstants{
