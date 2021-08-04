@@ -101,7 +101,7 @@ public class RobotContainer {
           new WaitCommand(4))
       );
 
-    AutoDriveOnly = new AutoDriveDistanceCommand(drivetrainSubsystem, intakeSubsystem, -24);
+    AutoDriveOnly = new AutoDriveDistanceCommand(drivetrainSubsystem, intakeSubsystem, 24);
 
     chooser.setDefaultOption("Auto Shoot Only", AutoShootOnly);
     chooser.addOption("Auto Shoot and Collect", AutoShootAndCollect);
@@ -119,7 +119,7 @@ public class RobotContainer {
     // Left Joystick Buttons
     setJoystickButtonWhenHeld(joystickLeft, 1, new SequentialCommandGroup(               // Limelight track and shoot = hold Left Joystick Trigger
         new LimelightInitCommand(),
-        new LimelightDriveToHeadingCommand(drivetrainSubsystem, limelight),
+        //new LimelightDriveToHeadingCommand(drivetrainSubsystem, limelight),
         new LimelightDriveToDistanceCommand(drivetrainSubsystem, limelight),
         new LimelightDriveToHeadingCommand(drivetrainSubsystem, limelight),
         new LimelightEndCommand()

@@ -91,7 +91,7 @@ public final class Constants {
         public static final double maxLimelightDriveSpeed = 0.6;
         public static final double maxLimelightTurnSpeed = 0.6;     // Make one for auto = 0.6
         public static final double distanceIntegralWindow = 1;
-        public static final double turnIntegralWindow = 8;
+        public static final double turnIntegralWindow = 5;
 
         // Auto Position PID Values
         public static final double kpDistance3 = 0.5;
@@ -106,7 +106,7 @@ public final class Constants {
         public static final double kiDistance0 = 0.45;
         public static final double kdDistance0 = 0.03;
         public static final double kpAim0 = 0.2;
-        public static final double kiAim0 = 0.3;
+        public static final double kiAim0 = 0.35;
         public static final double kdAim0 = 0.01;
     }
 
