@@ -91,7 +91,8 @@ public class RobotContainer {
       );
 
     AutoShootOnly =
-      new SequentialCommandGroup(new LimelightInitCommand(),
+      new SequentialCommandGroup(
+        new LimelightInitCommand(),
         new LimelightAutoDriveToDistanceCommand(drivetrainSubsystem, limelight),
         new LimelightAutoDriveToHeadingCommand(drivetrainSubsystem, limelight),
         new LimelightEndCommand(),
@@ -101,7 +102,11 @@ public class RobotContainer {
           new WaitCommand(4))
       );
 
-    AutoDriveOnly = new AutoDriveDistanceCommand(drivetrainSubsystem, intakeSubsystem, 24);
+    AutoDriveOnly =
+      new ParallelRaceGroup(
+        new RunCommand(() -> drivetrainSubsystem.drive(0.6, 0.6), drivetrainSubsystem),
+        new WaitCommand(2)
+      );
 
     chooser.setDefaultOption("Auto Shoot Only", AutoShootOnly);
     chooser.addOption("Auto Shoot and Collect", AutoShootAndCollect);
