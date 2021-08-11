@@ -87,7 +87,7 @@ public class LimelightAutoDriveToDistanceCommand extends CommandBase {
     SmartDashboard.putNumber("Distance Error Rate: ", errorRate);
     SmartDashboard.putNumber("Distance Sum Error: ", sumError);
 
-    if (Math.abs(error) < 0.5){
+    if (Math.abs(error) < 0.8){
       counter++;
     } else{
       counter = 0;

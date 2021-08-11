@@ -79,7 +79,7 @@ public final class Constants {
         public static final int conveyorButton1Port = 6;
         public static final int conveyorButton2Port = 7;
         public static final double conveyorSpeedDivider = 0.91;
-        public static final double conveyorIndexBallSpeed = 0.66;
+        public static final double conveyorIndexBallSpeed = 0.73;
         public static final double conveyorShootBallSpeed = 1;
         public static final double conveyorReverseSpeed = -0.25;
     }
@@ -95,10 +95,10 @@ public final class Constants {
 
         // Auto Position PID Values
         public static final double kpDistance3 = 0.5;
-        public static final double kiDistance3 = 0.5;
+        public static final double kiDistance3 = 0.4;
         public static final double kdDistance3 = 0.05;
         public static final double kpAim3 = 0.2;
-        public static final double kiAim3 = 0.3;
+        public static final double kiAim3 = 0.25;
         public static final double kdAim3 = 0.01;
 
         // Trench Position PID Values
@@ -106,7 +106,7 @@ public final class Constants {
         public static final double kiDistance0 = 0.45;
         public static final double kdDistance0 = 0.03;
         public static final double kpAim0 = 0.2;
-        public static final double kiAim0 = 0.35;
+        public static final double kiAim0 = 0.3;
         public static final double kdAim0 = 0.01;
     }
 
@@ -116,7 +116,7 @@ public final class Constants {
         public static final int shooterUpChannel = 2;
         public static final int shooterDownChannel = 3;
         public static final double shootSpeedPosition0 = 0.86;
-        public static final double shootSpeedPosition1 = 0.84;
+        public static final double shootSpeedPosition1 = 0.87;
         public static final double shootSpeedPosition2 = 0;
         public static final double shootSpeedPosition3 = 0.95;       // Auto shooter speed
         public static final double shooterSpeedOffset = 0.85;
