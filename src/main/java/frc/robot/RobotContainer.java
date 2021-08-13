@@ -30,7 +30,6 @@ import frc.robot.commands.auto.AutoDriveDistanceCommand;
 import frc.robot.commands.auto.AutoTurnAngleCommand;
 import frc.robot.commands.auto.LimelightAutoDriveToDistanceCommand;
 import frc.robot.commands.auto.LimelightAutoDriveToHeadingCommand;
-import frc.robot.commands.limelight.LimelightDriveToDistanceCommand;
 import frc.robot.commands.limelight.LimelightDriveToHeadingCommand;
 import frc.robot.commands.limelight.LimelightEndCommand;
 import frc.robot.commands.limelight.LimelightInitCommand;
@@ -124,8 +123,6 @@ public class RobotContainer {
     // Left Joystick Buttons
     setJoystickButtonWhenHeld(joystickLeft, 1, new SequentialCommandGroup(               // Limelight track and shoot = hold Left Joystick Trigger
         new LimelightInitCommand(),
-        //new LimelightDriveToHeadingCommand(drivetrainSubsystem, limelight),
-        new LimelightDriveToDistanceCommand(drivetrainSubsystem, limelight),
         new LimelightDriveToHeadingCommand(drivetrainSubsystem, limelight),
         new LimelightEndCommand()
     ));

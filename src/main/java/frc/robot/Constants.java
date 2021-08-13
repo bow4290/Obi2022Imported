@@ -108,6 +108,9 @@ public final class Constants {
         public static final double kpAim0 = 0.2;
         public static final double kiAim0 = 0.3;
         public static final double kdAim0 = 0.01;
+
+        public static final double headingPositionTolerance = 0.25;
+        public static final double headingVelocityTolerance = 0.05;
     }
 
     public static final class ShooterConstants{
