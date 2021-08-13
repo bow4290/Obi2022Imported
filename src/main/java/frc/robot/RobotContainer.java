@@ -18,6 +18,7 @@ import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
+import frc.robot.Constants.LimelightConstants;
 import frc.robot.Constants.OIConstants;
 import frc.robot.commands.climber.ClimbCommand;
 import frc.robot.commands.climber.ToggleClimberSolenoidCommand;
@@ -37,6 +38,7 @@ import frc.robot.commands.shooter.ShootCommand;
 import frc.robot.commands.shooter.ToggleShooterSolenoidCommand;
 import frc.robot.sensors.Limelight;
 import frc.robot.subsystems.*;
+import frc.robot.sensors.PIDParams;
 
 public class RobotContainer {
 
@@ -121,9 +123,17 @@ public class RobotContainer {
 
   private void configureButtonBindings() {
     // Left Joystick Buttons
+    PIDParams teleopParams = new PIDParams(
+      LimelightConstants.kpAim0,
+      LimelightConstants.kiAim0,
+      LimelightConstants.kdAim0,
+      LimelightConstants.headingPositionTolerance,
+      LimelightConstants.headingVelocityTolerance,
+      0.0);
+      
     setJoystickButtonWhenHeld(joystickLeft, 1, new SequentialCommandGroup(               // Limelight track and shoot = hold Left Joystick Trigger
         new LimelightInitCommand(),
-        new LimelightDriveToHeadingCommand(drivetrainSubsystem, limelight),
+        new LimelightDriveToHeadingCommand(drivetrainSubsystem, limelight, teleopParams),
         new LimelightEndCommand()
     ));
     

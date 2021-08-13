@@ -14,28 +14,31 @@ import edu.wpi.first.wpiutil.math.MathUtil;
 import frc.robot.Constants.LimelightConstants;
 import frc.robot.sensors.Limelight;
 import frc.robot.subsystems.DrivetrainSubsystem;
+import frc.robot.sensors.PIDParams;
 
 public class LimelightDriveToHeadingCommand extends CommandBase {
   private final DrivetrainSubsystem drivetrainSubsystem;
   private final Limelight limelight;
   private PIDController pid;
+  private PIDParams params;
   
-  public LimelightDriveToHeadingCommand(DrivetrainSubsystem drivetrainSubsystem, Limelight limelight) {
+  public LimelightDriveToHeadingCommand(DrivetrainSubsystem drivetrainSubsystem, Limelight limelight, PIDParams params) {
     this.drivetrainSubsystem = drivetrainSubsystem;
     this.limelight = limelight;
-    pid = new PIDController(LimelightConstants.kpAim0, LimelightConstants.kiAim0, LimelightConstants.kdAim0);
+    this.params = params;
+    pid = new PIDController(params.getKp(), params.getKi(), params.getKd());
     addRequirements(drivetrainSubsystem);
   }
 
   @Override
   public void initialize() {
     System.out.println("Running Limelight Heading Command");
-    pid.setTolerance(LimelightConstants.headingPositionTolerance, LimelightConstants.headingVelocityTolerance);
+    pid.setTolerance(params.getPosTolerance(), params.getVelTolerance());
   }
 
   @Override
   public void execute() {
-    double motorSpeed = pid.calculate(limelight.getXError(), 0.0);
+    double motorSpeed = pid.calculate(limelight.getXError(), params.getSetpoint());
     SmartDashboard.putNumber("Limelight Position X Error", pid.getPositionError());
     SmartDashboard.putNumber("Limelight Velocity X Error", pid.getVelocityError());
 
