@@ -29,7 +29,7 @@ import frc.robot.commands.drivetrain.ShiftGearCommand;
 import frc.robot.commands.intake.ToggleIntakeSolenoidCommand;
 import frc.robot.commands.auto.AutoDriveDistanceCommand;
 import frc.robot.commands.auto.AutoTurnAngleCommand;
-import frc.robot.commands.auto.LimelightAutoDriveToDistanceCommand;
+import frc.robot.commands.limelight.LimelightDriveToDistanceCommand;
 import frc.robot.commands.limelight.LimelightDriveToHeadingCommand;
 import frc.robot.commands.limelight.LimelightEndCommand;
 import frc.robot.commands.limelight.LimelightInitCommand;
@@ -82,10 +82,18 @@ public class RobotContainer {
       LimelightConstants.headingVelocityTolerance,
       0.0);
 
+    PIDParams autoDistanceParams = new PIDParams(
+      LimelightConstants.kpDistanceAuto,
+      LimelightConstants.kiDistanceAuto,
+      LimelightConstants.kdDistanceAuto,
+      LimelightConstants.distancePositionTolerance,
+      LimelightConstants.distanceVelocityTolerance,
+      0.0);   // Change setpoint to equal distance from calibration point (start line) to shooting distance in auto.
+
     AutoShootAndCollect =
       new SequentialCommandGroup(
         new LimelightInitCommand(),
-        new LimelightAutoDriveToDistanceCommand(drivetrainSubsystem, limelight),
+        new LimelightDriveToDistanceCommand(drivetrainSubsystem, limelight, autoDistanceParams),
         new LimelightDriveToHeadingCommand(drivetrainSubsystem, limelight, autoHeadingParams),
         new LimelightEndCommand(),
         new ParallelRaceGroup(
@@ -101,7 +109,7 @@ public class RobotContainer {
     AutoShootOnly =
       new SequentialCommandGroup(
         new LimelightInitCommand(),
-        new LimelightAutoDriveToDistanceCommand(drivetrainSubsystem, limelight),
+        new LimelightDriveToDistanceCommand(drivetrainSubsystem, limelight, autoDistanceParams),
         new LimelightDriveToHeadingCommand(drivetrainSubsystem, limelight, autoHeadingParams),
         new LimelightEndCommand(),
         new ParallelRaceGroup(
