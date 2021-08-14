@@ -30,7 +30,6 @@ import frc.robot.commands.intake.ToggleIntakeSolenoidCommand;
 import frc.robot.commands.auto.AutoDriveDistanceCommand;
 import frc.robot.commands.auto.AutoTurnAngleCommand;
 import frc.robot.commands.auto.LimelightAutoDriveToDistanceCommand;
-import frc.robot.commands.auto.LimelightAutoDriveToHeadingCommand;
 import frc.robot.commands.limelight.LimelightDriveToHeadingCommand;
 import frc.robot.commands.limelight.LimelightEndCommand;
 import frc.robot.commands.limelight.LimelightInitCommand;
@@ -75,11 +74,19 @@ public class RobotContainer {
     limelight = new Limelight();
     limelight.setPipeline(3);  // Default Position 3 (Start Line)
 
+    PIDParams autoHeadingParams = new PIDParams(
+      LimelightConstants.kpAimAuto,
+      LimelightConstants.kiAimAuto,
+      LimelightConstants.kdAimAuto,
+      LimelightConstants.headingPositionTolerance,
+      LimelightConstants.headingVelocityTolerance,
+      0.0);
+
     AutoShootAndCollect =
       new SequentialCommandGroup(
         new LimelightInitCommand(),
         new LimelightAutoDriveToDistanceCommand(drivetrainSubsystem, limelight),
-        new LimelightAutoDriveToHeadingCommand(drivetrainSubsystem, limelight),
+        new LimelightDriveToHeadingCommand(drivetrainSubsystem, limelight, autoHeadingParams),
         new LimelightEndCommand(),
         new ParallelRaceGroup(
           new ShootCommand(shooterSubsystem, conveyorSubsystem, limelight),
@@ -95,7 +102,7 @@ public class RobotContainer {
       new SequentialCommandGroup(
         new LimelightInitCommand(),
         new LimelightAutoDriveToDistanceCommand(drivetrainSubsystem, limelight),
-        new LimelightAutoDriveToHeadingCommand(drivetrainSubsystem, limelight),
+        new LimelightDriveToHeadingCommand(drivetrainSubsystem, limelight, autoHeadingParams),
         new LimelightEndCommand(),
         new ParallelRaceGroup(
           new ShootCommand(shooterSubsystem, conveyorSubsystem, limelight),
@@ -123,18 +130,18 @@ public class RobotContainer {
 
   private void configureButtonBindings() {
     // Left Joystick Buttons
-    PIDParams teleopParams = new PIDParams(
-      LimelightConstants.kpAim0,
-      LimelightConstants.kiAim0,
-      LimelightConstants.kdAim0,
+    PIDParams teleopHeadingParams = new PIDParams(
+      LimelightConstants.kpAimTeleop,
+      LimelightConstants.kiAimTeleop,
+      LimelightConstants.kdAimTeleop,
       LimelightConstants.headingPositionTolerance,
       LimelightConstants.headingVelocityTolerance,
       0.0);
       
-    setJoystickButtonWhenHeld(joystickLeft, 1, new SequentialCommandGroup(               // Limelight track and shoot = hold Left Joystick Trigger
-        new LimelightInitCommand(),
-        new LimelightDriveToHeadingCommand(drivetrainSubsystem, limelight, teleopParams),
-        new LimelightEndCommand()
+    setJoystickButtonWhenHeld(joystickLeft, 1, new SequentialCommandGroup(               // Limelight track = hold Left Joystick Trigger
+      new LimelightInitCommand(),
+      new LimelightDriveToHeadingCommand(drivetrainSubsystem, limelight, teleopHeadingParams),
+      new LimelightEndCommand()
     ));
     
     // Right Joystick Buttons
