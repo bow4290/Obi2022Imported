@@ -79,7 +79,7 @@ public final class Constants {
         public static final int conveyorButton1Port = 6;
         public static final int conveyorButton2Port = 7;
         public static final double conveyorSpeedDivider = 0.91;
-        public static final double conveyorIndexBallSpeed = 0.66; // 0.73 for competition balls, 0.66 for Zone balls
+        public static final double conveyorIndexBallSpeed = 0.76;   // 0.73 competition, 0.66 old zone
         public static final double conveyorShootBallSpeed = 1;
         public static final double conveyorReverseSpeed = -0.25;
     }
@@ -118,7 +118,7 @@ public final class Constants {
         public static final int rightShooterMotorChannel = 1;
         public static final int shooterUpChannel = 2;
         public static final int shooterDownChannel = 3;
-        public static final double shootSpeedPosition0 = 0.86;
+        public static final double shootSpeedPosition0 = 1;      // 0.86 normal pos 0, 1 for demo
         public static final double shootSpeedPosition1 = 0.87;
         public static final double shootSpeedPosition2 = 0;
         public static final double shootSpeedPosition3 = 0.95;       // Auto shooter speed
