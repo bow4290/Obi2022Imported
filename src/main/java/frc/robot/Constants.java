@@ -94,21 +94,23 @@ public final class Constants {
         public static final double turnIntegralWindow = 5;
 
         // Auto Position PID Values
-        public static final double kpDistance3 = 0.5;
-        public static final double kiDistance3 = 0.4;
-        public static final double kdDistance3 = 0.05;
-        public static final double kpAim3 = 0.2;
-        public static final double kiAim3 = 0.25;
-        public static final double kdAim3 = 0.01;
+        public static final double kpDistanceAuto = 0.5;
+        public static final double kiDistanceAuto = 0.4;
+        public static final double kdDistanceAuto = 0.05;
+        public static final double kpAimAuto = 0.2;
+        public static final double kiAimAuto = 0.25;
+        public static final double kdAimAuto = 0.01;
 
         // Trench Position PID Values
-        public static final double kpDistance0 = 0.3;
-        public static final double kiDistance0 = 0.45;
-        public static final double kdDistance0 = 0.03;
-        public static final double kpAim0 = 0.2;
-        public static final double kiAim0 = 0.3;
-        public static final double kdAim0 = 0.01;
+        public static final double kpDistanceTeleop = 0.3;
+        public static final double kiDistanceTeleop = 0.45;
+        public static final double kdDistanceTeleop = 0.03;
+        public static final double kpAimTeleop = 0.2;
+        public static final double kiAimTeleop = 0.3;
+        public static final double kdAimTeleop = 0.01;
 
+        public static final double distancePositionTolerance = 0.25;
+        public static final double distanceVelocityTolerance = 0.05;
         public static final double headingPositionTolerance = 0.25;
         public static final double headingVelocityTolerance = 0.05;
     }

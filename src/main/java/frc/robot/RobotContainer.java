@@ -18,6 +18,7 @@ import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
+import frc.robot.Constants.LimelightConstants;
 import frc.robot.Constants.OIConstants;
 import frc.robot.commands.climber.ClimbCommand;
 import frc.robot.commands.climber.ToggleClimberSolenoidCommand;
@@ -28,8 +29,7 @@ import frc.robot.commands.drivetrain.ShiftGearCommand;
 import frc.robot.commands.intake.ToggleIntakeSolenoidCommand;
 import frc.robot.commands.auto.AutoDriveDistanceCommand;
 import frc.robot.commands.auto.AutoTurnAngleCommand;
-import frc.robot.commands.auto.LimelightAutoDriveToDistanceCommand;
-import frc.robot.commands.auto.LimelightAutoDriveToHeadingCommand;
+import frc.robot.commands.limelight.LimelightDriveToDistanceCommand;
 import frc.robot.commands.limelight.LimelightDriveToHeadingCommand;
 import frc.robot.commands.limelight.LimelightEndCommand;
 import frc.robot.commands.limelight.LimelightInitCommand;
@@ -37,6 +37,7 @@ import frc.robot.commands.shooter.ShootCommand;
 import frc.robot.commands.shooter.ToggleShooterSolenoidCommand;
 import frc.robot.sensors.Limelight;
 import frc.robot.subsystems.*;
+import frc.robot.sensors.PIDParams;
 
 public class RobotContainer {
 
@@ -73,11 +74,27 @@ public class RobotContainer {
     limelight = new Limelight();
     limelight.setPipeline(3);  // Default Position 3 (Start Line)
 
+    PIDParams autoHeadingParams = new PIDParams(
+      LimelightConstants.kpAimAuto,
+      LimelightConstants.kiAimAuto,
+      LimelightConstants.kdAimAuto,
+      LimelightConstants.headingPositionTolerance,
+      LimelightConstants.headingVelocityTolerance,
+      0.0);
+
+    PIDParams autoDistanceParams = new PIDParams(
+      LimelightConstants.kpDistanceAuto,
+      LimelightConstants.kiDistanceAuto,
+      LimelightConstants.kdDistanceAuto,
+      LimelightConstants.distancePositionTolerance,
+      LimelightConstants.distanceVelocityTolerance,
+      0.0);   // Change setpoint to equal distance from calibration point (start line) to shooting distance in auto.
+
     AutoShootAndCollect =
       new SequentialCommandGroup(
         new LimelightInitCommand(),
-        new LimelightAutoDriveToDistanceCommand(drivetrainSubsystem, limelight),
-        new LimelightAutoDriveToHeadingCommand(drivetrainSubsystem, limelight),
+        new LimelightDriveToDistanceCommand(drivetrainSubsystem, limelight, autoDistanceParams),
+        new LimelightDriveToHeadingCommand(drivetrainSubsystem, limelight, autoHeadingParams),
         new LimelightEndCommand(),
         new ParallelRaceGroup(
           new ShootCommand(shooterSubsystem, conveyorSubsystem, limelight),
@@ -92,8 +109,8 @@ public class RobotContainer {
     AutoShootOnly =
       new SequentialCommandGroup(
         new LimelightInitCommand(),
-        new LimelightAutoDriveToDistanceCommand(drivetrainSubsystem, limelight),
-        new LimelightAutoDriveToHeadingCommand(drivetrainSubsystem, limelight),
+        new LimelightDriveToDistanceCommand(drivetrainSubsystem, limelight, autoDistanceParams),
+        new LimelightDriveToHeadingCommand(drivetrainSubsystem, limelight, autoHeadingParams),
         new LimelightEndCommand(),
         new ParallelRaceGroup(
           new ShootCommand(shooterSubsystem, conveyorSubsystem, limelight),
@@ -121,10 +138,18 @@ public class RobotContainer {
 
   private void configureButtonBindings() {
     // Left Joystick Buttons
-    setJoystickButtonWhenHeld(joystickLeft, 1, new SequentialCommandGroup(               // Limelight track and shoot = hold Left Joystick Trigger
-        new LimelightInitCommand(),
-        new LimelightDriveToHeadingCommand(drivetrainSubsystem, limelight),
-        new LimelightEndCommand()
+    PIDParams teleopHeadingParams = new PIDParams(
+      LimelightConstants.kpAimTeleop,
+      LimelightConstants.kiAimTeleop,
+      LimelightConstants.kdAimTeleop,
+      LimelightConstants.headingPositionTolerance,
+      LimelightConstants.headingVelocityTolerance,
+      0.0);
+      
+    setJoystickButtonWhenHeld(joystickLeft, 1, new SequentialCommandGroup(               // Limelight track = hold Left Joystick Trigger
+      new LimelightInitCommand(),
+      new LimelightDriveToHeadingCommand(drivetrainSubsystem, limelight, teleopHeadingParams),
+      new LimelightEndCommand()
     ));
     
     // Right Joystick Buttons

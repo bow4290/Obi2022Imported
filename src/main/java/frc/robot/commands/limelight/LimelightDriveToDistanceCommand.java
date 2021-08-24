@@ -16,13 +16,13 @@ import frc.robot.sensors.Limelight;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.sensors.PIDParams;
 
-public class LimelightDriveToHeadingCommand extends CommandBase {
+public class LimelightDriveToDistanceCommand extends CommandBase {
   private final DrivetrainSubsystem drivetrainSubsystem;
   private final Limelight limelight;
   private PIDController pid;
   private PIDParams params;
   
-  public LimelightDriveToHeadingCommand(DrivetrainSubsystem drivetrainSubsystem, Limelight limelight, PIDParams params) {
+  public LimelightDriveToDistanceCommand(DrivetrainSubsystem drivetrainSubsystem, Limelight limelight, PIDParams params) {
     this.drivetrainSubsystem = drivetrainSubsystem;
     this.limelight = limelight;
     this.params = params;
@@ -32,26 +32,26 @@ public class LimelightDriveToHeadingCommand extends CommandBase {
 
   @Override
   public void initialize() {
-    System.out.println("Running Limelight Heading Command");
+    System.out.println("Running Limelight Distance Command");
     pid.setTolerance(params.getPosTolerance(), params.getVelTolerance());
   }
 
   @Override
   public void execute() {
-    double motorSpeed = pid.calculate(limelight.getXError(), params.getSetpoint());
-    SmartDashboard.putNumber("Limelight Position X Error", pid.getPositionError());
-    SmartDashboard.putNumber("Limelight Velocity X Error", pid.getVelocityError());
+    double motorSpeed = pid.calculate(limelight.getYError(), params.getSetpoint());
+    SmartDashboard.putNumber("Limelight Position Y Error: ", pid.getPositionError());
+    SmartDashboard.putNumber("Limelight Velocity Y Error: ", pid.getVelocityError());
 
     // Don't exceed motor thresholds
-    motorSpeed = MathUtil.clamp(motorSpeed, -LimelightConstants.maxLimelightTurnSpeed, LimelightConstants.maxLimelightTurnSpeed);
-    
-    drivetrainSubsystem.drive(motorSpeed, -motorSpeed);
+    motorSpeed = MathUtil.clamp(motorSpeed, -LimelightConstants.maxLimelightDriveSpeed, LimelightConstants.maxLimelightDriveSpeed);
+
+    drivetrainSubsystem.drive(motorSpeed, motorSpeed);
   }
 
   @Override
   public void end(boolean interrupted) {
     drivetrainSubsystem.stopDrive();
-    System.out.println("Limelight Heading Command Interrupted");
+    System.out.println("Limelight Distance Command Interrupted");
   }
 
   @Override
