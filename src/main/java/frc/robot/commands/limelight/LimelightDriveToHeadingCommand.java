@@ -45,7 +45,7 @@ public class LimelightDriveToHeadingCommand extends CommandBase {
     // Don't exceed motor thresholds
     motorSpeed = MathUtil.clamp(motorSpeed, -LimelightConstants.maxLimelightTurnSpeed, LimelightConstants.maxLimelightTurnSpeed);
     
-    drivetrainSubsystem.drive(motorSpeed, -motorSpeed);
+    drivetrainSubsystem.drive(-motorSpeed, motorSpeed);
   }
 
   @Override
