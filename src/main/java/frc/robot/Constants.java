@@ -85,9 +85,10 @@ public final class Constants {
     }
 
     public static final class LimelightConstants{
-        public static final double h1 = 24;                     // Distance from ground to limelight
-        public static final double h2 = 99;                     // Distance from ground to target
-        public static final double a1 = 61.31;                  // Limelight mount angle
+        public static final double h1 = 22.25;                     // Distance from ground to limelight
+        public static final double h2 = 98.25;                     // Distance from ground to target
+        public static final double a1 = 17.15;                  // Limelight mount angle
+        public static final double Lime2BumpDistance = 16.5;
         public static final double maxLimelightDriveSpeed = 0.6;
         public static final double maxLimelightTurnSpeed = 0.6;     // Make one for auto = 0.6
         public static final double distanceIntegralWindow = 1;

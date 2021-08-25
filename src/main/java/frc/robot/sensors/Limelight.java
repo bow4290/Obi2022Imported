@@ -99,8 +99,8 @@ public class Limelight {
         return table.getEntry("getpipe").getDouble(0);
     }
 
-    public double getDistance(){                        // Horizontal distance from limelight to target
-        return (LimelightConstants.h2 - LimelightConstants.h1) / Math.tan(Math.toRadians(LimelightConstants.a1) + Math.toRadians(getYError()));
+    public double getDistance(){                        // Horizontal distance from robot bumper to target
+        return (LimelightConstants.h2 - LimelightConstants.h1) / Math.tan(Math.toRadians(LimelightConstants.a1) + Math.toRadians(getYError()))-LimelightConstants.Lime2BumpDistance;
     }
 
 }
