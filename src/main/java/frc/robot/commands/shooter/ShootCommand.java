@@ -25,6 +25,10 @@ public class ShootCommand extends CommandBase {
   private static double shooterRateSetPoint = 20000;
   private static double shooterMotorSpeedCorrection = 0;
 
+  private static enum ShootingZone {
+    invalid, close, far
+  }
+
   public ShootCommand(ShooterSubsystem shooterSubsystem, ConveyorSubsystem conveyorSubsystem, Limelight limelight) {
     this.shooterSubsystem = shooterSubsystem;
     this.conveyorSubsystem = conveyorSubsystem;
@@ -34,6 +38,7 @@ public class ShootCommand extends CommandBase {
 
   @Override
   public void initialize() {
+    System.out.println("Shooting Command Initialized");
   }
 
   @Override
@@ -59,16 +64,43 @@ public class ShootCommand extends CommandBase {
     } else{
       shooterSubsystem.shooterShoot(shooterMotorSpeed - shooterMotorSpeedCorrection);
     }
-
   }
 
   @Override
   public void end(boolean interrupted) {
     shooterSubsystem.shooterStop();
+    System.out.println("Shooting Command Ended");
   }
 
   @Override
   public boolean isFinished() {
-    return false;
+    return !isShooterEnabled();
   }
+
+  private ShootingZone getShootingZone() {
+    ShootingZone shootingZone = ShootingZone.invalid;
+
+    if(limelight.getBumperDistance() >= ShooterConstants.minimumShooterDistance &&
+       limelight.getBumperDistance() <= ShooterConstants.thresholdShooterDistance){
+       shootingZone = ShootingZone.close;
+    }else
+    if (limelight.getBumperDistance() > ShooterConstants.thresholdShooterDistance &&
+        limelight.getBumperDistance() <= ShooterConstants.maximumShooterDistance){
+        shootingZone = ShootingZone.far;
+    } else {
+        shootingZone = ShootingZone.invalid;
+    }
+    return shootingZone;
+  }
+
+  private boolean isShooterEnabled() {
+    return getShootingZone() != ShootingZone.invalid;
+  }
+
+
+
+
+
+
+
 }
