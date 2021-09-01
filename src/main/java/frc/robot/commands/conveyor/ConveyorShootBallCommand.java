@@ -9,50 +9,30 @@ package frc.robot.commands.conveyor;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants.ConveyorConstants;
-import frc.robot.Constants.ShooterConstants;
 import frc.robot.subsystems.ConveyorSubsystem;
+import frc.robot.subsystems.ShooterSubsystem;
 
 public class ConveyorShootBallCommand extends CommandBase {
   private final ConveyorSubsystem conveyorSubsystem;
-  private final double limelightShootingPosition;
-  private static double targetShooterRate = 0;
-  private static double shootSpeed = 0;
+  private final ShooterSubsystem shooterSubsystem;
 
-  public ConveyorShootBallCommand(ConveyorSubsystem conveyorSubsystem, double LimelightShootingPosition) {
+  public ConveyorShootBallCommand(ConveyorSubsystem conveyorSubsystem, ShooterSubsystem shooterSubsystem) {
     this.conveyorSubsystem = conveyorSubsystem;
-    this.limelightShootingPosition = LimelightShootingPosition;
+    this.shooterSubsystem = shooterSubsystem;
     addRequirements(conveyorSubsystem);
   }
 
   @Override
   public void initialize() {
-    setTargetShooterSpeed();
   }
 
   @Override
   public void execute() {
-    if(conveyorSubsystem.getEncoderRate() >= (targetShooterRate-8000)){
+    if(conveyorSubsystem.getEncoderRate() >= (shooterSubsystem.getTargetShooterRate()-8000)){
       conveyorSubsystem.conveyBall(ConveyorConstants.conveyorShootBallSpeed);
     } else{
       conveyorSubsystem.conveyorStop();
     }
-  }
-
-  private void setTargetShooterSpeed(){
-    if(limelightShootingPosition == 0){             // Trench Front
-        shootSpeed = ShooterConstants.shootSpeedPosition0;
-    } else if(limelightShootingPosition == 1){      // Trench Back
-        shootSpeed = ShooterConstants.shootSpeedPosition1;
-    } else if(limelightShootingPosition == 2){
-        shootSpeed = ShooterConstants.shootSpeedPosition2;
-    } else if(limelightShootingPosition == 3){      // Auto Line
-        shootSpeed = ShooterConstants.shootSpeedPosition3;
-    } 
-    targetShooterRate = (ShooterConstants.shooterMotorToRateSlope * shootSpeed) - ShooterConstants.shooterMotorToRateIntercept;
-  }
-
-  public double getTargetShooterSpeed(){
-    return shootSpeed;
   }
 
   @Override

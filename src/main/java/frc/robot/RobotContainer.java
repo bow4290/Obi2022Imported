@@ -98,7 +98,7 @@ public class RobotContainer {
         new LimelightEndCommand(),
         new ParallelRaceGroup(
           new ShootCommand(shooterSubsystem, conveyorSubsystem, limelight),
-          new ConveyorShootBallCommand(conveyorSubsystem,limelight.getPipeline()),
+          new ConveyorShootBallCommand(conveyorSubsystem, shooterSubsystem),
           new WaitCommand(4)),
         new AutoTurnAngleCommand(drivetrainSubsystem, 45),
         new ParallelRaceGroup(
@@ -114,7 +114,7 @@ public class RobotContainer {
         new LimelightEndCommand(),
         new ParallelRaceGroup(
           new ShootCommand(shooterSubsystem, conveyorSubsystem, limelight),
-          new ConveyorShootBallCommand(conveyorSubsystem, limelight.getPipeline()),
+          new ConveyorShootBallCommand(conveyorSubsystem, shooterSubsystem),
           new WaitCommand(4))
       );
 
@@ -162,7 +162,7 @@ public class RobotContainer {
     setJoystickButtonWhenPressed(xboxController, 4, new ToggleClimberSolenoidCommand(climberSubsystem));  // Climber pneumatics = press xbox Y Button
     setJoystickButtonWhileHeld(xboxController, 6, new ParallelCommandGroup(                               // Shoot balls        = hold xbox Right Bumper
       new ShootCommand(shooterSubsystem, conveyorSubsystem, limelight),
-      new ConveyorShootBallCommand(conveyorSubsystem, limelight.getPipeline())
+      new ConveyorShootBallCommand(conveyorSubsystem, shooterSubsystem)
       ));
     setJoystickButtonWhileHeld(xboxController, 10, new ReverseConveyorCommand(conveyorSubsystem));        // Reverse conveyor   = hold xbox Right Stick in
   }
