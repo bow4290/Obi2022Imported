@@ -121,19 +121,21 @@ public final class Constants {
         public static final int rightShooterMotorChannel = 1;
         public static final int shooterUpChannel = 2;
         public static final int shooterDownChannel = 3;
-        public static final double shooterSpeedAuto = 0.95;
-        public static final double shooterSpeedClose = 0.93;
-        public static final double shooterSpeedFar = 0.85;
-        public static final double shooterSpeedInvalid = 0.0;
         public static final double shooterSpeedOffset = 0.85;
         public static final int shooterEncoderChannelA = 0;
         public static final int shooterEncoderChannelB = 1;
         public static final int shooterEncoderAverageSamples = 127;
         public static final int shooterMotorToRateSlope = 240000;
         public static final int shooterMotorToRateIntercept = 25000;
+        public static final double shooterSpeedInvalid = 0.0;
+        public static final double shooterSpeedAuto = 0.95;
+
         public static final double minimumShooterDistance = 132.0;
         public static final double thresholdShooterDistance = 216.0;
         public static final double maximumShooterDistance = 300.0;
+
+        public static final double shooterSpeedClose = 0.93;
+        public static final double shooterSpeedFar = 0.85;
     }
 
 }
