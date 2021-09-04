@@ -7,7 +7,6 @@
 
 package frc.robot.commands.limelight;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.sensors.Limelight.*;
 import frc.robot.sensors.Limelight;
@@ -22,13 +21,11 @@ public class LimelightEndCommand extends CommandBase {
   @Override
   public void initialize() {
     System.out.println("Running Limelight End Command");
-    limelight.setLedMode(LedMode.ledOff);
-
+    limelight.setLedMode(LedMode.ledOn);                    // Keep Limelight ON
   }
 
   @Override
   public void end(boolean interrupted) {
-    SmartDashboard.putBoolean("Ready to fire: ", true);
   }
 
   @Override

@@ -20,6 +20,8 @@ public class ShooterSubsystem extends SubsystemBase {
   private final WPI_VictorSPX leftShooterMotor;
   private final WPI_VictorSPX rightShooterMotor;
   private final DoubleSolenoid shooterSolenoid;
+  private double targetShooterSpeed = 0.0;
+  private double targetShooterRate = 0.0;
 
   public enum ShooterStatus{
     DOWN, UP
@@ -46,6 +48,22 @@ public class ShooterSubsystem extends SubsystemBase {
   public void shooterStop(){
     leftShooterMotor.set(ControlMode.PercentOutput, 0);
     rightShooterMotor.set(ControlMode.PercentOutput, 0);
+  }
+
+  public void setTargetShooterSpeed(double targetShooterSpeed){
+    this.targetShooterSpeed = targetShooterSpeed;
+  }
+
+  public double getTargetShooterSpeed(){
+    return targetShooterSpeed;
+  }
+
+  public void setTargetShooterRate(double targetShooterRate){
+    this.targetShooterRate = targetShooterRate;
+  }
+
+  public double getTargetShooterRate(){
+    return targetShooterRate;
   }
 
   public void shooterDown(){
