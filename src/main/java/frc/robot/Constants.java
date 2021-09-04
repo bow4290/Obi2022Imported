@@ -79,7 +79,7 @@ public final class Constants {
         public static final int conveyorButton1Port = 6;
         public static final int conveyorButton2Port = 7;
         public static final double conveyorSpeedDivider = 0.91;
-        public static final double conveyorIndexBallSpeed = 0.76;   // 0.73 competition, 0.66 old zone
+        public static final double conveyorIndexBallSpeed = 0.73;
         public static final double conveyorShootBallSpeed = 1;
         public static final double conveyorReverseSpeed = -0.25;
     }
@@ -102,7 +102,7 @@ public final class Constants {
         public static final double kiAimAuto = 0.25;
         public static final double kdAimAuto = 0.01;
 
-        // Trench Position PID Values
+        // Teleop Position PID Values
         public static final double kpDistanceTeleop = 0.3;
         public static final double kiDistanceTeleop = 0.45;
         public static final double kdDistanceTeleop = 0.03;
@@ -127,15 +127,15 @@ public final class Constants {
         public static final int shooterEncoderAverageSamples = 127;
         public static final int shooterMotorToRateSlope = 240000;
         public static final int shooterMotorToRateIntercept = 25000;
-        public static final double shooterSpeedInvalid = 0.0;
+        public static final double shooterSpeedDefault = 0.95;
         public static final double shooterSpeedAuto = 0.95;
 
-        public static final double minimumShooterDistance = 132.0;
-        public static final double thresholdShooterDistance = 216.0;
-        public static final double maximumShooterDistance = 300.0;
+        public static final double minimumShooterDistance = 140.0;
+        public static final double thresholdShooterDistance = 265.0;
+        public static final double maximumShooterDistance = 335.0;
 
-        public static final double shooterSpeedClose = 0.93;
-        public static final double shooterSpeedFar = 0.85;
+        public static final double shooterSpeedClose = 0.95;
+        public static final double shooterSpeedFar = 0.83;
     }
 
 }

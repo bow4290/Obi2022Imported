@@ -92,12 +92,12 @@ public class RobotContainer {
 
     AutoShootAndCollect =
       new SequentialCommandGroup(
-        new LimelightInitCommand(),
+        new LimelightInitCommand(shooterSubsystem),
         new LimelightDriveToDistanceCommand(drivetrainSubsystem, limelight, autoDistanceParams),
         new LimelightDriveToHeadingCommand(drivetrainSubsystem, limelight, autoHeadingParams),
         new LimelightEndCommand(),
         new ParallelRaceGroup(
-          new ShootCommand(shooterSubsystem, conveyorSubsystem, limelight),
+          new ShootCommand(shooterSubsystem, conveyorSubsystem),
           new ConveyorShootBallCommand(conveyorSubsystem, shooterSubsystem),
           new WaitCommand(4)),
         new AutoTurnAngleCommand(drivetrainSubsystem, 45),
@@ -108,12 +108,12 @@ public class RobotContainer {
 
     AutoShootOnly =
       new SequentialCommandGroup(
-        new LimelightInitCommand(),
+        new LimelightInitCommand(shooterSubsystem),
         new LimelightDriveToDistanceCommand(drivetrainSubsystem, limelight, autoDistanceParams),
         new LimelightDriveToHeadingCommand(drivetrainSubsystem, limelight, autoHeadingParams),
         new LimelightEndCommand(),
         new ParallelRaceGroup(
-          new ShootCommand(shooterSubsystem, conveyorSubsystem, limelight),
+          new ShootCommand(shooterSubsystem, conveyorSubsystem),
           new ConveyorShootBallCommand(conveyorSubsystem, shooterSubsystem),
           new WaitCommand(4))
       );
@@ -137,7 +137,7 @@ public class RobotContainer {
   }
 
   private void configureButtonBindings() {
-    // Left Joystick Buttons
+    // RightJoystick Buttons
     PIDParams teleopHeadingParams = new PIDParams(
       LimelightConstants.kpAimTeleop,
       LimelightConstants.kiAimTeleop,
@@ -147,12 +147,12 @@ public class RobotContainer {
       0.0);
       
     setJoystickButtonWhenHeld(joystickLeft, 1, new SequentialCommandGroup(               // Limelight track = hold Left Joystick Trigger
-      new LimelightInitCommand(),
+      new LimelightInitCommand(shooterSubsystem),
       new LimelightDriveToHeadingCommand(drivetrainSubsystem, limelight, teleopHeadingParams),
       new LimelightEndCommand()
     ));
     
-    // Right Joystick Buttons
+    // Left Joystick Buttons
     setJoystickButtonWhenPressed(joystickRight, 1, new ShiftGearCommand(drivetrainSubsystem));            // Shift gear         = press Right Joystick Trigger
 
     // Xbox Controller Buttons
@@ -161,7 +161,7 @@ public class RobotContainer {
     setJoystickButtonWhileHeld(xboxController, 3, new ClimbCommand(climberSubsystem));                    // To climb           = hold xbox X Button
     setJoystickButtonWhenPressed(xboxController, 4, new ToggleClimberSolenoidCommand(climberSubsystem));  // Climber pneumatics = press xbox Y Button
     setJoystickButtonWhileHeld(xboxController, 6, new ParallelCommandGroup(                               // Shoot balls        = hold xbox Right Bumper
-      new ShootCommand(shooterSubsystem, conveyorSubsystem, limelight),
+      new ShootCommand(shooterSubsystem, conveyorSubsystem),
       new ConveyorShootBallCommand(conveyorSubsystem, shooterSubsystem)
       ));
     setJoystickButtonWhileHeld(xboxController, 10, new ReverseConveyorCommand(conveyorSubsystem));        // Reverse conveyor   = hold xbox Right Stick in

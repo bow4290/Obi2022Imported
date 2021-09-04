@@ -51,9 +51,6 @@ public class Robot extends TimedRobot {
       default:
         break;
     }
-
-    SmartDashboard.putNumber("Shooting Position: ", robotContainer.getShooterPosition());
-
   }
 
   @Override
