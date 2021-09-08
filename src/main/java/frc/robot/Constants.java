@@ -79,7 +79,7 @@ public final class Constants {
         public static final int conveyorButton1Port = 6;
         public static final int conveyorButton2Port = 7;
         public static final double conveyorSpeedDivider = 0.91;
-        public static final double conveyorIndexBallSpeed = 0.73;
+        public static final double conveyorIndexBallSpeed = 0.73;   // 0.73 old balls, 0.80 new balls
         public static final double conveyorShootBallSpeed = 1;
         public static final double conveyorReverseSpeed = -0.25;
     }
@@ -103,17 +103,14 @@ public final class Constants {
         public static final double kdAimAuto = 0.01;
 
         // Teleop Position PID Values
-        public static final double kpDistanceTeleop = 0.3;
-        public static final double kiDistanceTeleop = 0.45;
-        public static final double kdDistanceTeleop = 0.03;
         public static final double kpAimTeleop = 0.2;
         public static final double kiAimTeleop = 0.3;
         public static final double kdAimTeleop = 0.01;
 
-        public static final double distancePositionTolerance = 0.25;
-        public static final double distanceVelocityTolerance = 0.05;
-        public static final double headingPositionTolerance = 0.25;
-        public static final double headingVelocityTolerance = 0.05;
+        public static final double distancePositionTolerance = 0.20;
+        public static final double distanceVelocityTolerance = 0.025;
+        public static final double headingPositionTolerance = 0.18;
+        public static final double headingVelocityTolerance = 0.025;
     }
 
     public static final class ShooterConstants{
@@ -131,11 +128,11 @@ public final class Constants {
         public static final double shooterSpeedAuto = 0.95;
 
         public static final double minimumShooterDistance = 140.0;
-        public static final double thresholdShooterDistance = 265.0;
+        public static final double thresholdShooterDistance = 225.0;
         public static final double maximumShooterDistance = 335.0;
 
-        public static final double shooterSpeedClose = 0.95;
-        public static final double shooterSpeedFar = 0.83;
+        public static final double shooterSpeedClose = 0.95;    // 0.95 old balls, 0.86 new balls
+        public static final double shooterSpeedFar = 0.85;      // 0.85 old balls, 0.78 new balls
     }
 
 }
