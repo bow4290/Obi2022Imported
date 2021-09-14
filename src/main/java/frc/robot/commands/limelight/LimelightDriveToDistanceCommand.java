@@ -7,91 +7,45 @@
 
 package frc.robot.commands.limelight;
 
-import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpiutil.math.MathUtil;
 import frc.robot.Constants.LimelightConstants;
 import frc.robot.sensors.Limelight;
 import frc.robot.subsystems.DrivetrainSubsystem;
+import frc.robot.sensors.PIDParams;
 
 public class LimelightDriveToDistanceCommand extends CommandBase {
   private final DrivetrainSubsystem drivetrainSubsystem;
   private final Limelight limelight;
-  private double error = 0;
-  private double dt = 0;
-  private double sumError = 0;
-  private double lastTimestamp = 0;
-  private double lastError = 0;
-  private double errorRate = 0;
-  private double correctedLeftMotorSpeed = 0;
-  private double correctedRightMotorSpeed = 0;
-  private double kpAdjustment = 0;
-  private double kiAdjustment = 0;
-  private double kdAdjustment = 0;
-  private int counter = 0;
+  private PIDController pid;
+  private PIDParams params;
   
-  public LimelightDriveToDistanceCommand(DrivetrainSubsystem drivetrainSubsystem, Limelight limelight) {
+  public LimelightDriveToDistanceCommand(DrivetrainSubsystem drivetrainSubsystem, Limelight limelight, PIDParams params) {
     this.drivetrainSubsystem = drivetrainSubsystem;
     this.limelight = limelight;
+    this.params = params;
+    pid = new PIDController(params.getKp(), params.getKi(), params.getKd());
     addRequirements(drivetrainSubsystem);
   }
 
   @Override
   public void initialize() {
     System.out.println("Running Limelight Distance Command");
-    lastTimestamp = Timer.getFPGATimestamp();
+    pid.setTolerance(params.getPosTolerance(), params.getVelTolerance());
   }
 
   @Override
   public void execute() {
-    double yError = limelight.getYError();
-    SmartDashboard.putNumber("Limelight Y Error: ", yError);
-    dt = Timer.getFPGATimestamp() - lastTimestamp;
-    error = yError; // Distance is directly proportional to the Y (vertical) error
-    
-    // Distance Integral Gain Calculation
-    if (Math.abs(error) < LimelightConstants.distanceIntegralWindow) {
-      sumError += error * dt;
-    } else {
-      sumError = 0;
-    }
+    double motorSpeed = pid.calculate(limelight.getYError(), params.getSetpoint());
+    SmartDashboard.putNumber("Limelight Position Y Error: ", pid.getPositionError());
+    SmartDashboard.putNumber("Limelight Velocity Y Error: ", pid.getVelocityError());
 
-    // Distance Derivative Gain Calculation
-    errorRate = (error - lastError) / dt;
+    // Don't exceed motor thresholds
+    motorSpeed = MathUtil.clamp(motorSpeed, -LimelightConstants.maxLimelightDriveSpeed, LimelightConstants.maxLimelightDriveSpeed);
 
-    // Distance PID Compensation
-    kpAdjustment = LimelightConstants.kpDistance0 * error;
-    kiAdjustment = LimelightConstants.kiDistance0 * sumError;
-    kdAdjustment = LimelightConstants.kdDistance0 * errorRate;
-
-    correctedLeftMotorSpeed = kpAdjustment + kiAdjustment + kdAdjustment;
-    correctedRightMotorSpeed = kpAdjustment + kiAdjustment + kdAdjustment;
-    
-    // Set maximum drive speed (forward and reverse)
-    if (correctedLeftMotorSpeed > LimelightConstants.maxLimelightDriveSpeed){
-      correctedLeftMotorSpeed = LimelightConstants.maxLimelightDriveSpeed;
-    } else if (correctedLeftMotorSpeed < -LimelightConstants.maxLimelightDriveSpeed){
-      correctedLeftMotorSpeed = -LimelightConstants.maxLimelightDriveSpeed;
-    }
-    
-    if (correctedRightMotorSpeed > LimelightConstants.maxLimelightDriveSpeed){
-      correctedRightMotorSpeed = LimelightConstants.maxLimelightDriveSpeed;
-    } else if (correctedRightMotorSpeed < -LimelightConstants.maxLimelightDriveSpeed){
-      correctedRightMotorSpeed = -LimelightConstants.maxLimelightDriveSpeed;
-    }
-
-    drivetrainSubsystem.drive(correctedLeftMotorSpeed, correctedRightMotorSpeed);
-
-    lastTimestamp = Timer.getFPGATimestamp();
-    lastError = error;
-    SmartDashboard.putNumber("Distance Error Rate: ", errorRate);
-    SmartDashboard.putNumber("Distance Sum Error: ", sumError);
-
-    if (Math.abs(error) < 0.4){
-      counter++;
-    } else{
-      counter = 0;
-    }
+    drivetrainSubsystem.drive(motorSpeed, motorSpeed);
   }
 
   @Override
@@ -102,6 +56,6 @@ public class LimelightDriveToDistanceCommand extends CommandBase {
 
   @Override
   public boolean isFinished() {
-    return (counter > 50);
+    return pid.atSetpoint();
   }
 }

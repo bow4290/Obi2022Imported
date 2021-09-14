@@ -7,6 +7,7 @@ import frc.robot.Constants.LimelightConstants;
 
 public class Limelight {
     private static NetworkTable table = null;
+    private static double avgYError = 0.0;
 
     public static enum LedMode {
         ledPipeline, ledOff, ledBlink, ledOn
@@ -67,6 +68,11 @@ public class Limelight {
         return table.getEntry("ty").getDouble(0.00);
     }
 
+    public double getAvgYError(double historic_weight){
+        avgYError = ((historic_weight * avgYError) + ((1.0-historic_weight)*getYError()))/2.0;
+        return avgYError;
+    }
+
     public double getArea(){                            // Target area (0% to 100% of image)
         return table.getEntry("ta").getDouble(0.00);
     }
@@ -100,7 +106,11 @@ public class Limelight {
     }
 
     public double getDistance(){                        // Horizontal distance from limelight to target
-        return (LimelightConstants.h2 - LimelightConstants.h1) / Math.tan(Math.toRadians(LimelightConstants.a1) + Math.toRadians(getYError()));
+        return (LimelightConstants.h2 - LimelightConstants.h1) / Math.tan(Math.toRadians(LimelightConstants.a1 + getYError()));
+    }
+
+    public double getBumperDistance(){                  // Horizontal distance from front bumper to target
+        return getDistance() - LimelightConstants.Lime2BumpDistance;
     }
 
 }

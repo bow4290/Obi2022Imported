@@ -7,105 +7,45 @@
 
 package frc.robot.commands.limelight;
 
-import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpiutil.math.MathUtil;
 import frc.robot.Constants.LimelightConstants;
 import frc.robot.sensors.Limelight;
 import frc.robot.subsystems.DrivetrainSubsystem;
+import frc.robot.sensors.PIDParams;
 
 public class LimelightDriveToHeadingCommand extends CommandBase {
   private final DrivetrainSubsystem drivetrainSubsystem;
   private final Limelight limelight;
-  private double dt = 0;
-  private double lastTimestamp = 0;
-  private double lastError = 0;
-  private double errorRate = 0;
-  private double error = 0;
-  private double sumError = 0;
-  private double correctedLeftMotorSpeed = 0;
-  private double correctedRightMotorSpeed = 0;
-  private boolean motorsMeetThresholdSpeed = false;
-  private double motorTurnSpeedRatio = 0;
-  private double kpAdjustment = 0;
-  private double kiAdjustment = 0;
-  private double kdAdjustment = 0;
-  private int counter = 0;
+  private PIDController pid;
+  private PIDParams params;
   
-  public LimelightDriveToHeadingCommand(DrivetrainSubsystem drivetrainSubsystem, Limelight limelight) {
+  public LimelightDriveToHeadingCommand(DrivetrainSubsystem drivetrainSubsystem, Limelight limelight, PIDParams params) {
     this.drivetrainSubsystem = drivetrainSubsystem;
     this.limelight = limelight;
+    this.params = params;
+    pid = new PIDController(params.getKp(), params.getKi(), params.getKd());
     addRequirements(drivetrainSubsystem);
   }
 
   @Override
   public void initialize() {
     System.out.println("Running Limelight Heading Command");
-    lastTimestamp = Timer.getFPGATimestamp();
+    pid.setTolerance(params.getPosTolerance(), params.getVelTolerance());
   }
 
   @Override
   public void execute() {
-    double xError = limelight.getXError();
-    SmartDashboard.putNumber("Limelight X Error: ", xError);
-    dt = Timer.getFPGATimestamp() - lastTimestamp;
-    error = xError;
+    double motorSpeed = pid.calculate(limelight.getXError(), params.getSetpoint());
+    SmartDashboard.putNumber("Limelight Position X Error", pid.getPositionError());
+    SmartDashboard.putNumber("Limelight Velocity X Error", pid.getVelocityError());
 
-    // Turn Integral Gain Calculation
-    if (Math.abs(error) < LimelightConstants.turnIntegralWindow) {
-      sumError += error * dt;
-    } else {
-      sumError = 0;
-    }
-
-    // Turn Derivative Gain Calculation
-    errorRate = (error - lastError) / dt;
-
-    // Turn PID Compensation
-    kpAdjustment = LimelightConstants.kpAim0 * error;
-    kiAdjustment = LimelightConstants.kiAim0 * sumError;
-    kdAdjustment = LimelightConstants.kdAim0 * errorRate;
-
-    correctedLeftMotorSpeed = -kpAdjustment - kiAdjustment - kdAdjustment;
-    correctedRightMotorSpeed = kpAdjustment + kiAdjustment + kdAdjustment;
+    // Don't exceed motor thresholds
+    motorSpeed = MathUtil.clamp(motorSpeed, -LimelightConstants.maxLimelightTurnSpeed, LimelightConstants.maxLimelightTurnSpeed);
     
-    motorTurnSpeedRatio = Math.abs(correctedLeftMotorSpeed / correctedRightMotorSpeed);
-
-    // Set maximum drive speed whilst maintaining turn ratio
-    if (correctedLeftMotorSpeed > LimelightConstants.maxLimelightTurnSpeed){
-      correctedLeftMotorSpeed = LimelightConstants.maxLimelightTurnSpeed;
-      motorsMeetThresholdSpeed = true;
-    } else if (correctedLeftMotorSpeed < -LimelightConstants.maxLimelightTurnSpeed){
-      correctedLeftMotorSpeed = -LimelightConstants.maxLimelightTurnSpeed;
-      motorsMeetThresholdSpeed = true;
-    } else{
-      motorsMeetThresholdSpeed = false;
-    }
-    
-    if (correctedRightMotorSpeed > LimelightConstants.maxLimelightTurnSpeed){
-      correctedRightMotorSpeed = LimelightConstants.maxLimelightTurnSpeed;
-      motorsMeetThresholdSpeed = true;
-    } else if (correctedRightMotorSpeed < -LimelightConstants.maxLimelightTurnSpeed){
-      correctedRightMotorSpeed = -LimelightConstants.maxLimelightTurnSpeed;
-      motorsMeetThresholdSpeed = true;
-    } else{
-      motorsMeetThresholdSpeed = false;
-    }
-
-    if (motorsMeetThresholdSpeed == true){
-      correctedRightMotorSpeed = correctedRightMotorSpeed / motorTurnSpeedRatio;
-    }
-    
-    drivetrainSubsystem.drive(correctedLeftMotorSpeed, correctedRightMotorSpeed);
-
-    lastTimestamp = Timer.getFPGATimestamp();
-    lastError = error;
-
-    if (Math.abs(error) < 0.25){
-      counter++;
-    } else{
-      counter = 0;
-    }
+    drivetrainSubsystem.drive(-motorSpeed, motorSpeed);
   }
 
   @Override
@@ -116,6 +56,6 @@ public class LimelightDriveToHeadingCommand extends CommandBase {
 
   @Override
   public boolean isFinished() {
-    return (counter > 50);
+    return pid.atSetpoint();
   }
 }

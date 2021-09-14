@@ -79,35 +79,38 @@ public final class Constants {
         public static final int conveyorButton1Port = 6;
         public static final int conveyorButton2Port = 7;
         public static final double conveyorSpeedDivider = 0.91;
-        public static final double conveyorIndexBallSpeed = 0.73;
+        public static final double conveyorIndexBallSpeed = 0.73;   // 0.73 old balls, 0.80 new balls
         public static final double conveyorShootBallSpeed = 1;
         public static final double conveyorReverseSpeed = -0.25;
     }
 
     public static final class LimelightConstants{
-        public static final double h1 = 24;                     // Distance from ground to limelight
-        public static final double h2 = 99;                     // Distance from ground to target
-        public static final double a1 = 61.31;                  // Limelight mount angle
+        public static final double h1 = 22.25;                     // Distance from ground to limelight
+        public static final double h2 = 98.25;                     // Distance from ground to target
+        public static final double a1 = 22.407;                  // Limelight mount angle
+        public static final double Lime2BumpDistance = 16.5;
         public static final double maxLimelightDriveSpeed = 0.6;
         public static final double maxLimelightTurnSpeed = 0.6;     // Make one for auto = 0.6
         public static final double distanceIntegralWindow = 1;
         public static final double turnIntegralWindow = 5;
 
         // Auto Position PID Values
-        public static final double kpDistance3 = 0.5;
-        public static final double kiDistance3 = 0.4;
-        public static final double kdDistance3 = 0.05;
-        public static final double kpAim3 = 0.2;
-        public static final double kiAim3 = 0.25;
-        public static final double kdAim3 = 0.01;
+        public static final double kpDistanceAuto = 0.5;
+        public static final double kiDistanceAuto = 0.4;
+        public static final double kdDistanceAuto = 0.05;
+        public static final double kpAimAuto = 0.2;
+        public static final double kiAimAuto = 0.25;
+        public static final double kdAimAuto = 0.01;
 
-        // Trench Position PID Values
-        public static final double kpDistance0 = 0.3;
-        public static final double kiDistance0 = 0.45;
-        public static final double kdDistance0 = 0.03;
-        public static final double kpAim0 = 0.2;
-        public static final double kiAim0 = 0.3;
-        public static final double kdAim0 = 0.01;
+        // Teleop Position PID Values
+        public static final double kpAimTeleop = 0.2;
+        public static final double kiAimTeleop = 0.3;
+        public static final double kdAimTeleop = 0.01;
+
+        public static final double distancePositionTolerance = 0.20;
+        public static final double distanceVelocityTolerance = 0.025;
+        public static final double headingPositionTolerance = 0.18;
+        public static final double headingVelocityTolerance = 0.025;
     }
 
     public static final class ShooterConstants{
@@ -115,16 +118,21 @@ public final class Constants {
         public static final int rightShooterMotorChannel = 1;
         public static final int shooterUpChannel = 2;
         public static final int shooterDownChannel = 3;
-        public static final double shootSpeedPosition0 = 0.86;
-        public static final double shootSpeedPosition1 = 0.87;
-        public static final double shootSpeedPosition2 = 0;
-        public static final double shootSpeedPosition3 = 0.95;       // Auto shooter speed
         public static final double shooterSpeedOffset = 0.85;
         public static final int shooterEncoderChannelA = 0;
         public static final int shooterEncoderChannelB = 1;
         public static final int shooterEncoderAverageSamples = 127;
         public static final int shooterMotorToRateSlope = 240000;
         public static final int shooterMotorToRateIntercept = 25000;
+        public static final double shooterSpeedDefault = 0.95;
+        public static final double shooterSpeedAuto = 0.95;
+
+        public static final double minimumShooterDistance = 140.0;
+        public static final double thresholdShooterDistance = 225.0;
+        public static final double maximumShooterDistance = 335.0;
+
+        public static final double shooterSpeedClose = 0.95;    // 0.95 old balls, 0.86 new balls
+        public static final double shooterSpeedFar = 0.85;      // 0.85 old balls, 0.78 new balls
     }
 
 }

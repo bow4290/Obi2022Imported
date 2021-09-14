@@ -58,8 +58,8 @@ public class DrivetrainSubsystem extends SubsystemBase {
     SpeedControllerGroup m_left = new SpeedControllerGroup(leftVictorSPX1, leftVictorSPX2, leftVictorSPX3);
     SpeedControllerGroup m_right = new SpeedControllerGroup(rightVictorSPX1, rightVictorSPX2, rightVictorSPX3);
 
-    m_left.setInverted(false);
-    m_right.setInverted(false);
+    m_left.setInverted(true);
+    m_right.setInverted(true);
 
     m_drive = new DifferentialDrive(m_left, m_right);
     m_drive.setDeadband(0.05);

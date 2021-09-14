@@ -51,9 +51,6 @@ public class Robot extends TimedRobot {
       default:
         break;
     }
-
-    SmartDashboard.putNumber("Shooting Position: ", robotContainer.getShooterPosition());
-
   }
 
   @Override
@@ -88,6 +85,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopPeriodic() {
+    SmartDashboard.putNumber("Robot-Tower Distance", robotContainer.limelight.getBumperDistance());
   }
 
   @Override
