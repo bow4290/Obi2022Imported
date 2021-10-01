@@ -79,7 +79,7 @@ public final class Constants {
         public static final int conveyorButton1Port = 6;
         public static final int conveyorButton2Port = 7;
         public static final double conveyorSpeedDivider = 0.91;
-        public static final double conveyorIndexBallSpeed = 0.70;   // 0.70 old balls, 0.80 new balls
+        public static final double conveyorIndexBallSpeed = 0.80;   // 0.70 old balls, 0.80 new balls
         public static final double conveyorShootBallSpeed = 1;
         public static final double conveyorReverseSpeed = -0.25;
     }
@@ -131,8 +131,8 @@ public final class Constants {
         public static final double thresholdShooterDistance = 225.0;
         public static final double maximumShooterDistance = 335.0;
 
-        public static final double shooterSpeedClose = 0.95;    // 0.95 old balls, 0.86 new balls
-        public static final double shooterSpeedFar = 0.85;      // 0.85 old balls, 0.82 new balls
+        public static final double shooterSpeedClose = 0.86;    // 0.95 old balls, 0.86 new balls
+        public static final double shooterSpeedFar = 0.82;      // 0.85 old balls, 0.82 new balls
     }
 
 }
