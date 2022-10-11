@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ShooterConstants;
+import edu.wpi.first.wpilibj.PneumaticsModuleType;
 
 public class ShooterSubsystem extends SubsystemBase {
   
@@ -35,7 +36,7 @@ public class ShooterSubsystem extends SubsystemBase {
     leftShooterMotor.setInverted(true);
     rightShooterMotor.setInverted(true);
 
-    shooterSolenoid = new DoubleSolenoid(ShooterConstants.shooterUpChannel, ShooterConstants.shooterDownChannel);
+    shooterSolenoid = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, ShooterConstants.shooterUpChannel, ShooterConstants.shooterDownChannel);
     shooterStatus = ShooterStatus.DOWN;
   }
 

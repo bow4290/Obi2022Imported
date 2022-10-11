@@ -13,6 +13,7 @@ import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ClimberConstants;
+import edu.wpi.first.wpilibj.PneumaticsModuleType;
 
 public class ClimberSubsystem extends SubsystemBase {
   
@@ -26,7 +27,7 @@ public class ClimberSubsystem extends SubsystemBase {
 
   public ClimberSubsystem() {
     climberMotor = new WPI_VictorSPX(ClimberConstants.climberMotorChannel);
-    climberSolenoid = new DoubleSolenoid(ClimberConstants.climberUpChannel, ClimberConstants.climberDownChannel);
+    climberSolenoid = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, ClimberConstants.climberUpChannel, ClimberConstants.climberDownChannel);
   
     climberMotor.setInverted(false);
     climberStatus = ClimberStatus.DOWN;

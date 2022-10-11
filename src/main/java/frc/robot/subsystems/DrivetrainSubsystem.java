@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.*;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj.PneumaticsModuleType;
 
 //import com.ctre.phoenix.motorcontrol.InvertType;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
@@ -78,7 +79,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
     driveGyro = new ADXRS450_Gyro();
     driveGyro.calibrate();
 
-    gearShiftSolenoid = new DoubleSolenoid(DriveConstants.gearShiftHighChannel, DriveConstants.gearShiftLowChannel);
+    gearShiftSolenoid = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, DriveConstants.gearShiftHighChannel, DriveConstants.gearShiftLowChannel);
     gearShiftStatus = GearShiftStatus.LOW;
   }
 

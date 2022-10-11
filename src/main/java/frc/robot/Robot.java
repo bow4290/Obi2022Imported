@@ -7,8 +7,8 @@
 
 package frc.robot;
 
-import edu.wpi.cscore.UsbCamera;
-import edu.wpi.cscore.VideoMode;
+import edu.wpi.first.cscore.UsbCamera;
+import edu.wpi.first.cscore.VideoMode;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -25,8 +25,8 @@ public class Robot extends TimedRobot {
     robotContainer = new RobotContainer();
     
 
-    //UsbCamera cameraShooter = CameraServer.getInstance().startAutomaticCapture();
-    UsbCamera cameraIntake = CameraServer.getInstance().startAutomaticCapture();
+    //UsbCamera cameraShooter = CameraServer.startAutomaticCapture();
+    UsbCamera cameraIntake = CameraServer.startAutomaticCapture();
     //cameraShooter.setVideoMode(VideoMode.PixelFormat.kMJPEG, 160, 120, 30);
     cameraIntake.setVideoMode(VideoMode.PixelFormat.kMJPEG, 160, 120, 30);
   }
