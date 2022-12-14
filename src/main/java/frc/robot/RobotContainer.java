@@ -129,7 +129,7 @@ public class RobotContainer {
     chooser.addOption("Auto Drive Only", AutoDriveOnly);
     SmartDashboard.putData(chooser);
     
-    drivetrainSubsystem.setDefaultCommand(new RunCommand(() -> drivetrainSubsystem.drive(-getLeftY(), -getRightY()), drivetrainSubsystem));   // Negate the values because dumb joysticks
+    drivetrainSubsystem.setDefaultCommand(new RunCommand(() -> drivetrainSubsystem.drive(0.5 * getLeftY(), 0.5 * getRightY()), drivetrainSubsystem));   // Negate the values because dumb joysticks
     intakeSubsystem.setDefaultCommand(new RunCommand(() -> intakeSubsystem.intakeIn(getAxisValue(3)), intakeSubsystem));                      // Intake balls   = hold xbox Right Trigger
     conveyorSubsystem.setDefaultCommand(new ConveyorIndexBallCommand(conveyorSubsystem)); 
     
