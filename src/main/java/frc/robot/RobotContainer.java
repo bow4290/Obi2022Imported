@@ -129,7 +129,7 @@ public class RobotContainer {
     chooser.addOption("Auto Drive Only", AutoDriveOnly);
     SmartDashboard.putData(chooser);
     
-    drivetrainSubsystem.setDefaultCommand(new RunCommand(() -> drivetrainSubsystem.drive(0.5 * getLeftY(), 0.5 * getRightY()), drivetrainSubsystem));   // Negate the values because dumb joysticks
+    drivetrainSubsystem.setDefaultCommand(new RunCommand(() -> drivetrainSubsystem.drive(getLeftY(), getRightY()), drivetrainSubsystem));   // Negate the values because dumb joysticks
     intakeSubsystem.setDefaultCommand(new RunCommand(() -> intakeSubsystem.intakeIn(getAxisValue(3)), intakeSubsystem));                      // Intake balls   = hold xbox Right Trigger
     conveyorSubsystem.setDefaultCommand(new ConveyorIndexBallCommand(conveyorSubsystem)); 
     
@@ -157,7 +157,6 @@ public class RobotContainer {
 
     // Xbox Controller Buttons
     setJoystickButtonWhenPressed(xboxController, 1, new ToggleShooterSolenoidCommand(shooterSubsystem));  // Shooter pneumatics = press xbox A Button
-    setJoystickButtonWhenPressed(xboxController, 2, new ToggleIntakeSolenoidCommand(intakeSubsystem));    // Intake pneumatics  = press xbox B Button
     setJoystickButtonWhileHeld(xboxController, 3, new ClimbCommand(climberSubsystem));                    // To climb           = hold xbox X Button
     setJoystickButtonWhenPressed(xboxController, 4, new ToggleClimberSolenoidCommand(climberSubsystem));  // Climber pneumatics = press xbox Y Button
     setJoystickButtonWhileHeld(xboxController, 6, new ParallelCommandGroup(                               // Shoot balls        = hold xbox Right Bumper

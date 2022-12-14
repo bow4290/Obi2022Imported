@@ -10,22 +10,22 @@ package frc.robot;
 public final class Constants {
 
     public static final class DriveConstants{
-        public static final int leftVictorSPX1Channel = 12;
-        public static final int leftVictorSPX2Channel = 11;
-        public static final int leftVictorSPX3Channel = 10;
-        public static final int rightVictorSPX1Channel = 5;
-        public static final int rightVictorSPX2Channel = 3;
-        public static final int rightVictorSPX3Channel = 6;
+        public static final int leftVictorSPX1Channel = 5;
+        public static final int leftVictorSPX2Channel = 3;
+        public static final int leftVictorSPX3Channel = 6;
+        public static final int rightVictorSPX1Channel = 12;
+        public static final int rightVictorSPX2Channel = 11;
+        public static final int rightVictorSPX3Channel = 10;
 
-        public static final double driveSpeedMultiplier = 1;
+        public static final double driveSpeedMultiplier = 0.75;
         public static final double driveMaxSpeed = 1;
 
         private static final double wheelDiameter = 7;
     
-        public static final int driveTrainLeftEncoderChannelA = 2;
-        public static final int driveTrainLeftEncoderChannelB = 3;
-        public static final int driveTrainRightEncoderChannelA = 4;
-        public static final int driveTrainRightEncoderChannelB = 5;
+        public static final int driveTrainLeftEncoderChannelA = 4;
+        public static final int driveTrainLeftEncoderChannelB = 5;
+        public static final int driveTrainRightEncoderChannelA = 2;
+        public static final int driveTrainRightEncoderChannelB = 3;
 
         public static final int driveTrainLeftEncoderAverageSamples = 5;
         public static final double driveTrainLeftEncoderMinRate = 1;
