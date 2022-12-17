@@ -33,8 +33,8 @@ public class ShooterSubsystem extends SubsystemBase {
     leftShooterMotor = new WPI_VictorSPX(ShooterConstants.leftShooterMotorChannel);
     rightShooterMotor = new WPI_VictorSPX(ShooterConstants.rightShooterMotorChannel);
 
-    leftShooterMotor.setInverted(false);
-    rightShooterMotor.setInverted(false);
+    leftShooterMotor.setInverted(true);
+    rightShooterMotor.setInverted(true);
 
     shooterSolenoid = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, ShooterConstants.shooterUpChannel, ShooterConstants.shooterDownChannel);
     shooterStatus = ShooterStatus.DOWN;

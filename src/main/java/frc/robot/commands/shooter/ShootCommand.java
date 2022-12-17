@@ -32,7 +32,7 @@ public class ShootCommand extends CommandBase {
 
   @Override
   public void execute() {
-    double targetShooterSpeed = shooterSubsystem.getTargetShooterSpeed();
+    double targetShooterSpeed = ShooterConstants.shooterSpeedDefault;
     SmartDashboard.putNumber("Target Shooter Speed: ", targetShooterSpeed);
     double targetShooterRate = (ShooterConstants.shooterMotorToRateSlope * targetShooterSpeed) - ShooterConstants.shooterMotorToRateIntercept;                   // Roughly converts shooter motor speed (0 to 1) into encoder rate (0 to 215,000)
     shooterSubsystem.setTargetShooterRate(targetShooterRate);
