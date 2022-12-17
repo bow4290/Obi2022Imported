@@ -18,29 +18,11 @@ import edu.wpi.first.wpilibj.PneumaticsModuleType;
 public class IntakeSubsystem extends SubsystemBase {
   
   private final WPI_VictorSPX intakeMotor;
-  private final DoubleSolenoid intakeSolenoid;
-
-  public enum IntakeStatus{
-    DOWN, UP
-  }
-  public static IntakeStatus intakeStatus;
 
   public IntakeSubsystem() {
     intakeMotor = new WPI_VictorSPX(IntakeConstants.intakeMotorChannel);
-    intakeSolenoid = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, IntakeConstants.intakeUpChannel, IntakeConstants.intakeDownChannel);
-  
+
     intakeMotor.setInverted(false);
-    intakeStatus = IntakeStatus.UP;
-  }
-
-  public void retractIntake(){
-    intakeSolenoid.set(DoubleSolenoid.Value.kForward);
-    intakeStatus = IntakeStatus.UP;
-  }
-
-  public void extendIntake(){
-    intakeSolenoid.set(DoubleSolenoid.Value.kReverse);
-    intakeStatus = IntakeStatus.DOWN;
   }
 
   public void intakeIn(double intakeSpeed){
@@ -50,11 +32,7 @@ public class IntakeSubsystem extends SubsystemBase {
   public void intakeStop(){
     intakeMotor.set(ControlMode.PercentOutput, 0);
   }
-
-  public static IntakeStatus getIntakePosition(){
-    return intakeStatus;
-  }
-
+  
   @Override
   public void periodic() {
     // This method will be called once per scheduler run

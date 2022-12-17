@@ -27,13 +27,6 @@ public class DrivetrainSubsystem extends SubsystemBase {
   public Encoder driveTrainRightEncoder;
   public ADXRS450_Gyro driveGyro;
 
-  private final DoubleSolenoid gearShiftSolenoid;
-
-  public enum GearShiftStatus{
-    HIGH, LOW
-  }
-  public static GearShiftStatus gearShiftStatus;
-
   public DrivetrainSubsystem() {
     leftVictorSPX1 = new WPI_VictorSPX(DriveConstants.leftVictorSPX1Channel);
     leftVictorSPX2 = new WPI_VictorSPX(DriveConstants.leftVictorSPX2Channel);
@@ -78,9 +71,6 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
     driveGyro = new ADXRS450_Gyro();
     driveGyro.calibrate();
-
-    gearShiftSolenoid = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, DriveConstants.gearShiftHighChannel, DriveConstants.gearShiftLowChannel);
-    gearShiftStatus = GearShiftStatus.LOW;
   }
 
   public void drive(double leftSpeed, double rightSpeed){
@@ -123,21 +113,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
   public double getGyroRate(){
     return(driveGyro.getRate());
   }
-
-  public void shiftDown(){
-    gearShiftSolenoid.set(DoubleSolenoid.Value.kForward);   // kForward is Low (down) speed
-    gearShiftStatus = GearShiftStatus.LOW;
-  }
-
-  public void shiftUp(){
-    gearShiftSolenoid.set(DoubleSolenoid.Value.kReverse);   // kReverse is High (up) speed
-    gearShiftStatus = GearShiftStatus.HIGH;
-  }
-
-  public static GearShiftStatus getGearShiftPosition(){
-    return gearShiftStatus;
-  }
-
+  
   @Override
   public void periodic() {
     SmartDashboard.putNumber("Gyro Angle: ", getGyroAngle());
