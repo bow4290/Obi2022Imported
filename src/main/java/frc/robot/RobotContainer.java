@@ -41,8 +41,6 @@ import frc.robot.sensors.PIDParams;
 
 public class RobotContainer {
 
-  public static Joystick joystickLeft;
-  public static Joystick joystickRight;
   public static Joystick xboxController;
 
   private DrivetrainSubsystem drivetrainSubsystem;
@@ -61,8 +59,6 @@ public class RobotContainer {
 
   public RobotContainer() {
 
-    joystickLeft = new Joystick(OIConstants.LEFT_JOYSTICK);
-    joystickRight = new Joystick(OIConstants.RIGHT_JOYSTICK);
     xboxController = new Joystick(OIConstants.XBOX_CONTROLLER);
 
     drivetrainSubsystem = new DrivetrainSubsystem();
@@ -145,20 +141,11 @@ public class RobotContainer {
       LimelightConstants.headingPositionTolerance,
       LimelightConstants.headingVelocityTolerance,
       0.0);
-      
-    setJoystickButtonWhenHeld(joystickLeft, 1, new SequentialCommandGroup(               // Limelight track = hold Left Joystick Trigger
-      new LimelightInitCommand(shooterSubsystem),
-      new LimelightDriveToHeadingCommand(drivetrainSubsystem, limelight, teleopHeadingParams),
-      new LimelightEndCommand()
-    ));
     
     // Left Joystick Buttons
-    setJoystickButtonWhenPressed(joystickRight, 1, new ShiftGearCommand(drivetrainSubsystem));            // Shift gear         = press Right Joystick Trigger
+    // setJoystickButtonWhenPressed(joystickRight, 1, new ShiftGearCommand(drivetrainSubsystem));            // Shift gear         = press Right Joystick Trigger
 
     // Xbox Controller Buttons
-    setJoystickButtonWhenPressed(xboxController, 1, new ToggleShooterSolenoidCommand(shooterSubsystem));  // Shooter pneumatics = press xbox A Button
-    setJoystickButtonWhileHeld(xboxController, 3, new ClimbCommand(climberSubsystem));                    // To climb           = hold xbox X Button
-    setJoystickButtonWhenPressed(xboxController, 4, new ToggleClimberSolenoidCommand(climberSubsystem));  // Climber pneumatics = press xbox Y Button
     setJoystickButtonWhileHeld(xboxController, 6, new ParallelCommandGroup(                               // Shoot balls        = hold xbox Right Bumper
       new ShootCommand(shooterSubsystem, conveyorSubsystem),
       new ConveyorShootBallCommand(conveyorSubsystem, shooterSubsystem)
