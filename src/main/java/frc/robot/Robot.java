@@ -34,23 +34,6 @@ public class Robot extends TimedRobot {
   @Override
   public void robotPeriodic() {
     CommandScheduler.getInstance().run();
-    
-    switch(robotContainer.getDPad()){
-      case 0:
-        robotContainer.setShooterPosition(0);
-        break;
-      case 90:
-        robotContainer.setShooterPosition(1);
-        break;
-      case 180:
-        robotContainer.setShooterPosition(2);
-        break;
-      case 270:
-        robotContainer.setShooterPosition(3);
-        break;
-      default:
-        break;
-    }
   }
 
   @Override
@@ -63,7 +46,6 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousInit() {
-    robotContainer.limelight.setPipeline(3);
     autonomousCommand = robotContainer.getAutonomousCommand();
 
     if (autonomousCommand != null) {
@@ -80,12 +62,11 @@ public class Robot extends TimedRobot {
     if (autonomousCommand != null) {
       autonomousCommand.cancel();
     }
-    robotContainer.limelight.setPipeline(0);
   }
 
   @Override
   public void teleopPeriodic() {
-    SmartDashboard.putNumber("Robot-Tower Distance", robotContainer.limelight.getBumperDistance());
+    //SmartDashboard.putNumber("Robot-Tower Distance", robotContainer.limelight.getBumperDistance());
   }
 
   @Override

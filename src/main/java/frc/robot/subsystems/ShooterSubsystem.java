@@ -20,7 +20,6 @@ public class ShooterSubsystem extends SubsystemBase {
   
   private final WPI_VictorSPX leftShooterMotor;
   private final WPI_VictorSPX rightShooterMotor;
-  private final DoubleSolenoid shooterSolenoid;
   private double targetShooterSpeed = 0.0;
   private double targetShooterRate = 0.0;
 
@@ -35,9 +34,6 @@ public class ShooterSubsystem extends SubsystemBase {
 
     leftShooterMotor.setInverted(true);
     rightShooterMotor.setInverted(true);
-
-    shooterSolenoid = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, ShooterConstants.shooterUpChannel, ShooterConstants.shooterDownChannel);
-    shooterStatus = ShooterStatus.DOWN;
   }
 
   public void shooterShoot(double shooterSpeed){
@@ -65,20 +61,6 @@ public class ShooterSubsystem extends SubsystemBase {
 
   public double getTargetShooterRate(){
     return targetShooterRate;
-  }
-
-  public void shooterDown(){
-    shooterSolenoid.set(DoubleSolenoid.Value.kForward);
-    shooterStatus = ShooterStatus.DOWN;
-  }
-
-  public void shooterUp(){
-    shooterSolenoid.set(DoubleSolenoid.Value.kReverse);
-    shooterStatus = ShooterStatus.UP;
-  }
-
-  public static ShooterStatus getShooterPosition(){
-    return shooterStatus;
   }
 
   @Override

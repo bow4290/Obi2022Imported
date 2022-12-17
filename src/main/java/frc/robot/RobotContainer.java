@@ -20,22 +20,12 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Constants.LimelightConstants;
 import frc.robot.Constants.OIConstants;
-import frc.robot.commands.climber.ClimbCommand;
-import frc.robot.commands.climber.ToggleClimberSolenoidCommand;
 import frc.robot.commands.conveyor.ConveyorIndexBallCommand;
 import frc.robot.commands.conveyor.ConveyorShootBallCommand;
 import frc.robot.commands.conveyor.ReverseConveyorCommand;
-import frc.robot.commands.drivetrain.ShiftGearCommand;
-import frc.robot.commands.intake.ToggleIntakeSolenoidCommand;
 import frc.robot.commands.auto.AutoDriveDistanceCommand;
 import frc.robot.commands.auto.AutoTurnAngleCommand;
-import frc.robot.commands.limelight.LimelightDriveToDistanceCommand;
-import frc.robot.commands.limelight.LimelightDriveToHeadingCommand;
-import frc.robot.commands.limelight.LimelightEndCommand;
-import frc.robot.commands.limelight.LimelightInitCommand;
 import frc.robot.commands.shooter.ShootCommand;
-import frc.robot.commands.shooter.ToggleShooterSolenoidCommand;
-import frc.robot.sensors.Limelight;
 import frc.robot.subsystems.*;
 import frc.robot.sensors.PIDParams;
 
@@ -47,15 +37,12 @@ public class RobotContainer {
 
   private DrivetrainSubsystem drivetrainSubsystem;
   private IntakeSubsystem intakeSubsystem;
-  private ClimberSubsystem climberSubsystem;
   private ConveyorSubsystem conveyorSubsystem;
   private ShooterSubsystem shooterSubsystem;
 
   private Command AutoShootAndCollect;
   private Command AutoShootOnly;
   private Command AutoDriveOnly;
-
-  public Limelight limelight;
 
   SendableChooser<Command> chooser = new SendableChooser<>();
 
@@ -67,12 +54,8 @@ public class RobotContainer {
 
     drivetrainSubsystem = new DrivetrainSubsystem();
     intakeSubsystem = new IntakeSubsystem();
-    climberSubsystem = new ClimberSubsystem();
     conveyorSubsystem = new ConveyorSubsystem();
     shooterSubsystem = new ShooterSubsystem();
-
-    limelight = new Limelight();
-    limelight.setPipeline(3);  // Default Position 3 (Start Line)
 
     PIDParams autoHeadingParams = new PIDParams(
       LimelightConstants.kpAimAuto,
@@ -89,7 +72,7 @@ public class RobotContainer {
       LimelightConstants.distancePositionTolerance,
       LimelightConstants.distanceVelocityTolerance,
       0.0);   // Change setpoint to equal distance from calibration point (start line) to shooting distance in auto.
-
+/*
     AutoShootAndCollect =
       new SequentialCommandGroup(
         new LimelightInitCommand(shooterSubsystem),
@@ -123,7 +106,7 @@ public class RobotContainer {
         new RunCommand(() -> drivetrainSubsystem.drive(0.6, 0.6), drivetrainSubsystem),
         new WaitCommand(2)
       );
-
+*/
     chooser.setDefaultOption("Auto Shoot Only", AutoShootOnly);
     chooser.addOption("Auto Shoot and Collect", AutoShootAndCollect);
     chooser.addOption("Auto Drive Only", AutoDriveOnly);
@@ -145,20 +128,7 @@ public class RobotContainer {
       LimelightConstants.headingPositionTolerance,
       LimelightConstants.headingVelocityTolerance,
       0.0);
-      
-    setJoystickButtonWhenHeld(joystickLeft, 1, new SequentialCommandGroup(               // Limelight track = hold Left Joystick Trigger
-      new LimelightInitCommand(shooterSubsystem),
-      new LimelightDriveToHeadingCommand(drivetrainSubsystem, limelight, teleopHeadingParams),
-      new LimelightEndCommand()
-    ));
-    
-    // Left Joystick Buttons
-    setJoystickButtonWhenPressed(joystickRight, 1, new ShiftGearCommand(drivetrainSubsystem));            // Shift gear         = press Right Joystick Trigger
-
     // Xbox Controller Buttons
-    setJoystickButtonWhenPressed(xboxController, 1, new ToggleShooterSolenoidCommand(shooterSubsystem));  // Shooter pneumatics = press xbox A Button
-    setJoystickButtonWhileHeld(xboxController, 3, new ClimbCommand(climberSubsystem));                    // To climb           = hold xbox X Button
-    setJoystickButtonWhenPressed(xboxController, 4, new ToggleClimberSolenoidCommand(climberSubsystem));  // Climber pneumatics = press xbox Y Button
     setJoystickButtonWhileHeld(xboxController, 6, new ParallelCommandGroup(                               // Shoot balls        = hold xbox Right Bumper
       new ShootCommand(shooterSubsystem, conveyorSubsystem),
       new ConveyorShootBallCommand(conveyorSubsystem, shooterSubsystem)
@@ -192,14 +162,6 @@ public class RobotContainer {
 
   public int getDPad(){
     return xboxController.getPOV();
-  }
-
-  public void setShooterPosition(int position){
-    limelight.setPipeline(position);
-  }
-
-  public double getShooterPosition(){
-    return limelight.getPipeline();
   }
 
   // WhenPressed runs the command once at the moment the button is pressed.
