@@ -78,7 +78,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("Right Drive Speed: ", rightSpeed);
     leftSpeed = leftSpeed * DriveConstants.driveSpeedMultiplier;
     rightSpeed = rightSpeed * DriveConstants.driveSpeedMultiplier;
-    m_drive.tankDrive(leftSpeed, rightSpeed);
+    m_drive.curvatureDrive(leftSpeed, rightSpeed, true);
   }
 
   public void stopDrive(){

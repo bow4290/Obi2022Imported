@@ -108,8 +108,8 @@ public class RobotContainer {
     chooser.addOption("Auto Drive Only", AutoDriveOnly);
     SmartDashboard.putData(chooser);
     
-    drivetrainSubsystem.setDefaultCommand(new RunCommand(() -> drivetrainSubsystem.drive(getLeftY(), getRightY()), drivetrainSubsystem));   // Negate the values because dumb joysticks
-    intakeSubsystem.setDefaultCommand(new RunCommand(() -> intakeSubsystem.intakeIn(getAxisValue(3)), intakeSubsystem));                      // Intake balls   = hold xbox Right Trigger
+    drivetrainSubsystem.setDefaultCommand(new RunCommand(() -> drivetrainSubsystem.drive(getLeftY(), -getRightX()), drivetrainSubsystem));   // Negate the values because dumb joysticks
+    intakeSubsystem.setDefaultCommand(new RunCommand(() -> intakeSubsystem.intakeIn(xboxController.getRawButton(5)?1:0), intakeSubsystem));                      // Intake balls   = hold xbox Right Trigger
     conveyorSubsystem.setDefaultCommand(new ConveyorIndexBallCommand(conveyorSubsystem)); 
     
     configureButtonBindings();
@@ -124,19 +124,16 @@ public class RobotContainer {
       LimelightConstants.headingPositionTolerance,
       LimelightConstants.headingVelocityTolerance,
       0.0);
-<<<<<<< HEAD
     
     // Left Joystick Buttons
     // setJoystickButtonWhenPressed(joystickRight, 1, new ShiftGearCommand(drivetrainSubsystem));            // Shift gear         = press Right Joystick Trigger
 
-=======
->>>>>>> 3ac5fe5f9c1b63c4833d1959ca027c290c7c1915
     // Xbox Controller Buttons
     setJoystickButtonWhileHeld(xboxController, 6, new ParallelCommandGroup(                               // Shoot balls        = hold xbox Right Bumper
       new ShootCommand(shooterSubsystem, conveyorSubsystem),
       new ConveyorShootBallCommand(conveyorSubsystem, shooterSubsystem)
       ));
-    setJoystickButtonWhileHeld(xboxController, 10, new ReverseConveyorCommand(conveyorSubsystem));        // Reverse conveyor   = hold xbox Right Stick in
+    setJoystickButtonWhileHeld(xboxController, 2, new ReverseConveyorCommand(conveyorSubsystem));        // Reverse conveyor   = hold xbox Right Stick in
   }
 
   public Command getAutonomousCommand() {
@@ -144,19 +141,19 @@ public class RobotContainer {
   }
 
   public double getLeftY(){
-    return -joystickLeft.getY();   // Joystick Y axis provides -1 for forward, so invert this
+    return -getAxisValue(1);   // Joystick Y axis provides -1 for forward, so invert this
   }
 
   public double getLeftX(){
-    return joystickLeft.getX();
+    return getAxisValue(0);
   }
 
   public double getRightY(){
-    return -joystickRight.getY();  // Joystick Y axis provides -1 for forward, so invert this
+    return -getAxisValue(5);  // Joystick Y axis provides -1 for forward, so invert this
   }
 
   public double getRightX(){
-    return joystickRight.getX();
+    return getAxisValue(4);
   }
 
   public static double getAxisValue(int axis){
