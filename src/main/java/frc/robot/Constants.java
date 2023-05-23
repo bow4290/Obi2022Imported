@@ -17,7 +17,7 @@ public final class Constants {
         public static final int rightVictorSPX2Channel = 11;
         public static final int rightVictorSPX3Channel = 10;
 
-        public static final double driveSpeedMultiplier = 0.75;
+        public static final double driveSpeedMultiplier = 0.95;
         public static final double driveMaxSpeed = 1;
 
         private static final double wheelDiameter = 7;
@@ -122,7 +122,7 @@ public final class Constants {
         public static final int shooterEncoderAverageSamples = 127;
         public static final int shooterMotorToRateSlope = 240000;
         public static final int shooterMotorToRateIntercept = 25000;
-        public static final double shooterSpeedDefault = 0.95;
+        public static final double shooterSpeedDefault = 0.75;
         public static final double shooterSpeedAuto = 0.95;
 
         public static final double minimumShooterDistance = 140.0;
