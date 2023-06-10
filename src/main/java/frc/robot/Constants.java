@@ -17,8 +17,8 @@ public final class Constants {
         public static final int rightVictorSPX2Channel = 11;
         public static final int rightVictorSPX3Channel = 10;
 
-        public static final double driveSpeedMultiplier = 0.95;
-        public static final double driveMaxSpeed = 1;
+        public static final double driveSpeedMultiplier = 0.45;
+        public static final double driveMaxSpeed = 1.0;
 
         private static final double wheelDiameter = 7;
     

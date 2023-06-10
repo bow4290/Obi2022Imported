@@ -104,7 +104,7 @@ public class AutoDriveDistanceCommand extends CommandBase {
     //Maintains speed ratio if motor speeds are saturated
     correctedRightMotorSpeed = correctedRightMotorSpeed / motorSpeedRatio;
 
-    drivetrainSubsystem.drive(correctedLeftMotorSpeed, correctedRightMotorSpeed);
+//    drivetrainSubsystem.drive(correctedLeftMotorSpeed, correctedRightMotorSpeed);
 
     lastTimestamp = Timer.getFPGATimestamp();
     lastDistanceError = distanceError;

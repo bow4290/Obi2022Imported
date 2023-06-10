@@ -73,11 +73,13 @@ public class DrivetrainSubsystem extends SubsystemBase {
     driveGyro.calibrate();
   }
 
-  public void drive(double leftSpeed, double rightSpeed){
+  public void drive(double leftSpeed, double rightSpeed, boolean boost){
     SmartDashboard.putNumber("Left Drive Speed: ", leftSpeed);
     SmartDashboard.putNumber("Right Drive Speed: ", rightSpeed);
+    if (!boost) {
     leftSpeed = leftSpeed * DriveConstants.driveSpeedMultiplier;
     rightSpeed = rightSpeed * DriveConstants.driveSpeedMultiplier;
+    }
     m_drive.curvatureDrive(leftSpeed, rightSpeed, true);
   }
 

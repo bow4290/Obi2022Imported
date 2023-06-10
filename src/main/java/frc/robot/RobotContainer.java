@@ -53,21 +53,7 @@ public class RobotContainer {
     conveyorSubsystem = new ConveyorSubsystem();
     shooterSubsystem = new ShooterSubsystem();
 
-    PIDParams autoHeadingParams = new PIDParams(
-      LimelightConstants.kpAimAuto,
-      LimelightConstants.kiAimAuto,
-      LimelightConstants.kdAimAuto,
-      LimelightConstants.headingPositionTolerance,
-      LimelightConstants.headingVelocityTolerance,
-      0.0);
-
-    PIDParams autoDistanceParams = new PIDParams(
-      LimelightConstants.kpDistanceAuto,
-      LimelightConstants.kiDistanceAuto,
-      LimelightConstants.kdDistanceAuto,
-      LimelightConstants.distancePositionTolerance,
-      LimelightConstants.distanceVelocityTolerance,
-      0.0);   // Change setpoint to equal distance from calibration point (start line) to shooting distance in auto.
+    // Change setpoint to equal distance from calibration point (start line) to shooting distance in auto.
 /*
     AutoShootAndCollect =
       new SequentialCommandGroup(
@@ -108,7 +94,8 @@ public class RobotContainer {
     chooser.addOption("Auto Drive Only", AutoDriveOnly);
     SmartDashboard.putData(chooser);
     
-    drivetrainSubsystem.setDefaultCommand(new RunCommand(() -> drivetrainSubsystem.drive(getLeftY(), -getRightX()), drivetrainSubsystem));   // Negate the values because dumb joysticks
+    drivetrainSubsystem.setDefaultCommand(new RunCommand(() -> drivetrainSubsystem.drive(getLeftY(), -getRightX(), xboxController.getRawButton(7)), drivetrainSubsystem));   // Negate the values because dumb joysticks
+    // Left bumper intakes
     intakeSubsystem.setDefaultCommand(new RunCommand(() -> intakeSubsystem.intakeIn(xboxController.getRawButton(5)?1:0), intakeSubsystem));                      // Intake balls   = hold xbox Right Trigger
     conveyorSubsystem.setDefaultCommand(new ConveyorIndexBallCommand(conveyorSubsystem)); 
     
@@ -129,10 +116,12 @@ public class RobotContainer {
     // setJoystickButtonWhenPressed(joystickRight, 1, new ShiftGearCommand(drivetrainSubsystem));            // Shift gear         = press Right Joystick Trigger
 
     // Xbox Controller Buttons
+    // Right Bumper
     setJoystickButtonWhileHeld(xboxController, 6, new ParallelCommandGroup(                               // Shoot balls        = hold xbox Right Bumper
       new ShootCommand(shooterSubsystem, conveyorSubsystem),
       new ConveyorShootBallCommand(conveyorSubsystem, shooterSubsystem)
       ));
+    // B button
     setJoystickButtonWhileHeld(xboxController, 2, new ReverseConveyorCommand(conveyorSubsystem));        // Reverse conveyor   = hold xbox Right Stick in
   }
 

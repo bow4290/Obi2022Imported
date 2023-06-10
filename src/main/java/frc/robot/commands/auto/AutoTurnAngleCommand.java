@@ -82,7 +82,7 @@ public class AutoTurnAngleCommand extends CommandBase {
             speedToDriveRight = -AutoDriveConstants.autoTurnSpeed;
         }
         
-        drivetrainSubsystem.drive(speedToDriveLeft, speedToDriveRight);
+//        drivetrainSubsystem.drive(speedToDriveLeft, speedToDriveRight);
 
         lastTimestamp = Timer.getFPGATimestamp();
         lastTurnError = turnError;
