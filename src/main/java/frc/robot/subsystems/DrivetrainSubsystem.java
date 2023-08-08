@@ -9,6 +9,7 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.*;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
@@ -49,8 +50,8 @@ public class DrivetrainSubsystem extends SubsystemBase {
     // rightVictorSPX3.setInverted(InvertType.FollowMaster);
 
     // Using Speed Controller Groups caused output to motors to not update quick enough.
-    SpeedControllerGroup m_left = new SpeedControllerGroup(leftVictorSPX1, leftVictorSPX2, leftVictorSPX3);
-    SpeedControllerGroup m_right = new SpeedControllerGroup(rightVictorSPX1, rightVictorSPX2, rightVictorSPX3);
+    MotorControllerGroup m_left = new MotorControllerGroup(leftVictorSPX1, leftVictorSPX2, leftVictorSPX3);
+    MotorControllerGroup m_right = new MotorControllerGroup(rightVictorSPX1, rightVictorSPX2, rightVictorSPX3);
 
     m_left.setInverted(false);
     m_right.setInverted(true);

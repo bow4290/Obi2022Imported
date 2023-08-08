@@ -7,6 +7,7 @@
 
 package frc.robot.commands.conveyor;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants.ConveyorConstants;
 import frc.robot.subsystems.ConveyorSubsystem;
@@ -15,6 +16,7 @@ import frc.robot.subsystems.ShooterSubsystem;
 public class ConveyorShootBallCommand extends CommandBase {
   private final ConveyorSubsystem conveyorSubsystem;
   private final ShooterSubsystem shooterSubsystem;
+  private final Timer timer = new Timer();
 
   public ConveyorShootBallCommand(ConveyorSubsystem conveyorSubsystem, ShooterSubsystem shooterSubsystem) {
     this.conveyorSubsystem = conveyorSubsystem;
@@ -24,11 +26,12 @@ public class ConveyorShootBallCommand extends CommandBase {
 
   @Override
   public void initialize() {
+    timer.reset();
   }
 
   @Override
   public void execute() {
-    if(conveyorSubsystem.getEncoderRate() >= (shooterSubsystem.getTargetShooterRate()-8000)){
+    if(timer.hasElapsed(1)){
       conveyorSubsystem.conveyBall(ConveyorConstants.conveyorShootBallSpeed);
     } else{
       conveyorSubsystem.conveyorStop();
